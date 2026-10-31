@@ -1392,10 +1392,9 @@
     @stack('styles')
 </head>
 @php
-    $isCustomer = Auth::check() && Auth::user()->isPembeli();
+    $isCustomer = Auth::check() && Auth::user()->isCustomer();
     $isAdmin = Auth::check() && Auth::user()->isAdmin();
-    $isStaff = Auth::check() && Auth::user()->isStaff();
-    $pendingOrdersCount = $isCustomer ? \App\Models\Sale::where('buyer_id', Auth::id())->where('payment_status', 'pending')->count() : 0;
+    $isOperator = Auth::check() && Auth::user()->isOperator();
 @endphp
 <body class="{{ $isCustomer ? 'customer-layout' : '' }}">
     <div class="top-hairline"></div>
@@ -1405,11 +1404,11 @@
         <aside class="sidebar d-flex flex-column" id="sidebar">
             <div class="sidebar-brand-wrap flex-shrink-0">
                 <a href="{{ route('dashboard') }}" class="brand">
-                    <img src="{{ asset('images/logo.png') }}" alt="Ctrl+R" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; flex-shrink: 0;">
+                    <span class="brand-dot"></span>
                     <div>
-                        <div class="brand-title">Ctrl+R</div>
-                        <small style="font-size: 0.7rem; color: var(--colors-muted); font-weight: 600;">
-                            {{ $isAdmin ? 'ADMIN // OWNER' : 'STAFF // GUDANG' }}
+                        <div class="brand-title">CargoTrace</div>
+                        <small style="font-size: 0.7rem; color: var(--colors-muted); font-weight: 700;">
+                            {{ $isAdmin ? 'ADMINISTRATOR' : ($isOperator ? 'LOGISTICS OPERATOR' : 'STAFF') }}
                         </small>
                     </div>
                 </a>
@@ -1423,90 +1422,35 @@
             </div>
 
             <div class="sidebar-nav-body py-2 no-scrollbar">
-                <div class="section-heading">Navigasi Utama</div>
+                <div class="section-heading">Operational</div>
                 <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <i class="bi bi-grid-1x2"></i>
-                    <span>Dashboard Operasional</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="section-heading">Master Data</div>
+                <a href="{{ route('carriers.index') }}" class="nav-link {{ request()->routeIs('carriers.*') ? 'active' : '' }}">
+                    <i class="bi bi-truck"></i>
+                    <span>Carriers</span>
+                </a>
+                <a href="{{ route('locations.index') }}" class="nav-link {{ request()->routeIs('locations.*') ? 'active' : '' }}">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>Locations</span>
                 </a>
 
                 @if($isAdmin)
-                    <div class="section-heading">Master Data</div>
-                    <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.create') || request()->routeIs('products.edit') || request()->routeIs('products.show') ? 'active' : '' }}">
-                        <i class="bi bi-boxes"></i>
-                        <span>Kelola Produk</span>
-                    </a>
-                    <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                        <i class="bi bi-tags"></i>
-                        <span>Kategori Produk</span>
-                    </a>
-                    <a href="{{ route('suppliers.index') }}" class="nav-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
-                        <i class="bi bi-truck"></i>
-                        <span>Pemasok (Suppliers)</span>
-                    </a>
                     <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
-                        <span>Kelola Pengguna</span>
-                    </a>
-                    <a href="{{ route('banners.index') }}" class="nav-link {{ request()->routeIs('banners.*') ? 'active' : '' }}">
-                        <i class="bi bi-card-image"></i>
-                        <span>Banner Promo</span>
+                        <span>Users & RBAC</span>
                     </a>
                 @endif
 
-                @if($isStaff)
-                    <div class="section-heading">Katalog Produk</div>
-                    <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') || request()->routeIs('products.show') ? 'active' : '' }}">
-                        <i class="bi bi-boxes"></i>
-                        <span>Daftar Produk (Read-Only)</span>
-                    </a>
-                @endif
-
-                <div class="section-heading">Transaksi Inventaris</div>
-                <a href="{{ route('purchases.index') }}" class="nav-link {{ request()->routeIs('purchases.*') ? 'active' : '' }}">
-                    <i class="bi bi-box-arrow-in-down"></i>
-                    <span>Pembelian (Stock-In)</span>
-                </a>
-                <a href="{{ route('sales.index') }}" class="nav-link {{ request()->routeIs('sales.*') ? 'active' : '' }}">
-                    <i class="bi bi-cart-check"></i>
-                    <span>Penjualan (Stock-Out)</span>
-                </a>
-
-                @php
-                    $lowStockBadgeCount = \App\Models\Product::lowStock()->count();
-                @endphp
-                <a href="{{ route('products.low-stock') }}" class="nav-link d-flex align-items-center justify-content-between {{ request()->routeIs('products.low-stock') ? 'active' : '' }}">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-exclamation-triangle" style="color: var(--colors-accent);"></i>
-                        <span>Stok Kritis</span>
-                    </div>
-                    @if($lowStockBadgeCount > 0)
-                        <span class="badge" style="background: rgba(220, 38, 38, 0.08); color: #DC2626; border: 1px solid rgba(220, 38, 38, 0.25); font-size: 11px;">{{ $lowStockBadgeCount }}</span>
-                    @endif
-                </a>
-
-                <a href="{{ route('stock-movements.index') }}" class="nav-link {{ request()->routeIs('stock-movements.*') ? 'active' : '' }}">
-                    <i class="bi bi-arrow-left-right"></i>
-                    <span>Mutasi Stok</span>
-                </a>
-
-                @if($isAdmin)
-                    <div class="section-heading">Laporan & Audit</div>
-                    <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-                        <i class="bi bi-graph-up-arrow"></i>
-                        <span>Laporan Bisnis</span>
-                    </a>
-                @endif
-
-                <div class="section-heading">Akun & Sistem</div>
-                <a href="{{ route('customer.settings') }}" class="nav-link {{ request()->routeIs('customer.settings*', 'settings.*') ? 'active' : '' }}">
-                    <i class="bi bi-gear"></i>
-                    <span>Pengaturan Akun</span>
-                </a>
+                <div class="section-heading">Session</div>
                 <form action="{{ route('logout') }}" method="POST" class="m-0 mt-1">
                     @csrf
-                    <button type="submit" class="nav-link border-0 w-100 text-start bg-transparent d-flex align-items-center gap-2" style="cursor: pointer; color: #ff8599 !important;">
+                    <button type="submit" class="nav-link border-0 w-100 text-start bg-transparent d-flex align-items-center gap-2" style="cursor: pointer; color: #DC2626 !important;">
                         <i class="bi bi-box-arrow-right text-danger"></i>
-                        <span>Keluar Akun</span>
+                        <span>Logout</span>
                     </button>
                 </form>
             </div>
@@ -1518,133 +1462,81 @@
 
     <div class="main-wrapper">
         @if($isCustomer)
-            <!-- Top Navbar for Customer Layout (Premium Dark Matte) -->
+            <!-- Top Navbar for Customer Layout -->
             <nav class="customer-top-navbar">
                 <div class="container-fluid px-3 px-lg-4 d-flex align-items-center justify-content-between gap-3">
-                    <!-- Left: Brand + Nav Links (Home, Catalog, Promo, My Orders) -->
                     <div class="d-flex align-items-center">
                         <a href="{{ route('dashboard') }}" class="brand-title d-flex align-items-center gap-2">
-                            <img src="{{ asset('images/logo.png') }}" alt="Ctrl+R" style="width: 36px; height: 36px; object-fit: contain; border-radius: 8px; flex-shrink: 0;">
-                            <span>Ctrl+R</span>
+                            <span class="brand-dot"></span>
+                            <span>CargoTrace</span>
                         </a>
 
                         <div class="d-none d-md-flex align-items-center cust-nav-links">
-                            <a href="{{ route('dashboard') }}" class="cust-nav-link {{ request()->routeIs('dashboard') || request()->routeIs('customer.catalog*') ? 'active' : '' }}">
-                                Beranda
-                            </a>
-                            <a href="{{ route('customer.promo') }}" class="cust-nav-link {{ request()->routeIs('customer.promo*') ? 'active' : '' }}">
-                                Promo
-                            </a>
-                            <a href="{{ route('customer.orders.index') }}" class="cust-nav-link {{ request()->routeIs('customer.orders*') ? 'active' : '' }}">
-                                Pesanan Saya
-                                @if($pendingOrdersCount > 0)
-                                    <span class="badge badge-gradient-warning font-monospace ms-1" style="font-size: 0.65rem; padding: 2px 6px;">{{ $pendingOrdersCount }}</span>
-                                @endif
-                            </a>
-                            <a href="{{ route('customer.activity') }}" class="cust-nav-link {{ request()->routeIs('customer.activity*') ? 'active' : '' }}">
-                                Riwayat Aktivitas
+                            <a href="{{ route('dashboard') }}" class="cust-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                Dashboard
                             </a>
                         </div>
                     </div>
 
-                    <!-- Right: Search Bar + Cart + Notification + Profile -->
-                    <div class="d-flex align-items-center gap-2 gap-sm-3">
-                        <!-- Search Bar Pill -->
-                        <form action="{{ route('customer.catalog') }}" method="GET" class="cust-search-pill d-none d-sm-flex">
-                            <button type="submit" class="cust-search-btn" title="Cari Hardware">
-                                <i class="bi bi-search"></i>
-                            </button>
-                            <input type="text" 
-                                   name="search" 
-                                   id="navbarSearchInput"
-                                   class="cust-search-input" 
-                                   placeholder="Cari laptop, smartphone, komponen..." 
-                                   value="{{ request('search') }}"
-                                   autocomplete="off">
-                            @if(request('search'))
-                                <a href="{{ route('customer.catalog') }}" class="cust-search-btn" title="Hapus Pencarian">
-                                    <i class="bi bi-x-lg" style="font-size: 0.75rem;"></i>
-                                </a>
-                            @endif
-                        </form>
-
-                        <!-- Shopping Cart Icon with Dedicated Cart Page -->
-                        @php
-                            $cartCount = array_sum(session('cart', []));
-                        @endphp
-                        <a href="{{ route('customer.cart') }}" class="cust-action-icon {{ request()->routeIs('customer.cart*') ? 'active-profile' : '' }}" title="Keranjang Belanja">
-                            <i class="bi bi-cart3"></i>
-                            @if($cartCount > 0)
-                                <span class="cust-action-badge">{{ $cartCount }}</span>
-                            @endif
-                        </a>
-
-                        <!-- Notification Bell -->
-                        @include('layouts.notification_bell', [
-                            'buttonClass' => 'cust-action-icon',
-                            'isCustomer' => true
-                        ])
-
-                        <!-- User Profile Direct Link to Account Settings (No Dropdown Menu) -->
-                        <a href="{{ route('customer.settings') }}" class="cust-profile-btn border-0 text-decoration-none {{ request()->routeIs('customer.settings*', 'settings.*') ? 'active-profile' : '' }}" title="Pengaturan Akun & Profil">
-                            @if(Auth::user()->profile && Auth::user()->profile->avatar && file_exists(public_path(Auth::user()->profile->avatar)))
-                                <img src="{{ asset(Auth::user()->profile->avatar) }}" alt="Avatar" class="cust-avatar-circle object-fit-cover" style="object-fit: cover;">
-                            @else
-                                <div class="cust-avatar-circle">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
-                            @endif
-                            <div class="cust-profile-text d-none d-sm-flex">
-                                <span class="cust-profile-greeting">Halo,</span>
-                                <span class="cust-profile-name">{{ Auth::user()->name }}</span>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="cust-avatar-circle">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
-                        </a>
+                            <div class="d-flex flex-column text-start">
+                                <span class="cust-profile-name">{{ Auth::user()->name }}</span>
+                                <small style="font-size: 0.72rem; color: var(--colors-muted); font-weight: 600;">Customer</small>
+                            </div>
+                        </div>
+
+                        <form action="{{ route('logout') }}" method="POST" class="m-0">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-secondary btn-sm" title="Logout">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </nav>
         @else
-            <!-- Top Bar for Admin & Staff (Premium Dark Matte) -->
+            <!-- Top Bar for Admin & Operator -->
             <header class="top-navbar">
                 <div class="d-flex align-items-center gap-3">
                     <button class="btn btn-outline-secondary sidebar-toggle-top d-inline-flex d-lg-none" 
                             id="sidebarToggleTop" 
                             type="button" 
-                            title="Buka Sidebar"
+                            title="Toggle Sidebar"
                             style="height: 36px; width: 36px; padding: 0; align-items: center; justify-content: center; border-radius: 10px;">
                         <i class="bi bi-layout-sidebar-inset" style="font-size: 1.15rem;"></i>
                     </button>
                     <div>
-                        <h6 class="mb-0 text-white fw-bold">@yield('page_heading', 'Dashboard Operasional')</h6>
+                        <h6 class="mb-0 text-white fw-bold">@yield('page_heading', 'Dashboard')</h6>
                         <small style="color: var(--colors-muted); font-size: 12px;">
                             {{ now()->translatedFormat('l, d F Y') }}
                         </small>
                     </div>
                 </div>
 
-                <div class="d-flex align-items-center gap-2">
-                    <!-- Notification Bell for Admin & Staff -->
-                    @include('layouts.notification_bell', [
-                        'buttonClass' => 'btn btn-outline-secondary d-flex align-items-center justify-content-center',
-                        'buttonStyle' => 'width: 38px; height: 38px; border-radius: 10px; background: #FFFFFF; border: 1px solid var(--colors-border); color: var(--colors-text);',
-                        'isCustomer' => false
-                    ])
-
-                    <a href="{{ route('customer.settings') }}" 
-                       class="btn p-1 ps-2 pe-3 d-flex align-items-center gap-2 border-0 rounded-pill admin-nav-profile-btn text-decoration-none {{ request()->routeIs('customer.settings*', 'settings.*') ? 'active-profile' : '' }}" 
-                       title="Pengaturan Akun & Profil">
-                        @if(Auth::user()->profile && Auth::user()->profile->avatar && file_exists(public_path(Auth::user()->profile->avatar)))
-                            <img src="{{ asset(Auth::user()->profile->avatar) }}" alt="Avatar" class="rounded-circle object-fit-cover" style="width: 36px; height: 36px; border: 1.5px solid var(--colors-accent);">
-                        @else
-                            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" 
-                                 style="width: 36px; height: 36px; background: var(--colors-accent); font-size: 0.88rem; color: #FFFFFF !important;">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
-                        @endif
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold" 
+                             style="width: 36px; height: 36px; background: var(--colors-accent); font-size: 0.88rem; color: #FFFFFF !important;">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
                         <div class="d-none d-sm-flex flex-column text-start" style="line-height: 1.2;">
                             <span class="fw-bold text-truncate nav-profile-name" style="font-size: 0.84rem; max-width: 140px; color: #1A1A1C !important;">{{ Auth::user()->name }}</span>
-                            <span class="nav-profile-role" style="font-size: 0.72rem; color: #706E6B !important; font-weight: 600;">{{ $isAdmin ? 'Administrator' : 'Staff Gudang' }}</span>
+                            <span class="nav-profile-role" style="font-size: 0.72rem; color: #706E6B !important; font-weight: 600;">
+                                {{ $isAdmin ? 'Administrator' : ($isOperator ? 'Logistics Operator' : 'Staff') }}
+                            </span>
                         </div>
-                    </a>
+                    </div>
+
+                    <form action="{{ route('logout') }}" method="POST" class="m-0">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-secondary btn-sm" title="Logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </form>
                 </div>
             </header>
         @endif

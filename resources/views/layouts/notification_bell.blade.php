@@ -30,7 +30,7 @@
                     <span class="badge badge-gradient-danger font-monospace" style="font-size: 0.65rem; padding: 2px 6px;">{{ $unreadCount }}</span>
                 @endif
             </div>
-            @if($unreadCount > 0)
+            @if($unreadCount > 0 && Route::has('notifications.read-all'))
                 <form action="{{ route('notifications.read-all') }}" method="POST" class="m-0">
                     @csrf
                     <button type="submit" class="btn btn-link p-0 text-decoration-none text-muted" style="font-size: 11px;">
@@ -42,7 +42,7 @@
 
         <div class="notification-items" style="max-height: 320px; overflow-y: auto;">
             @forelse($unreadNotifications as $notification)
-                <form action="{{ route('notifications.mark-read', $notification->id) }}" method="POST" class="m-0">
+                <form action="{{ Route::has('notifications.mark-read') ? route('notifications.mark-read', $notification->id) : '#' }}" method="POST" class="m-0">
                     @csrf
                     <button type="submit" class="btn btn-link p-0 text-decoration-none text-start w-100 text-reset border-bottom px-3 py-2 notification-item-btn" style="border-color: rgba(255,255,255,0.05) !important;">
                         <div class="d-flex align-items-start gap-2">
@@ -73,8 +73,8 @@
 
         @if(!($isCustomer ?? false))
             <div class="px-3 py-2 text-center border-top" style="border-color: var(--colors-hairline) !important; background: var(--colors-card-alt);">
-                <a href="{{ route('products.low-stock') }}" class="small text-decoration-none d-flex align-items-center justify-content-center gap-1" style="color: var(--colors-accent); font-size: 11px; font-weight: 600;">
-                    <span>Buka Daftar Stok Kritis</span>
+                <a href="{{ route('dashboard') }}" class="small text-decoration-none d-flex align-items-center justify-content-center gap-1" style="color: var(--colors-accent); font-size: 11px; font-weight: 600;">
+                    <span>Dashboard Overview</span>
                     <i class="bi bi-arrow-right"></i>
                 </a>
             </div>

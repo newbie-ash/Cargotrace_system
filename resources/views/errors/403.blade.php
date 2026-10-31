@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>403 - Akses Ditolak | Ctrl+R</title>
+    <title>403 - Akses Ditolak | CargoTrace</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -62,27 +62,9 @@
 
         @php
             $user = Auth::user();
-            $isBuyer = $user && $user->isPembeli();
-            $isStaff = $user && $user->isStaff();
-            $isAdmin = $user && $user->isAdmin();
-
-            if ($isBuyer) {
-                $homeLabel = 'Kembali ke Beranda';
-                $homeIcon = 'bi-house';
-                $homeRoute = route('dashboard');
-            } elseif ($isStaff) {
-                $homeLabel = 'Kembali ke Operasional';
-                $homeIcon = 'bi-grid-1x2';
-                $homeRoute = route('dashboard');
-            } elseif ($isAdmin) {
-                $homeLabel = 'Kembali ke Dashboard';
-                $homeIcon = 'bi-speedometer2';
-                $homeRoute = route('dashboard');
-            } else {
-                $homeLabel = 'Halaman Utama';
-                $homeIcon = 'bi-house';
-                $homeRoute = route('landing');
-            }
+            $homeLabel = 'Kembali ke Dashboard';
+            $homeIcon = 'bi-grid-1x2';
+            $homeRoute = Auth::check() ? route('dashboard') : route('login');
         @endphp
 
         <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
