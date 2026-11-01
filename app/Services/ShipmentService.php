@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Shipment;
 use App\Models\ShipmentItem;
 use App\Models\User;
+use App\Notifications\ShipmentEventNotification;
 use Carbon\Carbon;
 use DomainException;
 use Illuminate\Support\Facades\DB;
@@ -151,6 +152,15 @@ class ShipmentService
             $shipment->update($updateData);
 
             $this->auditLogService->log('shipment.status_changed', $shipment, $oldValues, $shipment->fresh()->toArray());
+
+            // Dispatch customer in-app notification
+            $shipment->customer?->notify(new ShipmentEventNotification(
+                $shipment,
+                "Status Kargo {$shipment->shipment_number}: {$newStatus}",
+                "Pengiriman Anda telah beralih ke status {$newStatus}." . ($reason ? " Catatan: {$reason}" : ""),
+                'STATUS_CHANGE',
+                $newStatus
+            ));
 
             return $shipment;
         });

@@ -25,20 +25,20 @@ class ShipmentController extends Controller
     public function index(Request $request): Response
     {
         $user = auth()->user();
-        $query = Shipment::with(['carrier', 'originLocation', 'destinationLocation', 'customer'])
-            ->latest();
+        $query = Shipment::with(['carrier', 'originLocation', 'destinationLocation', 'customer']);
 
         // Customer access isolation
         if ($user->isCustomer()) {
             $query->where('customer_id', $user->id);
         }
 
-        // Filters
+        // Multi-parameter Filters
         if ($request->filled('search')) {
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
                 $q->where('shipment_number', 'like', "%{$search}%")
-                  ->orWhere('reference_number', 'like', "%{$search}%");
+                  ->orWhere('reference_number', 'like', "%{$search}%")
+                  ->orWhere('cargo_type', 'like', "%{$search}%");
             });
         }
 
@@ -50,6 +50,14 @@ class ShipmentController extends Controller
             $query->where('carrier_id', $request->query('carrier_id'));
         }
 
+        if ($request->filled('origin_id')) {
+            $query->where('origin_location_id', $request->query('origin_id'));
+        }
+
+        if ($request->filled('destination_id')) {
+            $query->where('destination_location_id', $request->query('destination_id'));
+        }
+
         if ($request->filled('delay')) {
             if ($request->query('delay') === 'delayed') {
                 $query->where('is_delayed', true);
@@ -58,13 +66,33 @@ class ShipmentController extends Controller
             }
         }
 
+        if ($request->filled('date_from')) {
+            $query->whereDate('expected_departure', '>=', $request->query('date_from'));
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('expected_departure', '<=', $request->query('date_to'));
+        }
+
+        // Dynamic Sorting
+        $allowedSorts = ['id', 'shipment_number', 'expected_departure', 'expected_arrival', 'current_status', 'is_delayed'];
+        $sortBy = in_array($request->query('sort_by'), $allowedSorts, true) ? $request->query('sort_by') : 'id';
+        $sortDirection = strtolower($request->query('sort_direction')) === 'asc' ? 'asc' : 'desc';
+
+        $query->orderBy($sortBy, $sortDirection);
+
         $shipments = $query->paginate(15)->withQueryString();
         $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
+        $locations = Location::where('is_active', true)->orderBy('name')->get();
 
         return Inertia::render('Shipments/Index', [
             'shipments' => $shipments,
             'carriers' => $carriers,
-            'filters' => $request->only(['search', 'status', 'carrier_id', 'delay']),
+            'locations' => $locations,
+            'filters' => $request->only([
+                'search', 'status', 'carrier_id', 'origin_id', 'destination_id',
+                'delay', 'date_from', 'date_to', 'sort_by', 'sort_direction'
+            ]),
         ]);
     }
 

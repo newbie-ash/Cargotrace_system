@@ -49,6 +49,15 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+            'notifications' => [
+                'unread_count' => fn () => $request->user() ? $request->user()->unreadNotifications()->count() : 0,
+                'recent' => fn () => $request->user() ? $request->user()->notifications()->take(6)->get()->map(fn ($n) => [
+                    'id' => $n->id,
+                    'read' => ! is_null($n->read_at),
+                    'data' => $n->data,
+                    'created_at' => $n->created_at?->diffForHumans() ?? 'Baru saja',
+                ]) : [],
+            ],
             'appName' => config('app.name', 'CargoTrace'),
         ]);
     }

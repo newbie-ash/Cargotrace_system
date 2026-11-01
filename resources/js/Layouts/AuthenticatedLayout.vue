@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
+import NotificationBell from '@/Components/NotificationBell.vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user || {});
@@ -40,6 +41,7 @@ const logout = () => {
             </div>
 
             <div class="flex items-center gap-3">
+                <NotificationBell />
                 <div class="text-right hidden sm:block">
                     <div class="text-xs font-bold text-[#1A1A1C]">{{ user.name }}</div>
                     <div class="text-[10px] text-[#706E6B] font-semibold uppercase tracking-wider">{{ user.company_name || 'Customer' }}</div>
@@ -116,15 +118,34 @@ const logout = () => {
 
             <!-- Main Content Area -->
             <div class="flex-1 flex flex-col min-w-0">
+                <!-- Desktop Top Bar -->
+                <header class="hidden lg:flex sticky top-0.5 z-30 bg-white/70 backdrop-blur-md border-b border-[#E5E0D5] px-8 py-3 items-center justify-between">
+                    <div class="flex items-center gap-2 text-xs text-[#706E6B] font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Sistem Operasi Aktif &bull; Role: <strong class="text-[#1A1A1C] uppercase font-bold">{{ user.role }}</strong></span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <NotificationBell />
+                        <div class="h-4 w-px bg-[#E5E0D5]"></div>
+                        <div class="text-right">
+                            <div class="text-xs font-bold text-[#1A1A1C]">{{ user.name }}</div>
+                            <div class="text-[10px] text-[#706E6B] font-mono">{{ user.email }}</div>
+                        </div>
+                    </div>
+                </header>
+
                 <!-- Mobile Header -->
                 <header class="lg:hidden sticky top-0.5 z-30 bg-white/70 backdrop-blur-md border-b border-[#E5E0D5] px-4 py-3 flex items-center justify-between">
                     <button @click="sidebarOpen = true" class="p-1.5 rounded-lg border border-[#E5E0D5] text-[#1A1A1C]">
                         <i class="bi bi-list text-xl"></i>
                     </button>
                     <span class="font-bold text-base">CargoTrace</span>
-                    <button @click="logout" class="text-red-600 p-1">
-                        <i class="bi bi-box-arrow-right"></i>
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <NotificationBell />
+                        <button @click="logout" class="text-red-600 p-1">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </div>
                 </header>
 
                 <!-- Page Content Body -->

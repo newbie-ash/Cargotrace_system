@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Shipment;
 use App\Models\TrackingEvent;
+use App\Notifications\ShipmentEventNotification;
 use Carbon\Carbon;
 use DomainException;
 use Illuminate\Support\Facades\DB;
@@ -74,6 +75,15 @@ class TrackingService
             }
 
             $this->auditLogService->log('tracking_event.appended', $trackingEvent, null, $trackingEvent->toArray());
+
+            // Dispatch customer in-app notification
+            $shipment->customer?->notify(new ShipmentEventNotification(
+                $shipment,
+                "Checkpoint {$shipment->shipment_number}: {$eventStatus}",
+                $data['description'],
+                $data['event_type'] ?? 'NORMAL',
+                $eventStatus
+            ));
 
             return $trackingEvent->load('location');
         });
