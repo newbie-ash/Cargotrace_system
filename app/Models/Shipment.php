@@ -82,6 +82,11 @@ class Shipment extends Model
         return $this->hasMany(ShipmentItem::class);
     }
 
+    public function lineItems(): HasMany
+    {
+        return $this->items();
+    }
+
     public function trackingEvents(): HasMany
     {
         return $this->hasMany(TrackingEvent::class)->orderBy('occurred_at', 'asc');

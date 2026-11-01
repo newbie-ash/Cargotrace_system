@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import ShipmentRouteMap from '@/Components/ShipmentRouteMap.vue';
 
 const props = defineProps({
     shipment: {
@@ -160,6 +161,9 @@ const statusBadgeClass = (st) => {
                         </div>
                     </div>
                 </div>
+
+                <!-- Interactive Route Map (Leaflet.js) -->
+                <ShipmentRouteMap :shipment="shipment" height="380px" />
 
                 <!-- Chronological Tracking Timeline -->
                 <div class="bg-white/80 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 shadow-xs">
