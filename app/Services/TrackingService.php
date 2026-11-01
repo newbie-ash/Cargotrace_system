@@ -12,7 +12,8 @@ class TrackingService
 {
     public function __construct(
         protected ShipmentService $shipmentService,
-        protected AuditLogService $auditLogService
+        protected AuditLogService $auditLogService,
+        protected ExternalIntegrationService $externalIntegrationService
     ) {}
 
     /**
@@ -35,6 +36,12 @@ class TrackingService
 
             $eventStatus = $data['status'] ?? $shipment->current_status;
 
+            // Fetch live weather snapshot if coordinates are provided and snapshot is absent
+            $weatherSnapshot = $data['weather_snapshot'] ?? null;
+            if ($weatherSnapshot === null && ! empty($data['latitude']) && ! empty($data['longitude'])) {
+                $weatherSnapshot = $this->externalIntegrationService->getWeather((float) $data['latitude'], (float) $data['longitude']);
+            }
+
             $trackingEvent = $shipment->trackingEvents()->create([
                 'location_id' => $data['location_id'] ?? null,
                 'created_by' => $creatorId ?? auth()->id(),
@@ -43,7 +50,7 @@ class TrackingService
                 'latitude' => $data['latitude'] ?? null,
                 'longitude' => $data['longitude'] ?? null,
                 'description' => $data['description'],
-                'weather_snapshot' => $data['weather_snapshot'] ?? null,
+                'weather_snapshot' => $weatherSnapshot,
                 'occurred_at' => $occurredAt,
             ]);
 

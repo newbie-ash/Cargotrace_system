@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LocationRequest;
 use App\Models\Location;
 use App\Services\AuditLogService;
+use App\Services\ExternalIntegrationService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -78,6 +80,24 @@ class LocationController extends Controller
 
         return redirect()->route('locations.index')
             ->with('success', "Location {$location->name} updated successfully.");
+    }
+
+    public function lookupCoordinates(Request $request, ExternalIntegrationService $integrationService): JsonResponse
+    {
+        $request->validate(['query' => 'required|string|max:200']);
+        $result = $integrationService->geocode($request->input('query'));
+
+        if (! $result) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Koordinat tidak ditemukan untuk lokasi tersebut.',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $result,
+        ]);
     }
 
     public function destroy(Location $location): RedirectResponse

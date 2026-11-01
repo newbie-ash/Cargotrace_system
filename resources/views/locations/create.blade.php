@@ -40,14 +40,21 @@
 
                 <div class="col-12 col-md-8">
                     <label class="form-label fw-semibold small">Nama Fasilitas / Pelabuhan <span class="text-danger">*</span></label>
-                    <input type="text" 
-                           name="name" 
-                           class="form-control @error('name') is-invalid @enderror" 
-                           placeholder="Contoh: Port of Tanjung Priok" 
-                           value="{{ old('name') }}" 
-                           required>
+                    <div class="input-group">
+                        <input type="text" 
+                               name="name" 
+                               id="locationNameInput"
+                               class="form-control @error('name') is-invalid @enderror" 
+                               placeholder="Contoh: Port of Tanjung Priok" 
+                               value="{{ old('name') }}" 
+                               required>
+                        <button type="button" class="btn btn-outline-secondary" id="lookupCoordBtn" title="Cari koordinat via OpenStreetMap Nominatim">
+                            <i class="bi bi-geo-alt"></i> Cari GPS
+                        </button>
+                    </div>
+                    <small id="lookupResultText" class="text-success d-none mt-1" style="font-size: 0.75rem;"></small>
                     @error('name')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -95,6 +102,7 @@
                     <input type="number" 
                            step="0.0000001" 
                            name="latitude" 
+                           id="latitudeInput"
                            class="form-control font-monospace @error('latitude') is-invalid @enderror" 
                            placeholder="-6.1022" 
                            value="{{ old('latitude') }}" 
@@ -109,6 +117,7 @@
                     <input type="number" 
                            step="0.0000001" 
                            name="longitude" 
+                           id="longitudeInput"
                            class="form-control font-monospace @error('longitude') is-invalid @enderror" 
                            placeholder="106.8833" 
                            value="{{ old('longitude') }}" 
@@ -129,4 +138,48 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('lookupCoordBtn');
+    const nameInput = document.getElementById('locationNameInput');
+    const latInput = document.getElementById('latitudeInput');
+    const lngInput = document.getElementById('longitudeInput');
+    const feedback = document.getElementById('lookupResultText');
+
+    if (btn) {
+        btn.addEventListener('click', function () {
+            const query = nameInput.value.trim();
+            if (!query) {
+                alert('Silakan ketik nama fasilitas atau pelabuhan terlebih dahulu.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+            feedback.classList.add('d-none');
+
+            fetch(`{{ route('locations.lookup') }}?query=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success' && data.data) {
+                        latInput.value = data.data.latitude;
+                        lngInput.value = data.data.longitude;
+                        feedback.textContent = `Ditemukan: ${data.data.display_name}`;
+                        feedback.classList.remove('d-none');
+                    } else {
+                        alert(data.message || 'Koordinat tidak ditemukan.');
+                    }
+                })
+                .catch(err => {
+                    alert('Gagal menghubungi layanan geocoding.');
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-geo-alt"></i> Cari GPS';
+                });
+        });
+    }
+});
+</script>
 @endsection

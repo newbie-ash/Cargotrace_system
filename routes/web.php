@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
 
     // Master Data: View-only for Operator & Admin
     Route::middleware('role:admin,operator')->group(function () {
+        Route::get('/locations/lookup-coordinates', [LocationController::class, 'lookupCoordinates'])->name('locations.lookup');
         Route::get('/carriers', [CarrierController::class, 'index'])->name('carriers.index');
         Route::get('/carriers/{carrier}', [CarrierController::class, 'show'])->name('carriers.show')->whereNumber('carrier');
 

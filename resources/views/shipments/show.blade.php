@@ -179,6 +179,17 @@
                                     {{ $event->description }}
                                 </p>
 
+                                @if($event->weather_snapshot)
+                                    <div class="mt-2 py-1 px-2 rounded bg-light border d-inline-flex align-items-center gap-2 small">
+                                        <i class="bi bi-cloud-sun text-primary"></i>
+                                        <span class="fw-semibold text-dark">{{ $event->weather_snapshot['condition'] ?? 'Weather Snapshot' }}</span>
+                                        <span class="text-muted">&bull;</span>
+                                        <span class="text-dark">{{ $event->weather_snapshot['temperature'] ?? '-' }}&deg;C</span>
+                                        <span class="text-muted">&bull;</span>
+                                        <span class="text-muted">Angin: {{ $event->weather_snapshot['windspeed'] ?? '-' }} km/h</span>
+                                    </div>
+                                @endif
+
                                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2 pt-2 border-top small text-muted">
                                     <div>
                                         @if($event->latitude && $event->longitude)
