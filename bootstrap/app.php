@@ -13,9 +13,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Global Security Middlewares (XSS defense & OWASP security headers)
+        $middleware->append([
+            \App\Http\Middleware\SecurityHeadersMiddleware::class,
+            \App\Http\Middleware\SanitizeInputMiddleware::class,
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
+
+        $middleware->api(append: [
+            'throttle:60,1',
+        ]);
+
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);

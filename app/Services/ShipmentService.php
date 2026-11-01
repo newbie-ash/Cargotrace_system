@@ -76,6 +76,14 @@ class ShipmentService
                 $data['estimated_arrival'] = $data['expected_arrival'];
             }
 
+            // Extract initial checkpoint timestamp and sanitize payload
+            $initialCheckpointAt = isset($data['initial_checkpoint_at']) 
+                ? Carbon::parse($data['initial_checkpoint_at']) 
+                : (isset($data['expected_departure']) && Carbon::parse($data['expected_departure'])->isPast() 
+                    ? Carbon::parse($data['expected_departure']) 
+                    : now());
+            unset($data['initial_checkpoint_at']);
+
             $shipment = Shipment::create($data);
 
             if (! empty($items)) {
@@ -92,12 +100,6 @@ class ShipmentService
             }
 
             // Create initial tracking checkpoint
-            $initialCheckpointAt = isset($data['initial_checkpoint_at']) 
-                ? Carbon::parse($data['initial_checkpoint_at']) 
-                : (isset($data['expected_departure']) && Carbon::parse($data['expected_departure'])->isPast() 
-                    ? Carbon::parse($data['expected_departure']) 
-                    : now());
-
             $shipment->trackingEvents()->create([
                 'location_id' => $shipment->origin_location_id,
                 'created_by' => $data['created_by'],

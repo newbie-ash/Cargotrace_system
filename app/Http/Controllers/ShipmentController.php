@@ -83,7 +83,7 @@ class ShipmentController extends Controller
 
         $shipments = $query->paginate(15)->withQueryString();
         $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
-        $locations = Location::where('is_active', true)->orderBy('name')->get();
+        $locations = Location::orderBy('name')->get();
 
         return Inertia::render('Shipments/Index', [
             'shipments' => $shipments,
@@ -101,7 +101,7 @@ class ShipmentController extends Controller
         $this->authorizeAdminOrOperator();
 
         $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
-        $locations = Location::where('is_active', true)->orderBy('name')->get();
+        $locations = Location::orderBy('name')->get();
         $customers = User::where('role', 'customer')->orderBy('name')->get();
 
         return Inertia::render('Shipments/Create', [
@@ -143,7 +143,7 @@ class ShipmentController extends Controller
             'exceptions',
         ]);
 
-        $locations = Location::where('is_active', true)->orderBy('name')->get();
+        $locations = Location::orderBy('name')->get();
 
         return Inertia::render('Shipments/Show', [
             'shipment' => $shipment,
@@ -156,7 +156,7 @@ class ShipmentController extends Controller
         $this->authorizeAdminOrOperator();
 
         $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
-        $locations = Location::where('is_active', true)->orderBy('name')->get();
+        $locations = Location::orderBy('name')->get();
         $customers = User::where('role', 'customer')->orderBy('name')->get();
 
         return Inertia::render('Shipments/Edit', [
