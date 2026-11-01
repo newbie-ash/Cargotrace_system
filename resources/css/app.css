@@ -2,8 +2,46 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../js/**/*.{vue,js,ts}';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --color-canvas: #F6F3EC;
+    --color-charcoal: #1A1A1C;
+    --color-hairline: #E5E0D5;
+    --color-faint: #706E6B;
+}
+
+:root {
+    --colors-canvas: #F6F3EC;
+    --colors-accent: #1A1A1C;
+    --colors-body: #1A1A1C;
+    --colors-muted: #706E6B;
+    --colors-hairline: #E5E0D5;
+}
+
+body {
+    background-color: var(--colors-canvas);
+    background-image: 
+        radial-gradient(circle at 12% 15%, rgba(222, 213, 196, 0.45) 0%, transparent 45%),
+        radial-gradient(circle at 88% 12%, rgba(208, 198, 180, 0.35) 0%, transparent 48%),
+        radial-gradient(circle at 50% 55%, rgba(228, 220, 204, 0.35) 0%, transparent 55%),
+        radial-gradient(circle at 18% 85%, rgba(218, 208, 192, 0.4) 0%, transparent 45%),
+        radial-gradient(circle at 82% 80%, rgba(226, 216, 200, 0.3) 0%, transparent 50%);
+    background-attachment: fixed;
+    color: var(--colors-body);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(229, 224, 213, 0.8);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(28, 26, 24, 0.04);
+}
+
+.glass-card:hover {
+    border-color: rgba(26, 26, 28, 0.2);
 }

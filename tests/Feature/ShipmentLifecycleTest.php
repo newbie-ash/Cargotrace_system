@@ -11,6 +11,7 @@ use App\Services\ShipmentService;
 use App\Services\TrackingService;
 use DomainException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class ShipmentLifecycleTest extends TestCase
@@ -299,5 +300,29 @@ class ShipmentLifecycleTest extends TestCase
             'expected_arrival' => now()->addDays(5),
         ]);
         $postResponse->assertStatus(403);
+    }
+
+    public function test_shipment_show_renders_inertia_component_with_relations(): void
+    {
+        $this->actingAs($this->admin);
+
+        $shipmentService = app(ShipmentService::class);
+        $shipment = $shipmentService->createShipment([
+            'customer_id' => $this->customerA->id,
+            'carrier_id' => $this->carrier->id,
+            'origin_location_id' => $this->origin->id,
+            'destination_location_id' => $this->destination->id,
+            'cargo_type' => 'Inertia Test Cargo',
+            'expected_departure' => now()->addDay(),
+            'expected_arrival' => now()->addDays(6),
+        ], creatorId: $this->admin->id);
+
+        $this->get("/shipments/{$shipment->id}")
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('Shipments/Show')
+                ->has('shipment.id')
+                ->has('shipment.tracking_events')
+                ->has('locations')
+            );
     }
 }

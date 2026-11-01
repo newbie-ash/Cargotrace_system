@@ -10,7 +10,10 @@ use App\Models\User;
 use App\Services\AuditLogService;
 use App\Services\ShipmentService;
 use DomainException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ShipmentController extends Controller
 {
@@ -19,7 +22,7 @@ class ShipmentController extends Controller
         protected AuditLogService $auditLogService
     ) {}
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $user = auth()->user();
         $query = Shipment::with(['carrier', 'originLocation', 'destinationLocation', 'customer'])
@@ -58,10 +61,14 @@ class ShipmentController extends Controller
         $shipments = $query->paginate(15)->withQueryString();
         $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
 
-        return view('shipments.index', compact('shipments', 'carriers'));
+        return Inertia::render('Shipments/Index', [
+            'shipments' => $shipments,
+            'carriers' => $carriers,
+            'filters' => $request->only(['search', 'status', 'carrier_id', 'delay']),
+        ]);
     }
 
-    public function create()
+    public function create(): Response
     {
         $this->authorizeAdminOrOperator();
 
@@ -69,10 +76,14 @@ class ShipmentController extends Controller
         $locations = Location::where('is_active', true)->orderBy('name')->get();
         $customers = User::where('role', 'customer')->orderBy('name')->get();
 
-        return view('shipments.create', compact('carriers', 'locations', 'customers'));
+        return Inertia::render('Shipments/Create', [
+            'carriers' => $carriers,
+            'locations' => $locations,
+            'customers' => $customers,
+        ]);
     }
 
-    public function store(ShipmentRequest $request)
+    public function store(ShipmentRequest $request): RedirectResponse
     {
         $this->authorizeAdminOrOperator();
 
@@ -85,7 +96,7 @@ class ShipmentController extends Controller
             ->with('success', "Shipment {$shipment->shipment_number} successfully registered.");
     }
 
-    public function show(Shipment $shipment)
+    public function show(Shipment $shipment): Response
     {
         $user = auth()->user();
         if ($user->isCustomer() && $shipment->customer_id !== $user->id) {
@@ -106,10 +117,13 @@ class ShipmentController extends Controller
 
         $locations = Location::where('is_active', true)->orderBy('name')->get();
 
-        return view('shipments.show', compact('shipment', 'locations'));
+        return Inertia::render('Shipments/Show', [
+            'shipment' => $shipment,
+            'locations' => $locations,
+        ]);
     }
 
-    public function edit(Shipment $shipment)
+    public function edit(Shipment $shipment): Response
     {
         $this->authorizeAdminOrOperator();
 
@@ -117,10 +131,15 @@ class ShipmentController extends Controller
         $locations = Location::where('is_active', true)->orderBy('name')->get();
         $customers = User::where('role', 'customer')->orderBy('name')->get();
 
-        return view('shipments.edit', compact('shipment', 'carriers', 'locations', 'customers'));
+        return Inertia::render('Shipments/Edit', [
+            'shipment' => $shipment,
+            'carriers' => $carriers,
+            'locations' => $locations,
+            'customers' => $customers,
+        ]);
     }
 
-    public function update(Request $request, Shipment $shipment)
+    public function update(Request $request, Shipment $shipment): RedirectResponse
     {
         $this->authorizeAdminOrOperator();
 
@@ -139,7 +158,7 @@ class ShipmentController extends Controller
             ->with('success', "Shipment {$shipment->shipment_number} updated successfully.");
     }
 
-    public function transition(Request $request, Shipment $shipment)
+    public function transition(Request $request, Shipment $shipment): RedirectResponse
     {
         $this->authorizeAdminOrOperator();
 
@@ -158,7 +177,7 @@ class ShipmentController extends Controller
         }
     }
 
-    public function destroy(Shipment $shipment)
+    public function destroy(Shipment $shipment): RedirectResponse
     {
         $user = auth()->user();
         if (! $user->isAdmin()) {

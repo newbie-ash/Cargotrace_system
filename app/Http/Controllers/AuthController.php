@@ -11,13 +11,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AuthController extends Controller
 {
     /**
      * Show login form.
      */
-    public function showLoginForm(Request $request): View|RedirectResponse
+    public function showLoginForm(Request $request): Response|RedirectResponse
     {
         if (Auth::check()) {
             return redirect()->route('dashboard');
@@ -27,7 +29,7 @@ class AuthController extends Controller
             session()->put('url.intended', $request->query('intended'));
         }
 
-        return view('auth.login');
+        return Inertia::render('Auth/Login');
     }
 
     /**

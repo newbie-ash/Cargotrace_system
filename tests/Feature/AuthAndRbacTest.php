@@ -6,6 +6,7 @@ use App\Models\Carrier;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class AuthAndRbacTest extends TestCase
@@ -49,6 +50,26 @@ class AuthAndRbacTest extends TestCase
 
         $responseCarriers = $this->get('/carriers');
         $responseCarriers->assertRedirect('/login');
+    }
+
+    public function test_login_screen_renders_inertia_component(): void
+    {
+        $this->get('/login')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('Auth/Login'));
+    }
+
+    public function test_dashboard_renders_inertia_component_with_props(): void
+    {
+        $this->actingAs($this->admin);
+
+        $this->get('/dashboard')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('Dashboard/Index')
+                ->has('stats')
+                ->has('stats.total_shipments')
+                ->has('stats.recent_audits')
+            );
     }
 
     public function test_admin_can_access_dashboard_and_all_master_data(): void

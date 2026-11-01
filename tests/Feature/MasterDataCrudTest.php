@@ -9,6 +9,7 @@ use App\Models\Shipment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class MasterDataCrudTest extends TestCase
@@ -227,5 +228,22 @@ class MasterDataCrudTest extends TestCase
             'action' => 'user.created',
             'auditable_type' => User::class,
         ]);
+    }
+
+    public function test_carrier_index_renders_inertia_with_paginated_carriers(): void
+    {
+        $this->actingAs($this->admin);
+
+        Carrier::create([
+            'code' => 'PIL',
+            'name' => 'Pacific International Lines',
+            'transport_mode' => 'SEA',
+        ]);
+
+        $this->get('/carriers')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('Carriers/Index')
+                ->has('carriers.data')
+            );
     }
 }

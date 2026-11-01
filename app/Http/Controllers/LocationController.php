@@ -9,7 +9,8 @@ use App\Services\ExternalIntegrationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class LocationController extends Controller
 {
@@ -17,7 +18,7 @@ class LocationController extends Controller
         protected AuditLogService $auditLogService
     ) {}
 
-    public function index(Request $request): View
+    public function index(Request $request): Response
     {
         $query = Location::query();
 
@@ -41,12 +42,15 @@ class LocationController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('locations.index', compact('locations'));
+        return Inertia::render('Locations/Index', [
+            'locations' => $locations,
+            'filters' => $request->only(['search', 'type']),
+        ]);
     }
 
-    public function create(): View
+    public function create(): Response
     {
-        return view('locations.create');
+        return Inertia::render('Locations/Create');
     }
 
     public function store(LocationRequest $request): RedirectResponse
@@ -59,16 +63,20 @@ class LocationController extends Controller
             ->with('success', "Location {$location->name} ({$location->code}) added successfully.");
     }
 
-    public function show(Location $location): View
+    public function show(Location $location): Response
     {
         $location->loadCount(['originShipments', 'destinationShipments', 'trackingEvents']);
 
-        return view('locations.show', compact('location'));
+        return Inertia::render('Locations/Show', [
+            'location' => $location,
+        ]);
     }
 
-    public function edit(Location $location): View
+    public function edit(Location $location): Response
     {
-        return view('locations.edit', compact('location'));
+        return Inertia::render('Locations/Edit', [
+            'location' => $location,
+        ]);
     }
 
     public function update(LocationRequest $request, Location $location): RedirectResponse

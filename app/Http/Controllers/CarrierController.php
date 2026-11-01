@@ -7,7 +7,8 @@ use App\Models\Carrier;
 use App\Services\AuditLogService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class CarrierController extends Controller
 {
@@ -15,7 +16,7 @@ class CarrierController extends Controller
         protected AuditLogService $auditLogService
     ) {}
 
-    public function index(Request $request): View
+    public function index(Request $request): Response
     {
         $query = Carrier::query();
 
@@ -36,12 +37,15 @@ class CarrierController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('carriers.index', compact('carriers'));
+        return Inertia::render('Carriers/Index', [
+            'carriers' => $carriers,
+            'filters' => $request->only(['search', 'mode']),
+        ]);
     }
 
-    public function create(): View
+    public function create(): Response
     {
-        return view('carriers.create');
+        return Inertia::render('Carriers/Create');
     }
 
     public function store(CarrierRequest $request): RedirectResponse
@@ -57,16 +61,20 @@ class CarrierController extends Controller
             ->with('success', "Carrier {$carrier->name} ({$carrier->code}) created successfully.");
     }
 
-    public function show(Carrier $carrier): View
+    public function show(Carrier $carrier): Response
     {
         $carrier->loadCount('shipments');
 
-        return view('carriers.show', compact('carrier'));
+        return Inertia::render('Carriers/Show', [
+            'carrier' => $carrier,
+        ]);
     }
 
-    public function edit(Carrier $carrier): View
+    public function edit(Carrier $carrier): Response
     {
-        return view('carriers.edit', compact('carrier'));
+        return Inertia::render('Carriers/Edit', [
+            'carrier' => $carrier,
+        ]);
     }
 
     public function update(CarrierRequest $request, Carrier $carrier): RedirectResponse

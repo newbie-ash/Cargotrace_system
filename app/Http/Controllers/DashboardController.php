@@ -8,22 +8,25 @@ use App\Models\Location;
 use App\Models\Shipment;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): Response
     {
         $user = $request->user();
 
         $stats = [
-            'total_shipments' => Shipment::count(),
+            'total_shipments' => $user->isCustomer() ? $user->shipments()->count() : Shipment::count(),
             'active_carriers' => Carrier::active()->count(),
             'total_locations' => Location::count(),
             'total_users' => User::count(),
-            'recent_audits' => $user->isAdmin() ? AuditLog::with('user')->latest('id')->take(6)->get() : collect(),
+            'recent_audits' => $user->isAdmin() ? AuditLog::with('user')->latest('id')->take(6)->get() : [],
         ];
 
-        return view('dashboard.index', compact('stats'));
+        return Inertia::render('Dashboard/Index', [
+            'stats' => $stats,
+        ]);
     }
 }

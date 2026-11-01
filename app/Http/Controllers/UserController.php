@@ -8,7 +8,8 @@ use App\Services\AuditLogService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
         protected AuditLogService $auditLogService
     ) {}
 
-    public function index(Request $request): View
+    public function index(Request $request): Response
     {
         $query = User::query();
 
@@ -39,12 +40,15 @@ class UserController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('users.index', compact('users'));
+        return Inertia::render('Users/Index', [
+            'users' => $users,
+            'filters' => $request->only(['search', 'role']),
+        ]);
     }
 
-    public function create(): View
+    public function create(): Response
     {
-        return view('users.create');
+        return Inertia::render('Users/Create');
     }
 
     public function store(UserRequest $request): RedirectResponse
@@ -61,16 +65,20 @@ class UserController extends Controller
             ->with('success', "User account for {$user->name} created successfully.");
     }
 
-    public function show(User $user): View
+    public function show(User $user): Response
     {
         $user->loadCount('shipments');
 
-        return view('users.show', compact('user'));
+        return Inertia::render('Users/Show', [
+            'user' => $user,
+        ]);
     }
 
-    public function edit(User $user): View
+    public function edit(User $user): Response
     {
-        return view('users.edit', compact('user'));
+        return Inertia::render('Users/Edit', [
+            'user' => $user,
+        ]);
     }
 
     public function update(UserRequest $request, User $user): RedirectResponse
