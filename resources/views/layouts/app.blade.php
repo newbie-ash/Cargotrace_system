@@ -1427,6 +1427,10 @@
                     <i class="bi bi-grid-1x2"></i>
                     <span>Dashboard</span>
                 </a>
+                <a href="{{ route('shipments.index') }}" class="nav-link {{ request()->routeIs('shipments.*') ? 'active' : '' }}">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Shipments</span>
+                </a>
 
                 <div class="section-heading">Master Data</div>
                 <a href="{{ route('carriers.index') }}" class="nav-link {{ request()->routeIs('carriers.*') ? 'active' : '' }}">
@@ -1474,6 +1478,9 @@
                         <div class="d-none d-md-flex align-items-center cust-nav-links">
                             <a href="{{ route('dashboard') }}" class="cust-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                                 Dashboard
+                            </a>
+                            <a href="{{ route('shipments.index') }}" class="cust-nav-link {{ request()->routeIs('shipments.*') ? 'active' : '' }}">
+                                My Shipments
                             </a>
                         </div>
                     </div>

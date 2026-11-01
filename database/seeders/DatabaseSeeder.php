@@ -4,8 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Carrier;
 use App\Models\Location;
+use App\Models\Shipment;
 use App\Models\SystemSetting;
 use App\Models\User;
+use App\Services\ShipmentService;
+use App\Services\TrackingService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -175,5 +178,102 @@ class DatabaseSeeder extends Seeder
         SystemSetting::set('primary_route_origin', 'IDTPP', 'string', 'Kode lokasi keberangkatan rute utama');
         SystemSetting::set('primary_route_destination', 'NLRTM', 'string', 'Kode lokasi tujuan rute utama');
         SystemSetting::set('kpi_target_on_time_rate', 90.0, 'float', 'Target KPI persentase on-time delivery (%)');
+
+        // 5. Seed Demo Shipments with Lifecycle & Historical Tracking Engine (Phase 2)
+        $customer = User::where('email', 'customer@cargotrace.app')->first();
+        $admin = User::where('email', 'admin@cargotrace.app')->first();
+        $maersk = Carrier::where('code', 'MAERSK')->first();
+        $msc = Carrier::where('code', 'MSC')->first();
+        $idtpp = Location::where('code', 'IDTPP')->first();
+        $sgsin = Location::where('code', 'SGSIN')->first();
+        $nlrtm = Location::where('code', 'NLRTM')->first();
+        $uslax = Location::where('code', 'USLAX')->first();
+
+        if ($customer && $maersk && $idtpp && $nlrtm) {
+            $shipmentService = app(ShipmentService::class);
+            $trackingService = app(TrackingService::class);
+
+            if (! Shipment::where('reference_number', 'PO-DEMO-001')->exists()) {
+                $shipment1 = $shipmentService->createShipment([
+                    'customer_id' => $customer->id,
+                    'carrier_id' => $maersk->id,
+                    'origin_location_id' => $idtpp->id,
+                    'destination_location_id' => $nlrtm->id,
+                    'cargo_type' => 'Electronics & Precision Tech',
+                    'reference_number' => 'PO-DEMO-001',
+                    'expected_departure' => now()->subDays(5),
+                    'expected_arrival' => now()->addDays(15),
+                    'notes' => 'Primary Intercontinental Asia-Europe maritime lane. High value electronics manifest.',
+                ], [
+                    [
+                        'sku' => 'EL-MCU-001',
+                        'description' => 'Automotive Microcontroller Units',
+                        'quantity' => 150,
+                        'weight_kg' => 12.5,
+                        'volume_cbm' => 0.08,
+                        'declared_value' => 45000,
+                    ],
+                    [
+                        'sku' => 'EL-PCB-002',
+                        'description' => 'Industrial Gateway Motherboards',
+                        'quantity' => 80,
+                        'weight_kg' => 15.0,
+                        'volume_cbm' => 0.12,
+                        'declared_value' => 32000,
+                    ],
+                ], creatorId: $admin->id);
+
+                $shipmentService->transitionStatus($shipment1, 'BOOKED');
+                $shipmentService->transitionStatus($shipment1, 'PICKED_UP');
+
+                // Singapore Hub Checkpoint
+                $trackingService->appendEvent($shipment1, [
+                    'location_id' => $sgsin->id,
+                    'status' => 'IN_TRANSIT',
+                    'event_type' => 'NORMAL',
+                    'latitude' => $sgsin->latitude,
+                    'longitude' => $sgsin->longitude,
+                    'description' => 'Transshipment container transfer completed at PSA Singapore Hub. Vessel departed for Suez Canal.',
+                    'occurred_at' => now()->subDays(2),
+                ], creatorId: $admin->id);
+            }
+
+            if (! Shipment::where('reference_number', 'PO-DEMO-002')->exists()) {
+                $shipment2 = $shipmentService->createShipment([
+                    'customer_id' => $customer->id,
+                    'carrier_id' => $msc->id,
+                    'origin_location_id' => $sgsin->id,
+                    'destination_location_id' => $uslax->id,
+                    'cargo_type' => 'Container FCL',
+                    'reference_number' => 'PO-DEMO-002',
+                    'expected_departure' => now()->subDays(25),
+                    'expected_arrival' => now()->subDays(2),
+                    'notes' => 'Trans-Pacific trade route.',
+                ], [
+                    [
+                        'sku' => 'FCL-TEX-99',
+                        'description' => 'Commercial Textiles & Fabrics',
+                        'quantity' => 400,
+                        'weight_kg' => 35.0,
+                        'volume_cbm' => 0.25,
+                        'declared_value' => 85000,
+                    ],
+                ], creatorId: $admin->id);
+
+                $shipmentService->transitionStatus($shipment2, 'BOOKED');
+                $shipmentService->transitionStatus($shipment2, 'PICKED_UP');
+                $shipmentService->transitionStatus($shipment2, 'IN_TRANSIT');
+
+                $trackingService->appendEvent($shipment2, [
+                    'location_id' => $uslax->id,
+                    'status' => 'DELIVERED',
+                    'event_type' => 'NORMAL',
+                    'latitude' => $uslax->latitude,
+                    'longitude' => $uslax->longitude,
+                    'description' => 'Consignment successfully discharged and cleared US customs at Port of Los Angeles terminal.',
+                    'occurred_at' => now()->subDays(1),
+                ], creatorId: $admin->id);
+            }
+        }
     }
 }

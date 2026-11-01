@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\ShipmentRequest;
+use App\Models\Carrier;
+use App\Models\Location;
+use App\Models\Shipment;
+use App\Models\User;
+use App\Services\AuditLogService;
+use App\Services\ShipmentService;
+use DomainException;
+use Illuminate\Http\Request;
+
+class ShipmentController extends Controller
+{
+    public function __construct(
+        protected ShipmentService $shipmentService,
+        protected AuditLogService $auditLogService
+    ) {}
+
+    public function index(Request $request)
+    {
+        $user = auth()->user();
+        $query = Shipment::with(['carrier', 'originLocation', 'destinationLocation', 'customer'])
+            ->latest();
+
+        // Customer access isolation
+        if ($user->isCustomer()) {
+            $query->where('customer_id', $user->id);
+        }
+
+        // Filters
+        if ($request->filled('search')) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('shipment_number', 'like', "%{$search}%")
+                  ->orWhere('reference_number', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('current_status', $request->query('status'));
+        }
+
+        if ($request->filled('carrier_id')) {
+            $query->where('carrier_id', $request->query('carrier_id'));
+        }
+
+        if ($request->filled('delay')) {
+            if ($request->query('delay') === 'delayed') {
+                $query->where('is_delayed', true);
+            } elseif ($request->query('delay') === 'on_time') {
+                $query->where('is_delayed', false);
+            }
+        }
+
+        $shipments = $query->paginate(15)->withQueryString();
+        $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
+
+        return view('shipments.index', compact('shipments', 'carriers'));
+    }
+
+    public function create()
+    {
+        $this->authorizeAdminOrOperator();
+
+        $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
+        $locations = Location::where('is_active', true)->orderBy('name')->get();
+        $customers = User::where('role', 'customer')->orderBy('name')->get();
+
+        return view('shipments.create', compact('carriers', 'locations', 'customers'));
+    }
+
+    public function store(ShipmentRequest $request)
+    {
+        $this->authorizeAdminOrOperator();
+
+        $data = $request->safe()->except('items');
+        $items = $request->input('items', []);
+
+        $shipment = $this->shipmentService->createShipment($data, $items);
+
+        return redirect()->route('shipments.show', $shipment)
+            ->with('success', "Shipment {$shipment->shipment_number} successfully registered.");
+    }
+
+    public function show(Shipment $shipment)
+    {
+        $user = auth()->user();
+        if ($user->isCustomer() && $shipment->customer_id !== $user->id) {
+            abort(403, 'Unauthorized access to this shipment.');
+        }
+
+        $shipment->load([
+            'carrier',
+            'originLocation',
+            'destinationLocation',
+            'customer',
+            'creator',
+            'items',
+            'trackingEvents.location',
+            'trackingEvents.creator',
+            'exceptions',
+        ]);
+
+        $locations = Location::where('is_active', true)->orderBy('name')->get();
+
+        return view('shipments.show', compact('shipment', 'locations'));
+    }
+
+    public function edit(Shipment $shipment)
+    {
+        $this->authorizeAdminOrOperator();
+
+        $carriers = Carrier::where('is_active', true)->orderBy('name')->get();
+        $locations = Location::where('is_active', true)->orderBy('name')->get();
+        $customers = User::where('role', 'customer')->orderBy('name')->get();
+
+        return view('shipments.edit', compact('shipment', 'carriers', 'locations', 'customers'));
+    }
+
+    public function update(Request $request, Shipment $shipment)
+    {
+        $this->authorizeAdminOrOperator();
+
+        $validated = $request->validate([
+            'reference_number' => ['nullable', 'string', 'max:100'],
+            'carrier_id' => ['required', 'exists:carriers,id'],
+            'expected_arrival' => ['required', 'date'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $old = $shipment->toArray();
+        $shipment->update($validated);
+        $this->auditLogService->log('shipment.updated', $shipment, $old, $shipment->fresh()->toArray());
+
+        return redirect()->route('shipments.show', $shipment)
+            ->with('success', "Shipment {$shipment->shipment_number} updated successfully.");
+    }
+
+    public function transition(Request $request, Shipment $shipment)
+    {
+        $this->authorizeAdminOrOperator();
+
+        $validated = $request->validate([
+            'status' => ['required', 'string'],
+            'reason' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        try {
+            $this->shipmentService->transitionStatus($shipment, $validated['status'], $validated['reason'] ?? null);
+
+            return redirect()->route('shipments.show', $shipment)
+                ->with('success', "Shipment status changed to {$validated['status']}.");
+        } catch (DomainException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroy(Shipment $shipment)
+    {
+        $user = auth()->user();
+        if (! $user->isAdmin()) {
+            abort(403, 'Only administrators can delete shipments.');
+        }
+
+        $old = $shipment->toArray();
+        $number = $shipment->shipment_number;
+
+        // Cascade delete relations
+        $shipment->items()->delete();
+        $shipment->trackingEvents()->delete();
+        $shipment->delete();
+
+        $this->auditLogService->log('shipment.deleted', null, $old, null);
+
+        return redirect()->route('shipments.index')
+            ->with('success', "Shipment {$number} deleted successfully.");
+    }
+
+    protected function authorizeAdminOrOperator(): void
+    {
+        $user = auth()->user();
+        if (! $user || (! $user->isAdmin() && ! $user->isOperator())) {
+            abort(403, 'Unauthorized. Requires administrator or operator privileges.');
+        }
+    }
+}
