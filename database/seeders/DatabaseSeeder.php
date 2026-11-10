@@ -6,6 +6,7 @@ use App\Models\Carrier;
 use App\Models\Location;
 use App\Models\Shipment;
 use App\Models\ShipmentException;
+use App\Models\ShippingTariff;
 use App\Models\SystemSetting;
 use App\Models\User;
 use App\Services\ShipmentService;
@@ -116,6 +117,14 @@ class DatabaseSeeder extends Seeder
                 'contact_phone' => '+65 6542 5588',
                 'is_active' => true,
             ],
+            [
+                'code' => 'INLANDEX',
+                'name' => 'Deliveree Intercity Logistics',
+                'transport_mode' => 'LAND',
+                'contact_email' => 'support@deliveree-fleet.id',
+                'contact_phone' => '+62 21 5086 8080',
+                'is_active' => true,
+            ],
         ];
 
         foreach ($carriers as $c) {
@@ -211,6 +220,47 @@ class DatabaseSeeder extends Seeder
 
         foreach ($settings as $s) {
             SystemSetting::firstOrCreate(['key' => $s['key']], $s);
+        }
+
+        // 4b. Seed Shipping Tariffs Table (Sea, Air, Land rate matrix)
+        $tariffs = [
+            [
+                'transport_mode' => 'SEA',
+                'service_name' => 'Ocean Freight FCL/LCL',
+                'base_fee_usd' => 150.00,
+                'rate_per_kg_usd' => 0.6500,
+                'rate_per_km_usd' => 0.0450,
+                'min_weight_kg' => 50,
+                'avg_speed_kmh' => 35,
+                'handling_hours' => 48,
+                'is_active' => true,
+            ],
+            [
+                'transport_mode' => 'AIR',
+                'service_name' => 'Air Freight Express Cold-Chain',
+                'base_fee_usd' => 95.00,
+                'rate_per_kg_usd' => 4.2500,
+                'rate_per_km_usd' => 0.1800,
+                'min_weight_kg' => 10,
+                'avg_speed_kmh' => 750,
+                'handling_hours' => 12,
+                'is_active' => true,
+            ],
+            [
+                'transport_mode' => 'LAND',
+                'service_name' => 'Inland Intermodal Trucking',
+                'base_fee_usd' => 45.00,
+                'rate_per_kg_usd' => 0.4500,
+                'rate_per_km_usd' => 0.3200,
+                'min_weight_kg' => 20,
+                'avg_speed_kmh' => 55,
+                'handling_hours' => 6,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($tariffs as $t) {
+            ShippingTariff::firstOrCreate(['transport_mode' => $t['transport_mode']], $t);
         }
 
         // 5. Seed End-to-End Realistic Shipments

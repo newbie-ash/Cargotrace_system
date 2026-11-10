@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ShipmentController;
@@ -15,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 | Public & Authentication Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
-})->name('landing');
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/track-public', [LandingController::class, 'trackPublic'])->middleware('throttle:30,1')->name('public.track');
+Route::get('/estimate-tariff', [LandingController::class, 'estimateTariff'])->middleware('throttle:30,1')->name('public.estimate');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
