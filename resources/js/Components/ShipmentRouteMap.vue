@@ -105,8 +105,8 @@ const initMap = () => {
     // Custom Zoom Control top-right
     L.control.zoom({ position: 'topright' }).addTo(map);
 
-    // CartoDB Positron / OSM Tiles
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    // CARTO Dark Matter Map Tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 19,
@@ -123,20 +123,20 @@ const initMap = () => {
         let iconHtml = '';
         if (wp.type === 'ORIGIN') {
             iconHtml = `
-                <div class="relative flex items-center justify-center w-8 h-8 rounded-full bg-emerald-600 text-white shadow-lg border-2 border-white ring-2 ring-emerald-300">
+                <div class="relative flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500 text-slate-950 font-bold shadow-[0_0_14px_#10b981] border-2 border-slate-950">
                     <i class="bi bi-geo-alt-fill text-xs"></i>
                 </div>
             `;
         } else if (wp.type === 'DESTINATION') {
             iconHtml = `
-                <div class="relative flex items-center justify-center w-8 h-8 rounded-full bg-rose-600 text-white shadow-lg border-2 border-white ring-2 ring-rose-300">
+                <div class="relative flex items-center justify-center w-8 h-8 rounded-full bg-rose-500 text-white font-bold shadow-[0_0_14px_#f43f5e] border-2 border-slate-950">
                     <i class="bi bi-flag-fill text-xs"></i>
                 </div>
             `;
         } else {
             iconHtml = `
-                <div class="relative flex items-center justify-center w-7 h-7 rounded-full bg-blue-600 text-white shadow-md border-2 border-white ring-2 ring-blue-300">
-                    <span class="text-[10px] font-bold font-mono">${wp.sequence || '•'}</span>
+                <div class="relative flex items-center justify-center w-7 h-7 rounded-full bg-cyan-400 text-slate-950 font-black font-mono shadow-[0_0_12px_#22d3ee] border-2 border-slate-950">
+                    <span class="text-[10px]">${wp.sequence || '•'}</span>
                 </div>
             `;
         }
@@ -153,12 +153,12 @@ const initMap = () => {
         let weatherHtml = '';
         if (wp.weather) {
             weatherHtml = `
-                <div class="mt-2 p-2 bg-[#F6F3EC] rounded-lg border border-[#E5E0D5] text-[11px]">
-                    <div class="font-bold text-[#1A1A1C] flex items-center gap-1.5">
-                        <i class="bi bi-cloud-sun text-amber-600"></i>
+                <div class="mt-2.5 p-2 bg-slate-950/70 rounded-xl border border-white/10 text-[11px]">
+                    <div class="font-bold text-cyan-300 flex items-center gap-1.5">
+                        <i class="bi bi-cloud-sun text-amber-400"></i>
                         <span>${wp.weather.condition || 'Kondisi Cuaca'} &bull; ${wp.weather.temperature ?? 'N/A'}°C</span>
                     </div>
-                    <div class="text-[#706E6B] text-[10px] mt-0.5">
+                    <div class="text-slate-400 text-[10px] mt-0.5 font-mono">
                         Angin: ${wp.weather.wind_speed ?? 'N/A'} km/h &bull; Kelembapan: ${wp.weather.humidity ?? 'N/A'}%
                     </div>
                 </div>
@@ -166,19 +166,19 @@ const initMap = () => {
         }
 
         const popupContent = `
-            <div class="font-sans text-xs min-w-[200px] p-1">
-                <div class="flex items-center justify-between gap-2 border-b border-[#E5E0D5] pb-1.5 mb-1.5">
-                    <span class="font-bold font-mono text-[10px] px-1.5 py-0.5 rounded ${
-                        wp.type === 'ORIGIN' ? 'bg-emerald-100 text-emerald-800' :
-                        wp.type === 'DESTINATION' ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800'
+            <div class="font-sans text-xs min-w-[210px] p-1.5 text-slate-200">
+                <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-2 mb-2">
+                    <span class="font-mono font-extrabold text-[10px] px-2 py-0.5 rounded ${
+                        wp.type === 'ORIGIN' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' :
+                        wp.type === 'DESTINATION' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                     }">${wp.type}</span>
-                    <span class="text-[10px] text-[#706E6B] font-mono">${wp.lat.toFixed(4)}, ${wp.lng.toFixed(4)}</span>
+                    <span class="text-[10px] text-slate-400 font-mono">${wp.lat.toFixed(4)}, ${wp.lng.toFixed(4)}</span>
                 </div>
-                <div class="font-bold text-[#1A1A1C] text-sm">${wp.name}</div>
-                <div class="text-[11px] text-[#706E6B]">${wp.city ? wp.city + ', ' : ''}${wp.country || ''}</div>
-                ${wp.description ? `<p class="mt-1 text-[#2C2C2E] italic text-[11px]">${wp.description}</p>` : ''}
+                <div class="font-extrabold text-white text-sm tracking-tight">${wp.name}</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">${wp.city ? wp.city + ', ' : ''}${wp.country || ''}</div>
+                ${wp.description ? `<p class="mt-1.5 text-slate-300 italic text-[11px] leading-relaxed">${wp.description}</p>` : ''}
                 ${weatherHtml}
-                <div class="mt-2 pt-1 border-t border-[#E5E0D5] text-[10px] text-[#706E6B]">
+                <div class="mt-2.5 pt-1.5 border-t border-white/10 text-[10px] text-slate-400 font-mono">
                     ${wp.time ? new Date(wp.time).toLocaleString() : '-'}
                 </div>
             </div>
@@ -188,25 +188,33 @@ const initMap = () => {
         layerGroup.addLayer(marker);
     });
 
-    // Draw route polyline
+    // Draw route polyline with Glowing Cyber Maritime style
     if (latLngs.length > 1) {
-        // Main route line
-        const polyline = L.polyline(latLngs, {
-            color: '#1A1A1C',
-            weight: 3.5,
-            opacity: 0.85,
+        // Glowing cyan base underlay
+        L.polyline(latLngs, {
+            color: '#22D3EE',
+            weight: 5,
+            opacity: 0.35,
             smoothFactor: 1,
         }).addTo(layerGroup);
 
-        // Dashed glowing underlay
+        // Sharp solid cyan route line
         L.polyline(latLngs, {
-            color: '#2563EB',
-            weight: 2,
-            opacity: 0.9,
-            dashArray: '8, 8',
+            color: '#06B6D4',
+            weight: 3,
+            opacity: 0.95,
+            smoothFactor: 1,
         }).addTo(layerGroup);
 
-        map.fitBounds(polyline.getBounds(), {
+        // Dashed animated pulse effect
+        L.polyline(latLngs, {
+            color: '#FFFFFF',
+            weight: 1.5,
+            opacity: 0.85,
+            dashArray: '6, 12',
+        }).addTo(layerGroup);
+
+        map.fitBounds(L.polyline(latLngs).getBounds(), {
             padding: [40, 40],
             maxZoom: 12,
         });
@@ -247,30 +255,30 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl overflow-hidden shadow-xs mb-6">
+    <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-xl mb-6">
         <!-- Map Header Toolbar -->
-        <div class="p-4 border-b border-[#E5E0D5] flex flex-wrap items-center justify-between gap-3 bg-white/90">
-            <div class="flex items-center gap-2">
-                <div class="w-7 h-7 rounded-lg bg-[#F6F3EC] border border-[#D8D2C4] flex items-center justify-center text-[#1A1A1C]">
+        <div class="p-4 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 bg-slate-950/60">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                     <i class="bi bi-map-fill text-xs"></i>
                 </div>
                 <div>
-                    <h3 class="text-xs font-bold text-[#1A1A1C] uppercase tracking-wider">Visualisasi Rute & Geospasial</h3>
-                    <p class="text-[11px] text-[#706E6B]">Pelacakan interaktif posisi kapal dan checkpoint cuaca</p>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Visualisasi Rute & Geospasial (Dark Map)</h3>
+                    <p class="text-[11px] text-slate-400">Pelacakan interaktif posisi kapal dan checkpoint cuaca</p>
                 </div>
             </div>
 
             <!-- Legend & Reset Button -->
             <div class="flex items-center gap-2 flex-wrap">
-                <div class="hidden sm:flex items-center gap-3 text-[11px] text-[#706E6B] px-3 py-1 bg-[#F6F3EC] rounded-xl border border-[#E5E0D5]">
-                    <span class="inline-flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span> Asal (Origin)
+                <div class="hidden sm:flex items-center gap-3 text-[11px] text-slate-300 px-3.5 py-1.5 bg-slate-900/80 rounded-xl border border-white/10">
+                    <span class="inline-flex items-center gap-1.5 font-semibold">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] inline-block"></span> Asal (Origin)
                     </span>
-                    <span class="inline-flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span> Checkpoint
+                    <span class="inline-flex items-center gap-1.5 font-semibold">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] inline-block"></span> Checkpoint
                     </span>
-                    <span class="inline-flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-rose-600 inline-block"></span> Tujuan (Destination)
+                    <span class="inline-flex items-center gap-1.5 font-semibold">
+                        <span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_8px_#fb7185] inline-block"></span> Tujuan (Destination)
                     </span>
                 </div>
 
@@ -278,9 +286,9 @@ onUnmounted(() => {
                     @click="resetBounds"
                     type="button"
                     title="Pusatkan Rute"
-                    class="px-2.5 py-1 text-xs font-medium border border-[#D8D2C4] rounded-xl hover:bg-[#F2EFE9] text-[#1A1A1C] inline-flex items-center gap-1 transition"
+                    class="px-3 py-1.5 text-xs font-bold border border-white/15 bg-white/5 hover:bg-white/10 rounded-xl text-white inline-flex items-center gap-1.5 transition cursor-pointer"
                 >
-                    <i class="bi bi-arrows-fullscreen"></i>
+                    <i class="bi bi-arrows-fullscreen text-xs"></i>
                     <span>Pusatkan</span>
                 </button>
             </div>
@@ -292,9 +300,9 @@ onUnmounted(() => {
         </div>
 
         <!-- Fallback if coordinates missing -->
-        <div v-else class="p-8 text-center bg-[#F6F3EC]/50 text-xs text-[#706E6B]">
-            <i class="bi bi-geo-alt-slash text-2xl text-[#8E8B85] mb-2 block"></i>
-            <p class="font-semibold text-[#1A1A1C]">Koordinat Geospasial Belum Lengkap</p>
+        <div v-else class="p-8 text-center bg-slate-950/60 text-xs text-slate-400">
+            <i class="bi bi-geo-alt-slash text-2xl text-slate-500 mb-2 block"></i>
+            <p class="font-bold text-white">Koordinat Geospasial Belum Lengkap</p>
             <p class="text-[11px] mt-1 max-w-sm mx-auto">
                 Lokasi asal atau tujuan belum memiliki titik koordinat (latitude & longitude) yang valid. Perbarui data master lokasi untuk menampilkan peta rute.
             </p>
@@ -303,19 +311,29 @@ onUnmounted(() => {
 </template>
 
 <style>
-/* Leaflet Popup Warm Paper styling overrides */
+/* Leaflet Dark Matter styling overrides */
 .leaflet-popup-content-wrapper {
-    background: #FFFFFF !important;
-    border: 1px solid #E5E0D5 !important;
-    border-radius: 14px !important;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+    background: #0B132B !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6) !important;
+    color: #F8FAFC !important;
 }
 .leaflet-popup-tip {
-    background: #FFFFFF !important;
-    border: 1px solid #E5E0D5 !important;
+    background: #0B132B !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
 }
 .custom-leaflet-pin {
     background: transparent !important;
     border: none !important;
+}
+.leaflet-bar a {
+    background-color: #0F172A !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #F8FAFC !important;
+}
+.leaflet-bar a:hover {
+    background-color: #1E293B !important;
+    color: #22D3EE !important;
 }
 </style>

@@ -18,13 +18,13 @@ const isOperator = computed(() => user.value.role === 'operator');
 
 const statusBadgeClass = (st) => {
     switch (st) {
-        case 'CREATED': return 'bg-gray-100 text-gray-700 border-gray-300';
+        case 'CREATED': return 'bg-slate-500/20 text-slate-300 border-slate-400/30';
         case 'BOOKED':
-        case 'PICKED_UP': return 'bg-blue-50 text-blue-700 border-blue-200';
-        case 'IN_TRANSIT': return 'bg-amber-50 text-amber-800 border-amber-300';
-        case 'DELIVERED': return 'bg-emerald-50 text-emerald-700 border-emerald-300';
-        case 'CANCELLED': return 'bg-rose-50 text-rose-700 border-rose-300';
-        default: return 'bg-gray-50 text-gray-700 border-gray-200';
+        case 'PICKED_UP': return 'bg-cyan-500/15 text-cyan-300 border-cyan-400/30';
+        case 'IN_TRANSIT': return 'bg-amber-500/15 text-amber-300 border-amber-400/30';
+        case 'DELIVERED': return 'bg-emerald-500/15 text-emerald-300 border-emerald-400/30';
+        case 'CANCELLED': return 'bg-rose-500/15 text-rose-300 border-rose-400/30';
+        default: return 'bg-slate-500/15 text-slate-300 border-slate-400/25';
     }
 };
 </script>
@@ -34,22 +34,22 @@ const statusBadgeClass = (st) => {
         <Head title="Operational Dashboard" />
 
         <!-- Header Banner -->
-        <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 mb-6 shadow-xs">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-6 shadow-xl">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <h1 class="text-2xl font-bold tracking-tight text-[#1A1A1C]">Operational Dashboard</h1>
-                        <span class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-[#1A1A1C] text-white uppercase tracking-wider">
+                    <div class="flex items-center gap-2.5 mb-1">
+                        <h1 class="text-2xl font-extrabold tracking-tight text-white">Operational Dashboard</h1>
+                        <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-400/30 uppercase tracking-wider">
                             {{ user.role }}
                         </span>
                     </div>
-                    <p class="text-xs text-[#706E6B]">
+                    <p class="text-xs text-slate-400">
                         Platform visibilitas terpadu & pelacakan rantai pasok kargo global interkontinental.
                     </p>
                 </div>
 
                 <div v-if="isAdmin || isOperator" class="flex gap-2">
-                    <Link href="/shipments/create" class="px-4 py-2 bg-[#1A1A1C] hover:bg-[#2C2C2E] text-white text-xs font-semibold rounded-xl transition inline-flex items-center gap-2 shadow-xs">
+                    <Link href="/shipments/create" class="px-4 py-2 bg-white hover:bg-cyan-50 text-slate-950 text-xs font-bold rounded-full transition inline-flex items-center gap-2 shadow-lg shadow-white/10">
                         <i class="bi bi-plus-lg"></i>
                         <span>Buat Shipment</span>
                     </Link>
@@ -60,103 +60,103 @@ const statusBadgeClass = (st) => {
         <!-- 8 Dynamic Metric KPI Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <!-- 1. Total Shipments -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">Total Shipments</span>
-                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">Total Shipments</span>
+                    <div class="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
                         <i class="bi bi-box-seam"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-[#1A1A1C] font-mono">{{ stats.total_shipments }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">Kargo terdaftar sistem</div>
+                <div class="text-2xl font-extrabold text-white font-mono">{{ stats.total_shipments }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">Kargo terdaftar sistem</div>
             </div>
 
             <!-- 2. In Transit -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">In Transit</span>
-                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">In Transit</span>
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center">
                         <i class="bi bi-water"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-amber-600 font-mono">{{ stats.in_transit }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">Sedang dalam pelayaran</div>
+                <div class="text-2xl font-extrabold text-amber-400 font-mono">{{ stats.in_transit }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">Sedang dalam pelayaran</div>
             </div>
 
             <!-- 3. Delivered -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">Delivered</span>
-                    <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">Delivered</span>
+                    <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
                         <i class="bi bi-check2-circle"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-emerald-600 font-mono">{{ stats.delivered }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">Tuntas tiba di destinasi</div>
+                <div class="text-2xl font-extrabold text-emerald-400 font-mono">{{ stats.delivered }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">Tuntas tiba di destinasi</div>
             </div>
 
             <!-- 4. Delayed Shipments -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">Delayed</span>
-                    <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">Delayed</span>
+                    <div class="w-8 h-8 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center">
                         <i class="bi bi-clock-history"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-rose-600 font-mono">{{ stats.delayed }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">
-                    Delay Rate: <strong class="text-rose-700 font-mono">{{ stats.delay_rate }}%</strong>
+                <div class="text-2xl font-extrabold text-rose-400 font-mono">{{ stats.delayed }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">
+                    Delay Rate: <strong class="text-rose-300 font-mono">{{ stats.delay_rate }}%</strong>
                 </div>
             </div>
 
             <!-- 5. Open Exceptions -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">Open Exceptions</span>
-                    <div class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">Open Exceptions</span>
+                    <div class="w-8 h-8 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center">
                         <i class="bi bi-exclamation-triangle"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-red-600 font-mono">{{ stats.open_exceptions }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">
-                    Incident Rate: <strong class="text-red-700 font-mono">{{ stats.exception_rate }}%</strong>
+                <div class="text-2xl font-extrabold text-rose-400 font-mono">{{ stats.open_exceptions }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">
+                    Incident Rate: <strong class="text-rose-300 font-mono">{{ stats.exception_rate }}%</strong>
                 </div>
             </div>
 
             <!-- 6. Active Carriers -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">Active Carriers</span>
-                    <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">Active Carriers</span>
+                    <div class="w-8 h-8 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-400 flex items-center justify-center">
                         <i class="bi bi-truck"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-[#1A1A1C] font-mono">{{ stats.active_carriers }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">Armada pelayaran aktif</div>
+                <div class="text-2xl font-extrabold text-white font-mono">{{ stats.active_carriers }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">Armada pelayaran aktif</div>
             </div>
 
             <!-- 7. Global Hubs -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">Global Hubs</span>
-                    <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">Global Hubs</span>
+                    <div class="w-8 h-8 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center">
                         <i class="bi bi-geo-alt"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-[#1A1A1C] font-mono">{{ stats.total_locations }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">Pelabuhan & checkpoint transit</div>
+                <div class="text-2xl font-extrabold text-white font-mono">{{ stats.total_locations }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">Pelabuhan & checkpoint transit</div>
             </div>
 
             <!-- 8. Users Count -->
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-5 shadow-xs hover:border-[#1A1A1C]/30 transition">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-lg hover:border-cyan-400/40 transition">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#706E6B]">Sistem Akun</span>
-                    <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center">
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">Sistem Akun</span>
+                    <div class="w-8 h-8 rounded-xl bg-teal-500/15 border border-teal-500/30 text-teal-400 flex items-center justify-center">
                         <i class="bi bi-people"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-extrabold text-[#1A1A1C] font-mono">{{ stats.total_users }}</div>
-                <div class="text-[11px] text-[#706E6B] mt-1">Admin, operator & customer</div>
+                <div class="text-2xl font-extrabold text-white font-mono">{{ stats.total_users }}</div>
+                <div class="text-[11px] text-slate-400 mt-1">Admin, operator & customer</div>
             </div>
         </div>
 
@@ -167,18 +167,18 @@ const statusBadgeClass = (st) => {
         />
 
         <!-- Recent Shipments Overview Table -->
-        <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 shadow-xs mb-6">
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#E5E0D5]">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl mb-6">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xs">
                         <i class="bi bi-clock-history"></i>
                     </div>
                     <div>
-                        <h2 class="text-xs font-bold text-[#1A1A1C] uppercase tracking-wider">Pengiriman Terkini (Recent Shipments)</h2>
-                        <p class="text-[11px] text-[#706E6B]">Daftar aktivitas kargo terbaru dalam sistem</p>
+                        <h2 class="text-xs font-bold text-white uppercase tracking-wider">Pengiriman Terkini (Recent Shipments)</h2>
+                        <p class="text-[11px] text-slate-400">Daftar aktivitas kargo terbaru dalam sistem</p>
                     </div>
                 </div>
-                <Link href="/shipments" class="text-xs font-semibold text-[#1A1A1C] hover:underline inline-flex items-center gap-1">
+                <Link href="/shipments" class="text-xs font-bold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1 transition">
                     <span>Lihat Semua</span>
                     <i class="bi bi-arrow-right"></i>
                 </Link>
@@ -187,7 +187,7 @@ const statusBadgeClass = (st) => {
             <div v-if="stats.recent_shipments?.length" class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="border-b border-[#E5E0D5] text-[#706E6B] uppercase font-mono text-[10px]">
+                        <tr class="border-b border-white/10 text-slate-400 uppercase font-mono text-[10px]">
                             <th class="py-2.5 px-3">No. Shipment</th>
                             <th class="py-2.5 px-3">Carrier</th>
                             <th class="py-2.5 px-3">Rute</th>
@@ -196,36 +196,36 @@ const statusBadgeClass = (st) => {
                             <th class="py-2.5 px-3 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-[#E5E0D5]">
-                        <tr v-for="s in stats.recent_shipments" :key="s.id" class="hover:bg-[#F6F3EC]/50 transition">
-                            <td class="py-3 px-3 font-mono font-bold text-[#1A1A1C]">
+                    <tbody class="divide-y divide-white/10">
+                        <tr v-for="s in stats.recent_shipments" :key="s.id" class="hover:bg-white/[0.04] transition">
+                            <td class="py-3 px-3 font-mono font-bold text-cyan-300">
                                 <Link :href="`/shipments/${s.id}`" class="hover:underline">
                                     {{ s.shipment_number }}
                                 </Link>
                             </td>
-                            <td class="py-3 px-3 text-[#1A1A1C]">
+                            <td class="py-3 px-3 text-slate-200 font-medium">
                                 {{ s.carrier?.name || '-' }}
                             </td>
-                            <td class="py-3 px-3 font-mono text-[11px] text-[#706E6B]">
+                            <td class="py-3 px-3 font-mono text-[11px] text-slate-400">
                                 {{ s.origin_location?.code }} &rarr; {{ s.destination_location?.code }}
                             </td>
                             <td class="py-3 px-3">
-                                <span :class="['px-2 py-0.5 rounded-md border text-[11px] font-mono font-semibold', statusBadgeClass(s.current_status)]">
+                                <span :class="['px-2.5 py-0.5 rounded-md border text-[10px] font-mono font-bold', statusBadgeClass(s.current_status)]">
                                     {{ s.current_status }}
                                 </span>
                             </td>
                             <td class="py-3 px-3">
-                                <span v-if="s.is_delayed" class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-semibold inline-flex items-center gap-1">
+                                <span v-if="s.is_delayed" class="px-2 py-0.5 rounded-md bg-rose-500/15 text-rose-300 border border-rose-500/30 text-[10px] font-bold inline-flex items-center gap-1">
                                     <i class="bi bi-clock-history"></i>
                                     <span>DELAY (+{{ s.delay_duration_hours }}j)</span>
                                 </span>
-                                <span v-else class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-semibold inline-flex items-center gap-1">
+                                <span v-else class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold inline-flex items-center gap-1">
                                     <i class="bi bi-check-circle"></i>
                                     <span>ON-TIME</span>
                                 </span>
                             </td>
                             <td class="py-3 px-3 text-right">
-                                <Link :href="`/shipments/${s.id}`" class="px-2.5 py-1 text-xs border border-[#D8D2C4] hover:bg-[#F2EFE9] rounded-lg transition inline-flex items-center gap-1">
+                                <Link :href="`/shipments/${s.id}`" class="px-3 py-1 text-xs border border-white/15 bg-white/5 hover:bg-white/15 text-white rounded-lg transition inline-flex items-center gap-1 font-medium">
                                     <span>Detail</span>
                                     <i class="bi bi-chevron-right text-[10px]"></i>
                                 </Link>
@@ -235,29 +235,29 @@ const statusBadgeClass = (st) => {
                 </table>
             </div>
 
-            <div v-else class="py-8 text-center text-xs text-[#706E6B]">
+            <div v-else class="py-8 text-center text-xs text-slate-400">
                 Belum ada data pengiriman terdaftar.
             </div>
         </div>
 
         <!-- Recent Audit Trail Feed (For Admin) -->
-        <div v-if="isAdmin && stats.recent_audits?.length" class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 shadow-xs">
-            <h2 class="text-xs font-bold text-[#1A1A1C] uppercase tracking-wider mb-4 flex items-center gap-2">
-                <i class="bi bi-shield-check text-emerald-600"></i>
+        <div v-if="isAdmin && stats.recent_audits?.length" class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl">
+            <h2 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                <i class="bi bi-shield-check text-emerald-400"></i>
                 <span>Aktivitas Audit Trail Terkini</span>
             </h2>
 
-            <div class="divide-y divide-[#E5E0D5] text-xs">
+            <div class="divide-y divide-white/10 text-xs">
                 <div v-for="log in stats.recent_audits" :key="log.id" class="py-2.5 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
-                        <span class="font-mono text-[#706E6B] text-[11px]">{{ new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
+                        <span class="font-mono text-slate-400 text-[11px]">{{ new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
                         <div>
-                            <span class="font-bold text-[#1A1A1C]">{{ log.user?.name || 'System' }}</span>
-                            <span class="text-[#706E6B] mx-1">&bull;</span>
-                            <span class="font-mono text-[11px] px-1.5 py-0.5 rounded bg-[#F6F3EC] border border-[#E5E0D5] text-[#1A1A1C]">{{ log.action }}</span>
+                            <span class="font-bold text-white">{{ log.user?.name || 'System' }}</span>
+                            <span class="text-slate-500 mx-1.5">&bull;</span>
+                            <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-slate-950/70 border border-white/10 text-cyan-300">{{ log.action }}</span>
                         </div>
                     </div>
-                    <span class="text-[#706E6B] font-mono text-[11px]">{{ log.auditable_type?.split('\\').pop() }} #{{ log.auditable_id }}</span>
+                    <span class="text-slate-400 font-mono text-[11px]">{{ log.auditable_type?.split('\\').pop() }} #{{ log.auditable_id }}</span>
                 </div>
             </div>
         </div>

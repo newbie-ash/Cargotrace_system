@@ -36,15 +36,15 @@ const renderCharts = () => {
                 datasets: [{
                     data,
                     backgroundColor: [
-                        '#9CA3AF', // CREATED (gray)
-                        '#60A5FA', // BOOKED (blue)
-                        '#818CF8', // PICKED_UP (indigo)
+                        '#64748B', // CREATED (slate)
+                        '#06B6D4', // BOOKED (cyan)
+                        '#6366F1', // PICKED_UP (indigo)
                         '#F59E0B', // IN_TRANSIT (amber)
                         '#10B981', // DELIVERED (emerald)
-                        '#EF4444', // CANCELLED (rose)
+                        '#F43F5E', // CANCELLED (rose)
                     ],
-                    borderWidth: 2,
-                    borderColor: '#FFFFFF',
+                    borderWidth: 3,
+                    borderColor: '#0B132B',
                 }],
             },
             options: {
@@ -56,15 +56,16 @@ const renderCharts = () => {
                         labels: {
                             boxWidth: 10,
                             padding: 12,
+                            color: '#94A3B8',
                             font: {
                                 family: 'Plus Jakarta Sans, sans-serif',
                                 size: 11,
-                                weight: '500',
+                                weight: '600',
                             },
                         },
                     },
                 },
-                cutout: '68%',
+                cutout: '70%',
             },
         });
     }
@@ -85,7 +86,8 @@ const renderCharts = () => {
                 datasets: [{
                     label: 'Jumlah Kargo',
                     data: labels.length ? data : [0],
-                    backgroundColor: '#1A1A1C',
+                    backgroundColor: '#22D3EE',
+                    hoverBackgroundColor: '#67E8F9',
                     borderRadius: 8,
                     maxBarThickness: 32,
                 }],
@@ -103,14 +105,16 @@ const renderCharts = () => {
                         beginAtZero: true,
                         ticks: {
                             stepSize: 1,
+                            color: '#94A3B8',
                             font: { family: 'JetBrains Mono, monospace', size: 10 },
                         },
                         grid: {
-                            color: '#E5E0D5',
+                            color: 'rgba(255, 255, 255, 0.08)',
                         },
                     },
                     x: {
                         ticks: {
+                            color: '#CBD5E1',
                             font: { family: 'Plus Jakarta Sans, sans-serif', size: 11 },
                         },
                         grid: {
@@ -140,15 +144,15 @@ onUnmounted(() => {
 <template>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Status Doughnut Chart Card -->
-        <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 shadow-xs">
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#E5E0D5]">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xs">
                         <i class="bi bi-pie-chart-fill"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs font-bold text-[#1A1A1C] uppercase tracking-wider">Distribusi Status Kargo</h3>
-                        <p class="text-[11px] text-[#706E6B]">Proporsi pengiriman menurut fase siklus hidup</p>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Distribusi Status Kargo</h3>
+                        <p class="text-[11px] text-slate-400">Proporsi pengiriman menurut fase siklus hidup</p>
                     </div>
                 </div>
             </div>
@@ -158,15 +162,15 @@ onUnmounted(() => {
         </div>
 
         <!-- Carrier Bar Chart Card -->
-        <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 shadow-xs">
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#E5E0D5]">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xs">
                         <i class="bi bi-bar-chart-fill"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs font-bold text-[#1A1A1C] uppercase tracking-wider">Volume Muatan per Carrier</h3>
-                        <p class="text-[11px] text-[#706E6B]">Jumlah kargo aktif yang diangkut per armada</p>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Volume Muatan per Carrier</h3>
+                        <p class="text-[11px] text-slate-400">Jumlah kargo aktif yang diangkut per armada</p>
                     </div>
                 </div>
             </div>

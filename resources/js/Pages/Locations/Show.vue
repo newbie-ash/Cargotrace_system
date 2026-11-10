@@ -19,48 +19,48 @@ const isAdmin = computed(() => page.props.auth?.user?.role === 'admin');
         <Head :title="`Lokasi ${location.name}`" />
 
         <div class="max-w-2xl mx-auto">
-            <div class="bg-white/70 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 mb-6 shadow-xs flex items-center justify-between">
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-6 shadow-xl flex items-center justify-between">
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-xl font-bold tracking-tight text-[#1A1A1C]">{{ location.name }}</h1>
-                        <span class="px-2 py-0.5 rounded font-mono font-bold text-xs bg-purple-50 text-purple-700 border border-purple-200">
+                    <div class="flex items-center gap-2.5">
+                        <h1 class="text-xl font-extrabold tracking-tight text-white">{{ location.name }}</h1>
+                        <span class="px-2.5 py-0.5 rounded font-mono font-bold text-xs bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
                             {{ location.code }}
                         </span>
                     </div>
-                    <p class="text-xs text-[#706E6B] mt-0.5">{{ location.city }}, {{ location.country }}</p>
+                    <p class="text-xs text-slate-400 mt-0.5">{{ location.city }}, {{ location.country }}</p>
                 </div>
                 <div class="flex gap-2">
-                    <Link href="/locations" class="px-3 py-1.5 border border-[#D8D2C4] hover:bg-[#F2EFE9] text-xs font-semibold rounded-xl text-[#1A1A1C] transition inline-flex items-center gap-1.5">
+                    <Link href="/locations" class="px-3.5 py-1.5 border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-full text-slate-200 transition inline-flex items-center gap-1.5">
                         <i class="bi bi-arrow-left"></i>
                         <span>Kembali</span>
                     </Link>
-                    <Link v-if="isAdmin" :href="`/locations/${location.id}/edit`" class="px-3 py-1.5 bg-[#1A1A1C] hover:bg-[#2C2C2E] text-white text-xs font-semibold rounded-xl transition inline-flex items-center gap-1.5">
+                    <Link v-if="isAdmin" :href="`/locations/${location.id}/edit`" class="px-4 py-1.5 bg-white hover:bg-cyan-50 text-slate-950 text-xs font-bold rounded-full transition inline-flex items-center gap-1.5 shadow-lg shadow-white/10">
                         <i class="bi bi-pencil"></i>
                         <span>Edit</span>
                     </Link>
                 </div>
             </div>
 
-            <div class="bg-white/80 backdrop-blur-md border border-[#E5E0D5] rounded-2xl p-6 shadow-xs space-y-4 text-xs">
-                <div class="flex justify-between py-2 border-b border-[#E5E0D5]">
-                    <span class="text-[#706E6B]">Tipe Fasilitas:</span>
-                    <span class="font-bold text-[#1A1A1C]">{{ location.type }}</span>
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl space-y-4 text-xs">
+                <div class="flex justify-between py-2 border-b border-white/10">
+                    <span class="text-slate-400">Tipe Fasilitas:</span>
+                    <span class="font-mono font-bold text-white">{{ location.type }}</span>
                 </div>
-                <div class="flex justify-between py-2 border-b border-[#E5E0D5]">
-                    <span class="text-[#706E6B]">Wilayah Geografis:</span>
-                    <span class="font-semibold text-[#1A1A1C]">{{ location.city }}, {{ location.country }}</span>
+                <div class="flex justify-between py-2 border-b border-white/10">
+                    <span class="text-slate-400">Wilayah Geografis:</span>
+                    <span class="font-semibold text-white">{{ location.city }}, {{ location.country }}</span>
                 </div>
-                <div class="flex justify-between py-2 border-b border-[#E5E0D5]">
-                    <span class="text-[#706E6B]">Koordinat GPS:</span>
-                    <span class="font-mono font-semibold text-[#1A1A1C]">{{ location.latitude }}, {{ location.longitude }}</span>
+                <div class="flex justify-between py-2 border-b border-white/10">
+                    <span class="text-slate-400">Koordinat GPS:</span>
+                    <span class="font-mono font-semibold text-white">{{ location.latitude }}, {{ location.longitude }}</span>
                 </div>
-                <div class="flex justify-between py-2 border-b border-[#E5E0D5]">
-                    <span class="text-[#706E6B]">Shipments Asal (Origin):</span>
-                    <span class="font-mono text-[#1A1A1C]">{{ location.origin_shipments_count || 0 }} kargo</span>
+                <div class="flex justify-between py-2 border-b border-white/10">
+                    <span class="text-slate-400">Shipments Asal (Origin):</span>
+                    <span class="font-mono font-bold text-cyan-400">{{ location.origin_shipments_count || 0 }} kargo</span>
                 </div>
                 <div class="flex justify-between py-2">
-                    <span class="text-[#706E6B]">Shipments Tujuan (Destination):</span>
-                    <span class="font-mono text-[#1A1A1C]">{{ location.destination_shipments_count || 0 }} kargo</span>
+                    <span class="text-slate-400">Shipments Tujuan (Destination):</span>
+                    <span class="font-mono font-bold text-cyan-400">{{ location.destination_shipments_count || 0 }} kargo</span>
                 </div>
             </div>
         </div>
