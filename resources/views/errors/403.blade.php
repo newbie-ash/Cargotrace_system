@@ -12,13 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #0B1120;
+            background-color: #031716;
             background-image:
-                radial-gradient(circle at 80% 15%, rgba(37, 99, 235, 0.16), transparent 45%),
-                radial-gradient(circle at 15% 85%, rgba(245, 158, 11, 0.10), transparent 45%),
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+                radial-gradient(circle at 80% 15%, rgba(12, 150, 156, 0.16), transparent 45%),
+                radial-gradient(circle at 15% 85%, rgba(10, 112, 117, 0.14), transparent 45%),
+                linear-gradient(145deg, #031716 0%, #032324 50%, #032F30 100%);
             color: #F8FAFC;
             font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
@@ -28,24 +26,24 @@
             padding: 1.5rem;
         }
         .error-card {
-            background: rgba(30, 41, 59, 0.50);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 112, 117, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-radius: 24px;
             max-width: 480px;
             width: 100%;
             padding: 2.5rem 2rem;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
         }
         .error-code {
             font-size: 3.75rem;
             font-weight: 800;
-            color: #3B82F6;
+            color: #0C969C;
             line-height: 1;
             margin-bottom: 0.5rem;
-            text-shadow: 0 0 24px rgba(37, 99, 235, 0.45);
+            text-shadow: 0 0 24px rgba(12, 150, 156, 0.45);
         }
     </style>
 </head>
@@ -53,7 +51,7 @@
     <div class="error-card">
         <div class="error-code">403</div>
         <h4 class="text-white fw-bold mb-2">Akses Ditolak</h4>
-        <p class="small mb-4" style="color: #94A3B8; font-size: 0.88rem;">
+        <p class="small mb-4" style="color: #9ABBC8; font-size: 0.88rem;">
             {{ $exception->getMessage() ?: 'Akun Anda tidak memiliki wewenang untuk membuka halaman ini.' }}
         </p>
 
@@ -64,18 +62,18 @@
         @endphp
 
         <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
-            <a href="{{ $homeRoute }}" class="btn fw-bold py-2 px-4" style="background: #FFFFFF; color: #0B1120; border-radius: 9999px;">
+            <a href="{{ $homeRoute }}" class="btn fw-semibold py-2 px-4" style="background: #274D60; color: #FFFFFF; border-radius: 9999px;">
                 <i class="bi {{ $homeIcon }} me-1"></i> {{ $homeLabel }}
             </a>
             @auth
                 <form action="{{ route('logout') }}" method="POST" class="m-0">
                     @csrf
-                    <button type="submit" class="btn w-100 py-2 px-4 fw-semibold" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); color: #F8FAFC; border-radius: 9999px;">
+                    <button type="submit" class="btn w-100 py-2 px-4 fw-semibold" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #F8FAFC; border-radius: 9999px;">
                         <i class="bi bi-box-arrow-right me-1"></i> Ganti Akun
                     </button>
                 </form>
             @else
-                <a href="{{ route('login') }}" class="btn py-2 px-4 fw-semibold" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); color: #F8FAFC; border-radius: 9999px;">
+                <a href="{{ route('login') }}" class="btn py-2 px-4 fw-semibold" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #F8FAFC; border-radius: 9999px;">
                     <i class="bi bi-box-arrow-in-right me-1"></i> Masuk (Login)
                 </a>
             @endauth

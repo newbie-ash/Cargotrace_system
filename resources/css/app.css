@@ -7,78 +7,81 @@
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-canvas: #0B1120;
+    --color-canvas: #031716;
+    --color-ocean: #032F30;
+    --color-teal-primary: #0A7075;
+    --color-teal-accent: #0C969C;
+    --color-steel-light: #6BA3BE;
+    --color-ocean-slate: #274D60;
     --color-charcoal: #F8FAFC;
-    --color-hairline: rgba(255, 255, 255, 0.12);
-    --color-faint: #94A3B8;
+    --color-hairline: rgba(255, 255, 255, 0.10);
+    --color-faint: #9ABBC8;
 }
 
 :root {
     color-scheme: dark;
-    --colors-canvas: #0B1120;
-    --colors-accent: #2563EB;
-    --colors-amber: #F59E0B;
+    --colors-canvas: #031716;
+    --colors-ocean: #032F30;
+    --colors-accent: #0C969C;
+    --colors-accent-dark: #0A7075;
+    --colors-highlight: #6BA3BE;
+    --colors-cta: #274D60;
     --colors-body: #F8FAFC;
-    --colors-muted: #94A3B8;
-    --colors-hairline: rgba(255, 255, 255, 0.12);
+    --colors-muted: #9ABBC8;
+    --colors-hairline: rgba(255, 255, 255, 0.10);
 }
 
 body {
-    background-color: #0B1120;
+    background-color: #031716;
     background-image:
-        radial-gradient(circle at 85% 10%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 12% 78%, rgba(37, 99, 235, 0.14) 0%, transparent 45%),
-        linear-gradient(135deg, #0B1120 0%, #0E172A 50%, #0F172A 100%);
+        radial-gradient(circle at 82% 14%, rgba(12, 150, 156, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 10% 82%, rgba(10, 112, 117, 0.14) 0%, transparent 50%),
+        linear-gradient(145deg, #031716 0%, #032324 50%, #032F30 100%);
     background-attachment: fixed;
     color: #F8FAFC;
 }
 
-.bg-cyber-grid {
-    background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-}
-
+/* Frosted Glassmorphism Container */
 .glass-card {
-    background: rgba(30, 41, 59, 0.42);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(10, 112, 117, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+    border-radius: 24px;
+    box-shadow: 0 16px 36px 0 rgba(0, 0, 0, 0.40);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-    border-color: rgba(37, 99, 235, 0.35);
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.25);
+    border-color: rgba(12, 150, 156, 0.35);
+    box-shadow: 0 0 24px rgba(12, 150, 156, 0.20);
 }
 
 .dark-input {
-    background-color: rgba(11, 17, 32, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background-color: rgba(3, 23, 22, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: #F8FAFC;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dark-input::placeholder {
-    color: #64748B;
+    color: #6B8B97;
 }
 
 .dark-input:focus {
     outline: none;
-    border-color: rgba(37, 99, 235, 0.65);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+    border-color: #0C969C;
+    box-shadow: 0 0 0 3px rgba(12, 150, 156, 0.22);
 }
 
-/* Global Leaflet Dark Matter overrides */
+/* Global Leaflet Dark Canvas overrides */
 .leaflet-container {
-    background: #070B14 !important;
+    background: #031716 !important;
     font-family: var(--font-sans) !important;
 }
 
 .leaflet-popup-content-wrapper {
-    background: #0B132B !important;
+    background: #032F30 !important;
     border: 1px solid rgba(255, 255, 255, 0.16) !important;
     border-radius: 16px !important;
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
@@ -86,7 +89,7 @@ body {
 }
 
 .leaflet-popup-tip {
-    background: #0B132B !important;
+    background: #032F30 !important;
     border: 1px solid rgba(255, 255, 255, 0.16) !important;
 }
 
@@ -96,12 +99,12 @@ body {
 }
 
 .leaflet-bar a {
-    background-color: #0F172A !important;
+    background-color: #032324 !important;
     border-color: rgba(255, 255, 255, 0.15) !important;
     color: #F8FAFC !important;
 }
 
 .leaflet-bar a:hover {
-    background-color: #1E293B !important;
-    color: #3B82F6 !important;
+    background-color: #0A7075 !important;
+    color: #FFFFFF !important;
 }

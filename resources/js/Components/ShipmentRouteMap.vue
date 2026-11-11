@@ -142,7 +142,7 @@ const initMap = () => {
             `;
         } else {
             iconHtml = `
-                <div class="relative flex items-center justify-center w-7 h-7 rounded-full bg-cyan-400 text-slate-950 font-black font-mono shadow-[0_0_12px_#22d3ee] border-2 border-slate-950">
+                <div class="relative flex items-center justify-center w-7 h-7 rounded-full bg-[#0C969C] text-[#031716] font-black font-mono shadow-[0_0_12px_#0C969C] border-2 border-[#031716]">
                     <span class="text-[10px]">${wp.sequence || '•'}</span>
                 </div>
             `;
@@ -160,12 +160,12 @@ const initMap = () => {
         let weatherHtml = '';
         if (wp.weather) {
             weatherHtml = `
-                <div class="mt-2.5 p-2 bg-slate-950/70 rounded-xl border border-white/10 text-[11px]">
-                    <div class="font-bold text-cyan-300 flex items-center gap-1.5">
+                <div class="mt-2.5 p-2 bg-[#031716]/80 rounded-xl border border-white/10 text-[11px]">
+                    <div class="font-bold text-[#6BA3BE] flex items-center gap-1.5">
                         <i class="bi bi-cloud-sun text-amber-400"></i>
                         <span>${wp.weather.condition || 'Kondisi Cuaca'} &bull; ${wp.weather.temperature ?? 'N/A'}°C</span>
                     </div>
-                    <div class="text-slate-400 text-[10px] mt-0.5 font-mono">
+                    <div class="text-[#9ABBC8] text-[10px] mt-0.5 font-mono">
                         Angin: ${wp.weather.wind_speed ?? 'N/A'} km/h &bull; Kelembapan: ${wp.weather.humidity ?? 'N/A'}%
                     </div>
                 </div>
@@ -173,19 +173,19 @@ const initMap = () => {
         }
 
         const popupContent = `
-            <div class="font-sans text-xs min-w-[210px] p-1.5 text-slate-200">
+            <div class="font-sans text-xs min-w-[210px] p-1.5 text-[#D6E6EA]">
                 <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-2 mb-2">
                     <span class="font-mono font-extrabold text-[10px] px-2 py-0.5 rounded ${
                         wp.type === 'ORIGIN' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' :
-                        wp.type === 'DESTINATION' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                        wp.type === 'DESTINATION' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-[#0A7075]/30 text-[#6BA3BE] border border-[#0C969C]/40'
                     }">${wp.type}</span>
-                    <span class="text-[10px] text-slate-400 font-mono">${wp.lat.toFixed(4)}, ${wp.lng.toFixed(4)}</span>
+                    <span class="text-[10px] text-[#9ABBC8] font-mono">${wp.lat.toFixed(4)}, ${wp.lng.toFixed(4)}</span>
                 </div>
                 <div class="font-extrabold text-white text-sm tracking-tight">${wp.name}</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">${wp.city ? wp.city + ', ' : ''}${wp.country || ''}</div>
-                ${wp.description ? `<p class="mt-1.5 text-slate-300 italic text-[11px] leading-relaxed">${wp.description}</p>` : ''}
+                <div class="text-[11px] text-[#9ABBC8] mt-0.5">${wp.city ? wp.city + ', ' : ''}${wp.country || ''}</div>
+                ${wp.description ? `<p class="mt-1.5 text-[#D6E6EA] font-light text-[11px] leading-relaxed">${wp.description}</p>` : ''}
                 ${weatherHtml}
-                <div class="mt-2.5 pt-1.5 border-t border-white/10 text-[10px] text-slate-400 font-mono">
+                <div class="mt-2.5 pt-1.5 border-t border-white/10 text-[10px] text-[#9ABBC8] font-mono">
                     ${wp.time ? new Date(wp.time).toLocaleString() : '-'}
                 </div>
             </div>
@@ -195,19 +195,19 @@ const initMap = () => {
         layerGroup.addLayer(marker);
     });
 
-    // Draw route polyline with Glowing Cyber Maritime style
+    // Draw route polyline with Glowing Dark Ocean Maritime style
     if (latLngs.length > 1) {
-        // Glowing cyan base underlay
+        // Glowing teal base underlay
         L.polyline(latLngs, {
-            color: '#22D3EE',
-            weight: 5,
+            color: '#0A7075',
+            weight: 6,
             opacity: 0.35,
             smoothFactor: 1,
         }).addTo(layerGroup);
 
         // Sharp solid cyan route line
         L.polyline(latLngs, {
-            color: '#06B6D4',
+            color: '#0C969C',
             weight: 3,
             opacity: 0.95,
             smoothFactor: 1,
@@ -262,30 +262,30 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-xl mb-6">
+    <div class="bg-[#0A7075]/15 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-xl mb-6">
         <!-- Map Header Toolbar -->
-        <div class="p-4 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 bg-slate-950/60">
+        <div class="p-4 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 bg-[#031716]/80">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                <div class="w-8 h-8 rounded-xl bg-[#0A7075]/30 border border-[#0C969C]/30 flex items-center justify-center text-[#0C969C]">
                     <i class="bi bi-map-fill text-xs"></i>
                 </div>
                 <div>
-                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Visualisasi Rute & Geospasial (Dark Map)</h3>
-                    <p class="text-[11px] text-slate-400">Pelacakan interaktif posisi kapal dan checkpoint cuaca</p>
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider">Visualisasi Rute & Geospasial (Dark Canvas)</h3>
+                    <p class="text-[11px] font-light text-[#9ABBC8]">Pelacakan interaktif posisi kapal dan checkpoint cuaca</p>
                 </div>
             </div>
 
             <!-- Legend & Reset Button -->
             <div class="flex items-center gap-2 flex-wrap">
-                <div class="hidden sm:flex items-center gap-3 text-[11px] text-slate-300 px-3.5 py-1.5 bg-slate-900/80 rounded-xl border border-white/10">
+                <div class="hidden sm:flex items-center gap-3 text-[11px] text-[#D6E6EA] px-3.5 py-1.5 bg-[#032324] rounded-xl border border-white/10 font-mono">
                     <span class="inline-flex items-center gap-1.5 font-semibold">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] inline-block"></span> Asal (Origin)
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> Asal
                     </span>
                     <span class="inline-flex items-center gap-1.5 font-semibold">
-                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] inline-block"></span> Checkpoint
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#0C969C] inline-block"></span> Checkpoint
                     </span>
                     <span class="inline-flex items-center gap-1.5 font-semibold">
-                        <span class="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_8px_#fb7185] inline-block"></span> Tujuan (Destination)
+                        <span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span> Tujuan
                     </span>
                 </div>
 
@@ -293,7 +293,7 @@ onUnmounted(() => {
                     @click="resetBounds"
                     type="button"
                     title="Pusatkan Rute"
-                    class="px-3 py-1.5 text-xs font-bold border border-white/15 bg-white/5 hover:bg-white/10 rounded-xl text-white inline-flex items-center gap-1.5 transition cursor-pointer"
+                    class="px-3.5 py-1.5 text-xs font-semibold bg-[#274D60] hover:bg-[#0A7075] rounded-full text-white inline-flex items-center gap-1.5 transition cursor-pointer"
                 >
                     <i class="bi bi-arrows-fullscreen text-xs"></i>
                     <span>Pusatkan</span>
@@ -307,8 +307,8 @@ onUnmounted(() => {
         </div>
 
         <!-- Fallback if coordinates missing -->
-        <div v-else class="p-8 text-center bg-slate-950/60 text-xs text-slate-400">
-            <i class="bi bi-geo-alt-slash text-2xl text-slate-500 mb-2 block"></i>
+        <div v-else class="p-8 text-center bg-[#031716]/75 text-xs text-[#9ABBC8]">
+            <i class="bi bi-geo-alt-slash text-2xl text-[#6BA3BE] mb-2 block"></i>
             <p class="font-bold text-white">Koordinat Geospasial Belum Lengkap</p>
             <p class="text-[11px] mt-1 max-w-sm mx-auto">
                 Lokasi asal atau tujuan belum memiliki titik koordinat (latitude & longitude) yang valid. Perbarui data master lokasi untuk menampilkan peta rute.
@@ -318,16 +318,16 @@ onUnmounted(() => {
 </template>
 
 <style>
-/* Leaflet Dark Matter styling overrides */
+/* Leaflet Dark Canvas styling overrides */
 .leaflet-popup-content-wrapper {
-    background: #0B132B !important;
+    background: #032F30 !important;
     border: 1px solid rgba(255, 255, 255, 0.16) !important;
     border-radius: 18px !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
     color: #F8FAFC !important;
 }
 .leaflet-popup-tip {
-    background: #0B132B !important;
+    background: #032F30 !important;
     border: 1px solid rgba(255, 255, 255, 0.16) !important;
 }
 .custom-leaflet-pin {
@@ -335,12 +335,12 @@ onUnmounted(() => {
     border: none !important;
 }
 .leaflet-bar a {
-    background-color: #0F172A !important;
+    background-color: #032324 !important;
     border-color: rgba(255, 255, 255, 0.15) !important;
     color: #F8FAFC !important;
 }
 .leaflet-bar a:hover {
-    background-color: #1E293B !important;
-    color: #22D3EE !important;
+    background-color: #0A7075 !important;
+    color: #FFFFFF !important;
 }
 </style>

@@ -86,12 +86,12 @@ const submit = () => {
         <Head title="Buat Pengiriman Baru" />
 
         <div class="max-w-5xl mx-auto">
-            <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-6 shadow-xl flex items-center justify-between">
+            <div class="bg-[#0A7075]/15 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-6 shadow-xl flex items-center justify-between">
                 <div>
                     <h1 class="text-xl font-extrabold tracking-tight text-white">Registrasi Order Pengiriman Kargo</h1>
-                    <p class="text-xs text-slate-400 mt-0.5">Input rute asal, tujuan, operator logistik, dan rincian manifest barang.</p>
+                    <p class="text-xs font-light text-[#9ABBC8] mt-0.5">Input rute asal, tujuan, operator logistik, dan rincian manifest barang.</p>
                 </div>
-                <Link href="/shipments" class="px-3.5 py-1.5 border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-full text-slate-200 transition inline-flex items-center gap-1.5">
+                <Link href="/shipments" class="px-3.5 py-1.5 border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-full text-[#D6E6EA] hover:text-white transition inline-flex items-center gap-1.5">
                     <i class="bi bi-arrow-left"></i>
                     <span>Kembali</span>
                 </Link>
@@ -100,13 +100,13 @@ const submit = () => {
             <form @submit.prevent="submit" class="space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Left: Logistics Routing -->
-                    <div class="lg:col-span-2 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl space-y-4">
+                    <div class="lg:col-span-2 bg-[#0A7075]/15 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl space-y-4">
                         <h2 class="text-sm font-bold text-white pb-2 border-b border-white/10">1. Parameter Rute & Mitra Logistik</h2>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Customer Akun <span class="text-rose-400">*</span></label>
-                                <select v-model="form.customer_id" required class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40">
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Customer Akun <span class="text-rose-400">*</span></label>
+                                <select v-model="form.customer_id" required class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]">
                                     <option value="">Pilih Customer...</option>
                                     <option v-for="c in customers" :key="c.id" :value="c.id">
                                         {{ c.name }} ({{ c.company_name || c.email }})
@@ -116,8 +116,8 @@ const submit = () => {
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Carrier Pelayaran <span class="text-rose-400">*</span></label>
-                                <select v-model="form.carrier_id" required class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40">
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Carrier Pelayaran <span class="text-rose-400">*</span></label>
+                                <select v-model="form.carrier_id" required class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]">
                                     <option value="">Pilih Carrier...</option>
                                     <option v-for="car in carriers" :key="car.id" :value="car.id">
                                         {{ car.name }} ({{ car.code }} &bull; {{ car.transport_mode }})
@@ -129,8 +129,8 @@ const submit = () => {
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Pelabuhan Asal (Origin) <span class="text-rose-400">*</span></label>
-                                <select v-model="form.origin_location_id" required class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40">
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Pelabuhan Asal (Origin) <span class="text-rose-400">*</span></label>
+                                <select v-model="form.origin_location_id" required class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]">
                                     <option value="">Pilih Lokasi Asal...</option>
                                     <option v-for="loc in locations" :key="loc.id" :value="loc.id">
                                         {{ loc.code }} &bull; {{ loc.name }} ({{ loc.city }})
@@ -140,8 +140,8 @@ const submit = () => {
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Pelabuhan Tujuan (Dest) <span class="text-rose-400">*</span></label>
-                                <select v-model="form.destination_location_id" required class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40">
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Pelabuhan Tujuan (Dest) <span class="text-rose-400">*</span></label>
+                                <select v-model="form.destination_location_id" required class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]">
                                     <option value="">Pilih Lokasi Tujuan...</option>
                                     <option v-for="loc in locations" :key="loc.id" :value="loc.id">
                                         {{ loc.code }} &bull; {{ loc.name }} ({{ loc.city }})
@@ -153,8 +153,8 @@ const submit = () => {
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Klasifikasi Kargo <span class="text-rose-400">*</span></label>
-                                <select v-model="form.cargo_type" required class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40">
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Klasifikasi Kargo <span class="text-rose-400">*</span></label>
+                                <select v-model="form.cargo_type" required class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]">
                                     <option value="Container FCL">Container FCL (Full Load)</option>
                                     <option value="Container LCL">Container LCL (Less Container)</option>
                                     <option value="Electronics & Tech">Electronics & Tech</option>
@@ -165,70 +165,70 @@ const submit = () => {
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">No. Referensi PO Customer</label>
-                                <input v-model="form.reference_number" type="text" placeholder="PO-2026-9001" class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/40" />
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">No. Referensi PO Customer</label>
+                                <input v-model="form.reference_number" type="text" placeholder="PO-2026-9001" class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white placeholder-[#9ABBC8]/60 focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]" />
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Keberangkatan (ETD) <span class="text-rose-400">*</span></label>
-                                <input v-model="form.expected_departure" type="datetime-local" required class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40" />
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Keberangkatan (ETD) <span class="text-rose-400">*</span></label>
+                                <input v-model="form.expected_departure" type="datetime-local" required class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]" />
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 mb-1">Kedatangan (ETA) <span class="text-rose-400">*</span></label>
-                                <input v-model="form.expected_arrival" type="datetime-local" required class="w-full h-10 px-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-400/40" />
+                                <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Kedatangan (ETA) <span class="text-rose-400">*</span></label>
+                                <input v-model="form.expected_arrival" type="datetime-local" required class="w-full h-10 px-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]" />
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1">Catatan Operasional / Penanganan Khusus</label>
-                            <textarea v-model="form.notes" rows="2" placeholder="Instruksi stowage, penanganan suhu, atau nomor container..." class="w-full p-3 bg-slate-950/70 border border-white/15 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400/40"></textarea>
+                            <label class="block text-xs font-semibold text-[#D6E6EA] mb-1">Catatan Operasional / Penanganan Khusus</label>
+                            <textarea v-model="form.notes" rows="2" placeholder="Instruksi stowage, penanganan suhu, atau nomor container..." class="w-full p-3 bg-[#031716]/75 border border-white/15 rounded-xl text-xs text-white placeholder-[#9ABBC8]/60 focus:outline-none focus:ring-2 focus:ring-[#0C969C]/40 focus:border-[#0C969C]"></textarea>
                         </div>
                     </div>
 
                     <!-- Right: Live Manifest Metrics -->
-                    <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+                    <div class="bg-[#0A7075]/15 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
                         <div>
                             <h2 class="text-sm font-bold text-white pb-2 border-b border-white/10 mb-4">Ringkasan Muatan</h2>
 
                             <div class="grid grid-cols-2 gap-3 text-center mb-4">
-                                <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10">
-                                    <div class="text-[10px] font-mono font-bold text-slate-400 uppercase">Total Berat</div>
-                                    <div class="text-lg font-mono font-extrabold text-white mt-0.5">{{ totalWeight.toFixed(2) }} <span class="text-xs font-normal text-slate-400">kg</span></div>
+                                <div class="p-3 rounded-2xl bg-[#031716]/75 border border-white/10">
+                                    <div class="text-[10px] font-mono font-bold text-[#9ABBC8] uppercase">Total Berat</div>
+                                    <div class="text-lg font-mono font-extrabold text-white mt-0.5">{{ totalWeight.toFixed(2) }} <span class="text-xs font-normal text-[#9ABBC8]">kg</span></div>
                                 </div>
-                                <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10">
-                                    <div class="text-[10px] font-mono font-bold text-slate-400 uppercase">Total Volume</div>
-                                    <div class="text-lg font-mono font-extrabold text-white mt-0.5">{{ totalVolume.toFixed(2) }} <span class="text-xs font-normal text-slate-400">CBM</span></div>
+                                <div class="p-3 rounded-2xl bg-[#031716]/75 border border-white/10">
+                                    <div class="text-[10px] font-mono font-bold text-[#9ABBC8] uppercase">Total Volume</div>
+                                    <div class="text-lg font-mono font-extrabold text-white mt-0.5">{{ totalVolume.toFixed(2) }} <span class="text-xs font-normal text-[#9ABBC8]">CBM</span></div>
                                 </div>
-                                <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10">
-                                    <div class="text-[10px] font-mono font-bold text-slate-400 uppercase">Total Item</div>
-                                    <div class="text-lg font-mono font-extrabold text-cyan-400 mt-0.5">{{ totalQuantity }} <span class="text-xs font-normal text-slate-400">unit</span></div>
+                                <div class="p-3 rounded-2xl bg-[#031716]/75 border border-white/10">
+                                    <div class="text-[10px] font-mono font-bold text-[#9ABBC8] uppercase">Total Item</div>
+                                    <div class="text-lg font-mono font-extrabold text-[#7DE2E6] mt-0.5">{{ totalQuantity }} <span class="text-xs font-normal text-[#9ABBC8]">unit</span></div>
                                 </div>
-                                <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10">
-                                    <div class="text-[10px] font-mono font-bold text-slate-400 uppercase">Declared Value</div>
+                                <div class="p-3 rounded-2xl bg-[#031716]/75 border border-white/10">
+                                    <div class="text-[10px] font-mono font-bold text-[#9ABBC8] uppercase">Declared Value</div>
                                     <div class="text-lg font-mono font-extrabold text-emerald-400 mt-0.5">${{ totalDeclaredValue.toLocaleString() }}</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 text-cyan-200 text-[11px] leading-relaxed">
-                            <i class="bi bi-info-circle me-1 text-cyan-400"></i>
+                        <div class="p-3.5 rounded-2xl bg-[#0C969C]/15 border border-[#0C969C]/30 text-[#D6E6EA] text-[11px] leading-relaxed">
+                            <i class="bi bi-info-circle me-1 text-[#7DE2E6]"></i>
                             Nomor shipment unik (<code class="font-mono text-white">CT-YYYY-XXXXXX</code>) dan checkpoint pelacakan awal di lokasi asal dibuat otomatis saat shipment didaftarkan.
                         </div>
                     </div>
                 </div>
 
                 <!-- Dynamic Line Items Manifest Builder -->
-                <div class="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl">
+                <div class="bg-[#0A7075]/15 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl">
                     <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
                         <div>
                             <h2 class="text-sm font-bold text-white">2. Manifest Barang Kargo (Line Items)</h2>
-                            <p class="text-xs text-slate-400">Rincian item muatan yang dikemas dalam pengiriman ini.</p>
+                            <p class="text-xs font-light text-[#9ABBC8]">Rincian item muatan yang dikemas dalam pengiriman ini.</p>
                         </div>
                         <button type="button" @click="addItem" class="px-3.5 py-1.5 bg-white/10 hover:bg-white/15 border border-white/15 rounded-full text-xs font-bold text-white transition inline-flex items-center gap-1.5 cursor-pointer">
-                            <i class="bi bi-plus-circle text-cyan-400"></i>
+                            <i class="bi bi-plus-circle text-[#7DE2E6]"></i>
                             <span>Tambah Item</span>
                         </button>
                     </div>
@@ -236,7 +236,7 @@ const submit = () => {
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr class="bg-slate-950/70 border-b border-white/10 text-slate-400 font-mono font-bold uppercase tracking-wider text-[10px]">
+                                <tr class="bg-[#031716]/75 border-b border-white/10 text-[#9ABBC8] font-mono font-bold uppercase tracking-wider text-[10px]">
                                     <th class="py-2.5 px-3">SKU</th>
                                     <th class="py-2.5 px-3">Deskripsi Barang <span class="text-rose-400">*</span></th>
                                     <th class="py-2.5 px-3 w-20">Qty <span class="text-rose-400">*</span></th>
@@ -249,25 +249,25 @@ const submit = () => {
                             <tbody class="divide-y divide-white/10">
                                 <tr v-for="(item, idx) in form.items" :key="idx">
                                     <td class="py-2 px-2">
-                                        <input v-model="item.sku" type="text" placeholder="SKU-001" class="w-full h-9 px-2 bg-slate-950/70 border border-white/15 rounded-lg font-mono text-xs text-white" />
+                                        <input v-model="item.sku" type="text" placeholder="SKU-001" class="w-full h-9 px-2 bg-[#031716]/75 border border-white/15 rounded-lg font-mono text-xs text-white" />
                                     </td>
                                     <td class="py-2 px-2">
-                                        <input v-model="item.description" type="text" placeholder="Nama komoditas" required class="w-full h-9 px-2 bg-slate-950/70 border border-white/15 rounded-lg text-xs text-white" />
+                                        <input v-model="item.description" type="text" placeholder="Nama komoditas" required class="w-full h-9 px-2 bg-[#031716]/75 border border-white/15 rounded-lg text-xs text-white" />
                                     </td>
                                     <td class="py-2 px-2">
-                                        <input v-model.number="item.quantity" type="number" min="1" required class="w-full h-9 px-2 bg-slate-950/70 border border-white/15 rounded-lg text-xs text-center font-mono text-white" />
+                                        <input v-model.number="item.quantity" type="number" min="1" required class="w-full h-9 px-2 bg-[#031716]/75 border border-white/15 rounded-lg text-xs text-center font-mono text-white" />
                                     </td>
                                     <td class="py-2 px-2">
-                                        <input v-model.number="item.weight_kg" type="number" step="0.01" min="0" placeholder="0.00" class="w-full h-9 px-2 bg-slate-950/70 border border-white/15 rounded-lg text-xs text-right font-mono text-white" />
+                                        <input v-model.number="item.weight_kg" type="number" step="0.01" min="0" placeholder="0.00" class="w-full h-9 px-2 bg-[#031716]/75 border border-white/15 rounded-lg text-xs text-right font-mono text-white" />
                                     </td>
                                     <td class="py-2 px-2">
-                                        <input v-model.number="item.volume_cbm" type="number" step="0.01" min="0" placeholder="0.00" class="w-full h-9 px-2 bg-slate-950/70 border border-white/15 rounded-lg text-xs text-right font-mono text-white" />
+                                        <input v-model.number="item.volume_cbm" type="number" step="0.01" min="0" placeholder="0.00" class="w-full h-9 px-2 bg-[#031716]/75 border border-white/15 rounded-lg text-xs text-right font-mono text-white" />
                                     </td>
                                     <td class="py-2 px-2">
-                                        <input v-model.number="item.declared_value" type="number" step="0.01" min="0" placeholder="0.00" class="w-full h-9 px-2 bg-slate-950/70 border border-white/15 rounded-lg text-xs text-right font-mono text-white" />
+                                        <input v-model.number="item.declared_value" type="number" step="0.01" min="0" placeholder="0.00" class="w-full h-9 px-2 bg-[#031716]/75 border border-white/15 rounded-lg text-xs text-right font-mono text-white" />
                                     </td>
                                     <td class="py-2 px-2 text-center">
-                                        <button type="button" @click="removeItem(idx)" :disabled="form.items.length <= 1" class="p-1.5 text-rose-400 hover:bg-rose-500/15 rounded-lg transition disabled:opacity-30 cursor-pointer">
+                                        <button type="button" @click="removeItem(idx)" :disabled="form.items.length <= 1" aria-label="Hapus Item" class="p-1.5 text-rose-300 hover:bg-rose-500/15 rounded-lg transition disabled:opacity-30 cursor-pointer">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
@@ -279,11 +279,11 @@ const submit = () => {
 
                 <!-- Submit Bar -->
                 <div class="flex justify-end gap-3 pt-2">
-                    <Link href="/shipments" class="px-5 py-2.5 border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-full text-slate-200 transition">
+                    <Link href="/shipments" class="px-5 py-2.5 border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-full text-[#D6E6EA] transition">
                         Batal
                     </Link>
-                    <button type="submit" :disabled="form.processing" class="px-6 py-2.5 bg-white hover:bg-cyan-50 text-slate-950 text-xs font-bold rounded-full transition shadow-lg shadow-white/10 disabled:opacity-60 flex items-center gap-2 cursor-pointer">
-                        <span v-if="form.processing" class="inline-block w-3.5 h-3.5 border-2 border-slate-950/20 border-t-slate-950 rounded-full animate-spin"></span>
+                    <button type="submit" :disabled="form.processing" class="px-6 py-2.5 bg-[#274D60] hover:bg-[#0A7075] text-white text-xs font-semibold rounded-full transition shadow-lg shadow-black/25 disabled:opacity-60 flex items-center gap-2 cursor-pointer">
+                        <span v-if="form.processing" class="inline-block w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
                         <i v-else class="bi bi-check2-circle"></i>
                         <span>Registrasikan Shipment</span>
                     </button>
