@@ -20,8 +20,11 @@
         "@inertiajs/vue3": "^3.10.0",
         "@vitejs/plugin-vue": "^6.0.10",
         "chart.js": "^4.6.1",
+        "globe.gl": "^2.46.2",
         "leaflet": "^1.9.4",
         "lucide-vue-next": "^1.0.0",
-        "vue": "^3.5.44"
+        "topojson-client": "^3.1.0",
+        "vue": "^3.5.44",
+        "world-atlas": "^2.0.2"
     }
 }

@@ -63,7 +63,7 @@ const handleFixieTrack = (code) => {
         <NavbarPill :auth-user="authUser" @scroll-to="scrollToUtility" />
 
         <!-- 2. Hybrid Winzy + Veluno Hero Section -->
-        <HeroSection :stats="stats" @scroll-to-track="scrollToUtility('track')" />
+        <HeroSection :stats="stats" :locations="locations" @scroll-to-track="scrollToUtility('track')" />
 
         <!-- 3. Floating Glassmorphism Utility Widget (Bridges Hero & Bento Grid) -->
         <FloatingUtilityWidget
