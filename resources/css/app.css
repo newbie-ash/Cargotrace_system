@@ -70,3 +70,38 @@ body {
     border-color: rgba(37, 99, 235, 0.65);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
 }
+
+/* Global Leaflet Dark Matter overrides */
+.leaflet-container {
+    background: #070B14 !important;
+    font-family: var(--font-sans) !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background: #0B132B !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    color: #F8FAFC !important;
+}
+
+.leaflet-popup-tip {
+    background: #0B132B !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.custom-leaflet-pin {
+    background: transparent !important;
+    border: none !important;
+}
+
+.leaflet-bar a {
+    background-color: #0F172A !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #F8FAFC !important;
+}
+
+.leaflet-bar a:hover {
+    background-color: #1E293B !important;
+    color: #3B82F6 !important;
+}

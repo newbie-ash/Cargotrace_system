@@ -73,7 +73,7 @@ const handleFixieTrack = (code) => {
         />
 
         <!-- 4. Asymmetric 12-Column Bento Grid -->
-        <AsymmetricBentoGrid :carriers="carriers" :stats="stats" />
+        <AsymmetricBentoGrid :carriers="carriers" :locations="locations" :stats="stats" />
 
         <!-- 5. Enterprise Footer -->
         <FooterSection :auth-user="authUser" />

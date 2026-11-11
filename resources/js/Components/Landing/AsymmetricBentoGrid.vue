@@ -1,6 +1,14 @@
 <script setup>
-defineProps({
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+const props = defineProps({
     carriers: {
+        type: Array,
+        default: () => [],
+    },
+    locations: {
         type: Array,
         default: () => [],
     },
@@ -8,6 +16,211 @@ defineProps({
         type: Object,
         default: () => ({ on_time_rate: 100 }),
     },
+});
+
+const worldMapRef = ref(null);
+let map = null;
+let layerGroup = null;
+
+const escapeHtml = (value) =>
+    String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+const hasCoords = (loc) =>
+    loc &&
+    loc.latitude !== null &&
+    loc.latitude !== undefined &&
+    loc.longitude !== null &&
+    loc.longitude !== undefined &&
+    Number.isFinite(Number(loc.latitude)) &&
+    Number.isFinite(Number(loc.longitude));
+
+// Curve helper for realistic maritime route arcs
+const createArcPoints = (start, end, offsetRatio = 0.08, segments = 16) => {
+    const [lat1, lng1] = start;
+    const [lat2, lng2] = end;
+    const midLat = (lat1 + lat2) / 2;
+    const midLng = (lng1 + lng2) / 2;
+    const dLat = lat2 - lat1;
+    const dLng = lng2 - lng1;
+    const ctrlLat = midLat - dLng * offsetRatio;
+    const ctrlLng = midLng + dLat * offsetRatio;
+
+    const pts = [];
+    for (let i = 0; i <= segments; i++) {
+        const t = i / segments;
+        const inv = 1 - t;
+        const lat = inv * inv * lat1 + 2 * inv * t * ctrlLat + t * t * lat2;
+        const lng = inv * inv * lng1 + 2 * inv * t * ctrlLng + t * t * lng2;
+        pts.push([lat, lng]);
+    }
+    return pts;
+};
+
+const drawRouteCorridor = (codes, styleOptions, curveOffset = 0.07) => {
+    const matched = codes
+        .map((code) => props.locations.find((l) => l.code === code && hasCoords(l)))
+        .filter(Boolean);
+
+    if (matched.length < 2) return;
+
+    const fullPath = [];
+    for (let i = 0; i < matched.length - 1; i++) {
+        const p1 = [parseFloat(matched[i].latitude), parseFloat(matched[i].longitude)];
+        const p2 = [parseFloat(matched[i + 1].latitude), parseFloat(matched[i + 1].longitude)];
+        const seg = createArcPoints(p1, p2, curveOffset);
+        fullPath.push(...(i === 0 ? seg : seg.slice(1)));
+    }
+
+    if (styleOptions.glow) {
+        L.polyline(fullPath, {
+            color: styleOptions.glow,
+            weight: 6,
+            opacity: 0.28,
+            smoothFactor: 1,
+        }).addTo(layerGroup);
+    }
+
+    L.polyline(fullPath, {
+        color: styleOptions.color,
+        weight: styleOptions.weight || 2.5,
+        opacity: styleOptions.opacity ?? 0.9,
+        dashArray: styleOptions.dashArray || null,
+        smoothFactor: 1,
+    }).addTo(layerGroup);
+};
+
+const initWorldMap = () => {
+    if (!worldMapRef.value) return;
+
+    if (map) {
+        map.remove();
+        map = null;
+    }
+
+    map = L.map(worldMapRef.value, {
+        center: [20, 30],
+        zoom: 1.5,
+        zoomSnap: 0.25,
+        minZoom: 1,
+        maxZoom: 12,
+        zoomControl: false,
+        scrollWheelZoom: false,
+        worldCopyJump: true,
+        attributionControl: true,
+    });
+
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
+    // Real Global Dark Map Tiles (CARTO Dark Matter)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 18,
+    }).addTo(map);
+
+    layerGroup = L.layerGroup().addTo(map);
+
+    const validLocs = props.locations.filter(hasCoords);
+    if (!validLocs.length) return;
+
+    // 1. Draw Main Indonesia-Suez-Europe Maritime Corridor & East Asia Feeder
+    drawRouteCorridor(
+        ['IDJKT', 'SGSIN', 'AEDXB', 'NLRTM'],
+        { color: '#38BDF8', glow: '#2563EB', weight: 2.5, dashArray: '6, 8' },
+        0.08
+    );
+
+    drawRouteCorridor(
+        ['KRPUS', 'CNSHA', 'SGSIN'],
+        { color: '#60A5FA', weight: 1.8, opacity: 0.65, dashArray: '4, 8' },
+        -0.06
+    );
+
+    // 2. Plot Real Global Hub Markers
+    const bounds = [];
+    validLocs.forEach((loc) => {
+        const lat = parseFloat(loc.latitude);
+        const lng = parseFloat(loc.longitude);
+
+        bounds.push([lat, lng]);
+
+        const isOrigin = loc.code === 'IDJKT' || loc.code === 'IDTPP';
+        const isDest = loc.code === 'NLRTM';
+
+        const dotClass = isOrigin
+            ? 'bg-emerald-400 shadow-[0_0_12px_#10b981] ring-4 ring-emerald-500/25'
+            : isDest
+              ? 'bg-amber-400 shadow-[0_0_12px_#f59e0b] ring-4 ring-amber-500/25'
+              : 'bg-blue-500 shadow-[0_0_10px_#3b82f6] ring-4 ring-blue-500/20';
+
+        const icon = L.divIcon({
+            html: `<div class="relative flex items-center justify-center w-6 h-6">
+                <span class="w-3 h-3 rounded-full ${dotClass} border border-slate-950"></span>
+            </div>`,
+            className: 'custom-leaflet-pin',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12],
+            popupAnchor: [0, -10],
+        });
+
+        const popupHtml = `
+            <div class="font-sans text-xs min-w-[180px] p-1 text-slate-200">
+                <div class="flex items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-white/10">
+                    <span class="font-mono font-extrabold text-[11px] text-blue-400">${escapeHtml(loc.code)}</span>
+                    <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-slate-300">${escapeHtml(loc.type)}</span>
+                </div>
+                <div class="font-bold text-white">${escapeHtml(loc.name)}</div>
+                <div class="text-[11px] text-slate-400">${escapeHtml(loc.city)}, ${escapeHtml(loc.country)}</div>
+                <div class="mt-1.5 text-[10px] font-mono text-slate-500">${lat.toFixed(4)}, ${lng.toFixed(4)}</div>
+            </div>
+        `;
+
+        L.marker([lat, lng], { icon }).bindPopup(popupHtml).addTo(layerGroup);
+    });
+
+    if (bounds.length > 1) {
+        map.fitBounds(bounds, { padding: [32, 32], maxZoom: 4 });
+    }
+};
+
+const resetGlobalView = () => {
+    if (!map) return;
+    const bounds = props.locations
+        .filter(hasCoords)
+        .map((l) => [parseFloat(l.latitude), parseFloat(l.longitude)]);
+    if (bounds.length > 1) {
+        map.fitBounds(bounds, { padding: [32, 32], maxZoom: 4 });
+    } else {
+        map.setView([20, 30], 1.5);
+    }
+};
+
+onMounted(() => {
+    nextTick(() => {
+        initWorldMap();
+    });
+});
+
+watch(
+    () => props.locations,
+    () => {
+        nextTick(() => {
+            initWorldMap();
+        });
+    },
+    { deep: true }
+);
+
+onUnmounted(() => {
+    if (map) {
+        map.remove();
+        map = null;
+    }
 });
 </script>
 
@@ -31,7 +244,7 @@ defineProps({
             <div class="grid grid-cols-12 gap-6">
                 <!-- CARD 1: Live Intercontinental Route Visibility (8 cols x 2 rows) -->
                 <article class="col-span-12 md:col-span-8 md:row-span-2 bg-slate-800/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-500/40 hover:shadow-[0_0_25px_rgba(37,99,235,0.3)] flex flex-col justify-between">
-                    <div class="flex items-start justify-between gap-4 mb-6">
+                    <div class="flex items-start justify-between gap-4 mb-5">
                         <div>
                             <span class="px-2.5 py-1 rounded-md bg-blue-600/20 text-blue-300 border border-blue-500/30 text-[10px] font-bold uppercase tracking-wider font-mono">
                                 Leaflet Dark Matter + Maritime Polyline
@@ -40,74 +253,43 @@ defineProps({
                                 Live Intercontinental Route Visibility
                             </h3>
                             <p class="text-xs text-slate-300 mt-1.5 max-w-lg leading-relaxed">
-                                Pelacakan lintasan kargo lintas samudra secara kronologis menghubungkan Origin, titik checkpoint transit maritim, hingga Destination akhir tanpa blind spot.
+                                Peta dunia interaktif menghubungkan seluruh pelabuhan dan hub global dari database dengan jalur pelayaran real-time tanpa blind spot.
                             </p>
                         </div>
-                        <div class="w-11 h-11 rounded-2xl bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center shrink-0">
-                            <i class="bi bi-map-fill text-lg" aria-hidden="true"></i>
-                        </div>
+                        <button
+                            type="button"
+                            @click="resetGlobalView"
+                            title="Reset tampilan peta dunia"
+                            class="w-11 h-11 rounded-2xl bg-blue-600/20 hover:bg-blue-600/35 border border-blue-500/30 text-blue-400 flex items-center justify-center shrink-0 transition cursor-pointer"
+                        >
+                            <i class="bi bi-globe-asia-australia text-lg" aria-hidden="true"></i>
+                        </button>
                     </div>
 
-                    <!-- Map Route Visualization Space -->
-                    <div class="relative rounded-2xl bg-[#070B14] border border-white/10 p-5 overflow-hidden flex-1 min-h-[260px] flex flex-col justify-between">
-                        <!-- Subtle Vector Map Backdrop -->
-                        <svg viewBox="0 0 800 320" class="w-full h-44 sm:h-52 opacity-85 select-none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="routeArc" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#10B981" />
-                                    <stop offset="50%" stop-color="#2563EB" />
-                                    <stop offset="100%" stop-color="#F59E0B" />
-                                </linearGradient>
-                            </defs>
+                    <!-- Real Interactive Leaflet Global World Map -->
+                    <div class="relative rounded-2xl bg-[#070B14] border border-white/10 overflow-hidden flex-1 min-h-[300px] flex flex-col">
+                        <div ref="worldMapRef" class="w-full flex-1 min-h-[260px] sm:min-h-[310px] z-10"></div>
 
-                            <!-- Minimalist Grid Lines -->
-                            <path d="M 0,80 H 800 M 0,160 H 800 M 0,240 H 800" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
-                            <path d="M 160,0 V 320 M 320,0 V 320 M 480,0 V 320 M 640,0 V 320" stroke="rgba(255,255,255,0.03)" stroke-width="1" />
-
-                            <!-- Continental Silhouette Shapes -->
-                            <path d="M 90,70 L 180,60 L 210,120 L 140,140 L 110,110 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" />
-                            <path d="M 280,65 L 380,60 L 400,130 L 310,145 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" />
-                            <path d="M 430,85 L 620,75 L 660,175 L 520,185 L 450,150 Z" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" />
-                            <path d="M 600,200 L 680,210 L 690,250 L 620,255 Z" fill="rgba(37,99,235,0.12)" stroke="rgba(37,99,235,0.3)" />
-
-                            <!-- Main Intercontinental Maritime Arc: IDJKT -> SGSIN -> AEDXB -> NLRTM -->
-                            <path d="M 640,225 Q 520,185 450,145 T 310,95" fill="none" stroke="url(#routeArc)" stroke-width="2.5" />
-                            <path d="M 640,225 Q 520,185 450,145 T 310,95" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="5 8" opacity="0.5" />
-
-                            <!-- Node 1: IDJKT -->
-                            <circle cx="640" cy="225" r="7" fill="#10B981" opacity="0.25" />
-                            <circle cx="640" cy="225" r="3.5" fill="#10B981" />
-                            <text x="650" y="229" fill="#10B981" font-size="11" font-family="monospace" font-weight="bold">IDJKT (Jakarta)</text>
-
-                            <!-- Node 2: SGSIN -->
-                            <circle cx="570" cy="192" r="4" fill="#38BDF8" />
-                            <text x="530" y="182" fill="#94A3B8" font-size="10" font-family="monospace">SGSIN</text>
-
-                            <!-- Node 3: AEDXB -->
-                            <circle cx="450" cy="145" r="4" fill="#2563EB" />
-                            <text x="458" y="148" fill="#60A5FA" font-size="10" font-family="monospace">AEDXB</text>
-
-                            <!-- Node 4: NLRTM -->
-                            <circle cx="310" cy="95" r="7" fill="#F59E0B" opacity="0.25" />
-                            <circle cx="310" cy="95" r="3.5" fill="#F59E0B" />
-                            <text x="200" y="99" fill="#FBBF24" font-size="11" font-family="monospace" font-weight="bold">NLRTM (Rotterdam)</text>
-                        </svg>
-
-                        <!-- Telemetry Corridor Progress Footer -->
-                        <div class="pt-4 border-t border-white/10 grid grid-cols-3 items-center gap-2 font-mono text-xs">
-                            <div>
-                                <span class="text-[10px] text-slate-400 block">ORIGIN PORT</span>
-                                <strong class="text-emerald-400">IDJKT &bull; Tanjung Priok</strong>
-                            </div>
-                            <div class="text-center">
-                                <span class="px-2 py-0.5 rounded bg-blue-600/20 text-blue-300 border border-blue-500/30 text-[10px]">
-                                    11,380 KM CORRIDOR
+                        <!-- Telemetry Legend & Corridor Footer -->
+                        <div class="px-4 py-3 bg-slate-950/95 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 font-mono text-[11px] relative z-20">
+                            <div class="flex items-center gap-3">
+                                <span class="inline-flex items-center gap-1.5 text-emerald-400 font-bold">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> IDJKT Origin
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 text-blue-400 font-bold">
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span> Global Hubs ({{ locations.length }})
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 text-amber-400 font-bold">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400"></span> NLRTM Hub
                                 </span>
                             </div>
-                            <div class="text-right">
-                                <span class="text-[10px] text-slate-400 block">FINAL HUB</span>
-                                <strong class="text-amber-400">NLRTM &bull; Europort</strong>
-                            </div>
+                            <button
+                                type="button"
+                                @click="resetGlobalView"
+                                class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-slate-300 hover:text-white transition text-[10px] cursor-pointer"
+                            >
+                                <i class="bi bi-arrows-fullscreen mr-1" aria-hidden="true"></i>Reset Peta Dunia
+                            </button>
                         </div>
                     </div>
                 </article>
