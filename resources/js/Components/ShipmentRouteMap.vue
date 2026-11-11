@@ -105,11 +105,18 @@ const initMap = () => {
     // Custom Zoom Control top-right
     L.control.zoom({ position: 'topright' }).addTo(map);
 
-    // CARTO Dark Matter Map Tiles
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19,
+    // Esri World Dark Gray Canvas (No API Key Required)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri',
+        maxZoom: 16,
+        maxNativeZoom: 10,
+    }).addTo(map);
+
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '',
+        maxZoom: 16,
+        maxNativeZoom: 10,
+        opacity: 0.75,
     }).addTo(map);
 
     layerGroup = L.layerGroup().addTo(map);

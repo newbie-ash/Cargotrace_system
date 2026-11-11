@@ -116,11 +116,18 @@ const initWorldMap = () => {
 
     L.control.zoom({ position: 'topright' }).addTo(map);
 
-    // Real Global Dark Map Tiles (CARTO Dark Matter)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 18,
+    // Real Global Dark Map Tiles (Esri World Dark Gray Canvas - No API Key Required)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri',
+        maxZoom: 16,
+        maxNativeZoom: 10,
+    }).addTo(map);
+
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '',
+        maxZoom: 16,
+        maxNativeZoom: 10,
+        opacity: 0.75,
     }).addTo(map);
 
     layerGroup = L.layerGroup().addTo(map);
@@ -247,7 +254,7 @@ onUnmounted(() => {
                     <div class="flex items-start justify-between gap-4 mb-5">
                         <div>
                             <span class="px-2.5 py-1 rounded-md bg-blue-600/20 text-blue-300 border border-blue-500/30 text-[10px] font-bold uppercase tracking-wider font-mono">
-                                Leaflet Dark Matter + Maritime Polyline
+                                Leaflet Dark Canvas + Maritime Polyline
                             </span>
                             <h3 class="text-xl sm:text-2xl font-bold text-white mt-3">
                                 Live Intercontinental Route Visibility
