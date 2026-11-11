@@ -66,32 +66,32 @@ onUnmounted(() => {
                 role="dialog"
                 aria-modal="true"
                 aria-label="Panel Asisten Fixie"
-                class="mb-3 w-[92vw] sm:w-96 rounded-3xl bg-[#032324]/95 backdrop-blur-xl border border-white/10 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.65)] text-white text-xs relative overflow-hidden"
+                class="mb-3 w-[92vw] sm:w-96 rounded-3xl bg-white/90 backdrop-blur-2xl border border-white p-5 shadow-[0_24px_60px_rgba(19,41,61,0.18)] text-[#13293D] text-xs relative overflow-hidden"
             >
                 <!-- Header with Mascot Avatar & Close -->
-                <div class="flex items-center justify-between pb-3 border-b border-white/10 relative z-10">
+                <div class="flex items-center justify-between pb-3 border-b border-[#265D7A]/15 relative z-10">
                     <div class="flex items-center gap-3">
                         <!-- Fixie Mascot SVG Avatar -->
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0A7075] to-[#0C969C] p-1 flex items-center justify-center shadow-lg shadow-black/30 shrink-0">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#13293D] to-[#265D7A] p-1 flex items-center justify-center shadow-lg shadow-[#13293D]/20 shrink-0">
                             <svg viewBox="0 0 48 48" class="w-10 h-10 select-none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="24" cy="24" r="18" fill="#031716" stroke="#6BA3BE" stroke-width="2" />
-                                <line x1="24" y1="6" x2="24" y2="1" stroke="#6BA3BE" stroke-width="2" stroke-linecap="round" />
-                                <circle cx="24" cy="1" r="2.5" fill="#0C969C" />
-                                <rect x="14" y="18" width="20" height="9" rx="4.5" fill="#0A7075" />
+                                <circle cx="24" cy="24" r="18" fill="#13293D" stroke="#67C7C6" stroke-width="2" />
+                                <line x1="24" y1="6" x2="24" y2="1" stroke="#A7E4DB" stroke-width="2" stroke-linecap="round" />
+                                <circle cx="24" cy="1" r="2.5" fill="#67C7C6" />
+                                <rect x="14" y="18" width="20" height="9" rx="4.5" fill="#265D7A" />
                                 <circle cx="19" cy="22.5" r="2" fill="#FFFFFF" />
                                 <circle cx="29" cy="22.5" r="2" fill="#FFFFFF" />
-                                <path d="M 20 32 Q 24 35 28 32" fill="none" stroke="#6BA3BE" stroke-width="1.8" stroke-linecap="round" />
+                                <path d="M 20 32 Q 24 35 28 32" fill="none" stroke="#A7E4DB" stroke-width="1.8" stroke-linecap="round" />
                             </svg>
                         </div>
                         <div>
                             <div class="flex items-center gap-1.5">
-                                <span class="font-bold text-sm text-white">Fixie</span>
-                                <span class="px-1.5 py-0.5 rounded-full bg-[#0A7075]/30 text-[#6BA3BE] border border-white/10 text-[9px] font-mono font-bold uppercase">
+                                <span class="font-bold text-sm text-[#13293D]">Fixie</span>
+                                <span class="px-2 py-0.5 rounded-full bg-[#A7E4DB]/45 text-[#13293D] border border-[#265D7A]/20 text-[9px] font-mono font-bold uppercase">
                                     Asisten Resi
                                 </span>
                             </div>
-                            <span class="text-[10px] text-emerald-400 flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                            <span class="text-[10px] font-semibold text-emerald-700 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                                 Standby &bull; Delixie
                             </span>
                         </div>
@@ -100,22 +100,22 @@ onUnmounted(() => {
                         @click="closeAssistant"
                         type="button"
                         aria-label="Tutup Panel Fixie"
-                        class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-[#9ABBC8] hover:text-white transition cursor-pointer"
+                        class="w-7 h-7 rounded-full bg-[#EAF6F4] hover:bg-[#67C7C6]/30 border border-[#265D7A]/15 flex items-center justify-center text-[#265D7A] hover:text-[#13293D] transition cursor-pointer"
                     >
                         <i class="bi bi-x-lg text-xs" aria-hidden="true"></i>
                     </button>
                 </div>
 
                 <!-- Speech Bubble Dialogue -->
-                <div class="mt-3 p-3.5 rounded-2xl bg-[#031716]/80 border border-white/10 leading-relaxed text-[#D6E6EA] font-light">
+                <div class="mt-3 p-3.5 rounded-2xl bg-[#EAF6F4]/90 border border-[#265D7A]/15 leading-relaxed text-[#265D7A] font-normal">
                     <p>
-                        Halo! Saya <strong class="font-semibold text-white">Fixie</strong>, asisten navigasi kargo Delixie. Mau lacak kontainer antar benua, kalkulasi tarif rute, atau cek jaringan hub?
+                        Halo! Saya <strong class="font-bold text-[#13293D]">Fixie</strong>, asisten navigasi kargo Delixie. Mau lacak kontainer antar benua, kalkulasi tarif rute, atau cek jaringan hub?
                     </p>
                 </div>
 
-                <!-- Quick Track Input -->
+                <!-- Quick Track Input (Dark Navy Track Input Contrast per Reference) -->
                 <div class="mt-3 space-y-1.5">
-                    <label for="fixie-track-input" class="text-[10px] uppercase font-mono tracking-wider text-[#9ABBC8] font-bold block">
+                    <label for="fixie-track-input" class="text-[10px] uppercase font-mono tracking-wider text-[#265D7A] font-bold block">
                         Ketik Resi Instan
                     </label>
                     <div class="flex gap-2">
@@ -125,12 +125,12 @@ onUnmounted(() => {
                             @keyup.enter="handleQuickTrack(quickSearchCode)"
                             type="text"
                             placeholder="Contoh: CT-2026-0001"
-                            class="flex-1 h-9 px-3 bg-[#031716] border border-white/10 rounded-xl text-xs font-mono text-white placeholder-[#6B8B97] focus:outline-none focus:border-[#0C969C] focus:ring-1 focus:ring-[#0C969C]"
+                            class="flex-1 h-9 px-3 bg-[#13293D] border border-[#265D7A] rounded-xl text-xs font-mono text-white placeholder-[#A7E4DB]/60 focus:outline-none focus:ring-2 focus:ring-[#67C7C6]/50"
                         />
                         <button
                             type="button"
                             @click="handleQuickTrack(quickSearchCode)"
-                            class="px-4 h-9 bg-[#274D60] hover:bg-[#0A7075] text-white font-semibold rounded-full transition cursor-pointer text-xs shrink-0"
+                            class="px-4 h-9 bg-[#67C7C6] hover:bg-[#A7E4DB] text-[#13293D] font-bold rounded-full transition cursor-pointer text-xs shrink-0 shadow-sm"
                         >
                             Lacak
                         </button>
@@ -138,8 +138,8 @@ onUnmounted(() => {
                 </div>
 
                 <!-- Quick Action Chips -->
-                <div class="mt-3 pt-3 border-t border-white/10 space-y-2">
-                    <div class="text-[10px] uppercase font-mono tracking-wider text-[#9ABBC8] font-bold">
+                <div class="mt-3 pt-3 border-t border-[#265D7A]/15 space-y-2">
+                    <div class="text-[10px] uppercase font-mono tracking-wider text-[#265D7A] font-bold">
                         Pilihan Cepat
                     </div>
                     <div class="flex flex-wrap gap-1.5">
@@ -148,15 +148,15 @@ onUnmounted(() => {
                             :key="sample"
                             type="button"
                             @click="handleQuickTrack(sample)"
-                            class="px-2.5 py-1 rounded-lg bg-[#0A7075]/20 hover:bg-[#0A7075]/40 text-[#6BA3BE] hover:text-white border border-[#0C969C]/30 text-[11px] font-mono transition cursor-pointer"
+                            class="px-2.5 py-1 rounded-lg bg-[#EAF6F4] hover:bg-[#67C7C6]/35 text-[#13293D] border border-[#265D7A]/20 text-[11px] font-mono font-bold transition cursor-pointer"
                         >
-                            <i class="bi bi-box-seam mr-1" aria-hidden="true"></i>{{ sample }}
+                            <i class="bi bi-box-seam mr-1 text-[#265D7A]" aria-hidden="true"></i>{{ sample }}
                         </button>
 
                         <button
                             type="button"
                             @click="handleTabAction('tariff')"
-                            class="px-2.5 py-1 rounded-lg bg-[#032F30] hover:bg-[#0A7075]/40 text-[#D6E6EA] border border-white/10 text-[11px] font-semibold transition cursor-pointer"
+                            class="px-2.5 py-1 rounded-lg bg-white hover:bg-[#EAF6F4] text-[#265D7A] hover:text-[#13293D] border border-[#265D7A]/20 text-[11px] font-semibold transition cursor-pointer"
                         >
                             <i class="bi bi-calculator mr-1" aria-hidden="true"></i>Kalkulator Tarif
                         </button>
@@ -164,7 +164,7 @@ onUnmounted(() => {
                         <button
                             type="button"
                             @click="handleTabAction('hubs')"
-                            class="px-2.5 py-1 rounded-lg bg-[#032F30] hover:bg-[#0A7075]/40 text-[#D6E6EA] border border-white/10 text-[11px] font-semibold transition cursor-pointer"
+                            class="px-2.5 py-1 rounded-lg bg-white hover:bg-[#EAF6F4] text-[#265D7A] hover:text-[#13293D] border border-[#265D7A]/20 text-[11px] font-semibold transition cursor-pointer"
                         >
                             <i class="bi bi-geo-alt mr-1" aria-hidden="true"></i>Jaringan Pelabuhan
                         </button>
@@ -186,28 +186,28 @@ onUnmounted(() => {
             >
                 <div
                     v-if="showTooltip && !isOpen"
-                    class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-[#0A7075]/20 backdrop-blur-xl border border-white/10 text-white text-xs shadow-xl shadow-black/40"
+                    class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-white/85 backdrop-blur-2xl border border-white text-[#13293D] font-medium text-xs shadow-lg shadow-[#13293D]/10"
                 >
-                    <span class="w-2 h-2 rounded-full bg-[#0C969C]"></span>
+                    <span class="w-2 h-2 rounded-full bg-[#67C7C6]"></span>
                     <span>Fixie standby. Sini kubantu lacak resimu.</span>
                     <button
                         @click="showTooltip = false"
                         type="button"
                         aria-label="Tutup Tooltip"
-                        class="text-[#9ABBC8] hover:text-white transition ml-1 cursor-pointer"
+                        class="text-[#265D7A] hover:text-[#13293D] transition ml-1 cursor-pointer"
                     >
                         <i class="bi bi-x" aria-hidden="true"></i>
                     </button>
                 </div>
             </Transition>
 
-            <!-- Dark Teal Ocean FAB Button -->
+            <!-- Deep Ocean Steel FAB Button -->
             <button
                 @click="toggleAssistant"
                 type="button"
                 aria-label="Buka Asisten AI Fixie"
-                class="relative w-14 h-14 rounded-full bg-[#274D60] hover:bg-[#0A7075] border border-white/15 text-white flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-105 cursor-pointer group"
-                :class="{ 'ring-2 ring-[#0C969C]': isOpen }"
+                class="relative w-14 h-14 rounded-full bg-[#265D7A] hover:bg-[#13293D] border border-white/40 text-white flex items-center justify-center shadow-[0_12px_30px_rgba(19,41,61,0.3)] transition-all duration-300 hover:scale-105 cursor-pointer group"
+                :class="{ 'ring-2 ring-[#67C7C6]': isOpen }"
             >
                 <i v-if="isOpen" class="bi bi-chevron-down text-xl" aria-hidden="true"></i>
                 <svg v-else viewBox="0 0 24 24" class="w-7 h-7 fill-white group-hover:scale-105 transition-transform" xmlns="http://www.w3.org/2000/svg">

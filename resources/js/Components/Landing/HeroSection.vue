@@ -10,7 +10,6 @@ const props = defineProps({
 
 const emit = defineEmits(['scrollToTrack']);
 
-// Animated counters
 const displayShipments = ref(0);
 const displayCarriers = ref(0);
 const displayLocations = ref(0);
@@ -40,12 +39,13 @@ onMounted(() => {
 <template>
     <section
         aria-label="Hero Section Delixie"
-        class="relative min-h-[90vh] overflow-hidden bg-gradient-to-br from-[#031716] via-[#032324] to-[#032F30] text-white pt-32 pb-24 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
+        class="relative min-h-[90vh] overflow-hidden bg-transparent text-[#13293D] pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
     >
-        <!-- Subtle Ambient Ocean Glow (Airy Negative Space) -->
+        <!-- Ambient Organic Gradient Wave Accent (Matches Color Palette Reference) -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-            <div class="absolute top-1/4 -right-32 w-[600px] h-[600px] rounded-full bg-[#0C969C]/10 blur-[160px]"></div>
-            <div class="absolute -bottom-20 -left-20 w-[500px] h-[500px] rounded-full bg-[#0A7075]/12 blur-[150px]"></div>
+            <div class="hidden sm:block absolute -top-28 -right-28 w-[640px] h-[640px] rounded-full bg-gradient-to-br from-[#13293D] via-[#265D7A] to-[#67C7C6] opacity-80 blur-[64px]"></div>
+            <div class="hidden sm:block absolute top-20 right-16 w-[420px] h-[420px] rounded-full bg-[#A7E4DB]/35 blur-[90px]"></div>
+            <div class="absolute -bottom-24 -left-24 w-[480px] h-[480px] rounded-full bg-[#67C7C6]/20 blur-[130px]"></div>
         </div>
 
         <!-- Main Hero Grid: Split Asymmetrical Editorial Layout -->
@@ -54,141 +54,131 @@ onMounted(() => {
             <div class="lg:col-span-7 flex flex-col justify-between space-y-8">
                 <!-- Eyebrow Category -->
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-px bg-[#0C969C]" aria-hidden="true"></span>
-                    <span class="text-xs font-mono font-semibold tracking-widest text-[#6BA3BE] uppercase">
+                    <span class="w-8 h-px bg-[#265D7A]" aria-hidden="true"></span>
+                    <span class="text-xs font-mono font-bold tracking-widest text-[#265D7A] uppercase">
                         VISIBILITAS LOGISTIK GLOBAL
                     </span>
                 </div>
 
                 <!-- Massive Editorial Headline -->
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white">
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-[#13293D]">
                     End-to-End
-                    <span class="text-[#0C969C] font-light">Global</span>
+                    <span class="text-[#265D7A] font-bold">Global</span>
                     Shipment Visibility.
                 </h1>
 
                 <!-- Concise Lightweight Narrative -->
-                <p class="text-base sm:text-lg text-[#9ABBC8] font-light leading-relaxed max-w-xl">
+                <p class="text-base sm:text-lg text-[#265D7A] font-normal leading-relaxed max-w-xl">
                     Pantau pergerakan kontainer interkontinental secara terverifikasi dengan validasi rute geospasial maritim, kalkulasi tarif transparan, dan peringatan keterlambatan real-time.
                 </p>
 
                 <!-- Solid Pill Primary CTA -->
-                <div class="pt-2">
+                <div class="pt-2 flex flex-wrap items-center gap-4">
                     <button
                         type="button"
                         @click="emit('scrollToTrack')"
-                        class="px-8 py-3.5 rounded-full bg-[#274D60] hover:bg-[#0A7075] text-white font-semibold text-sm transition-all duration-300 shadow-xl shadow-black/25 hover:-translate-y-0.5 inline-flex items-center gap-3 cursor-pointer group"
+                        class="px-8 py-3.5 rounded-full bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold text-sm transition-all duration-300 shadow-xl shadow-[#13293D]/20 hover:-translate-y-0.5 inline-flex items-center gap-3 cursor-pointer group"
                     >
                         <span>Lacak Kargo Sekarang</span>
                         <i class="bi bi-arrow-right text-xs transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></i>
                     </button>
                 </div>
 
-                <!-- Bottom Left: 3 Minimalist Statistics Separated by Vertical Dividers -->
-                <div class="pt-8 mt-4 border-t border-white/10 grid grid-cols-3 gap-6 max-w-lg">
-                    <div class="pr-4 border-r border-white/15">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight">
-                            {{ displayShipments }}<span class="text-[#0C969C]">+</span>
+                <!-- Bottom Left: 3 Real Statistics Separated by Vertical Dividers -->
+                <div class="pt-8 mt-4 border-t border-[#265D7A]/20 grid grid-cols-3 gap-6 max-w-lg">
+                    <div class="pr-4 border-r border-[#265D7A]/20">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#13293D] tracking-tight">
+                            {{ displayShipments }}<span class="text-[#265D7A]">+</span>
                         </div>
-                        <div class="text-[11px] font-medium text-[#9ABBC8] mt-1">
+                        <div class="text-[11px] font-semibold text-[#265D7A] mt-1">
                             Pengiriman Aktif
                         </div>
                     </div>
-                    <div class="pr-4 border-r border-white/15">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight">
+                    <div class="pr-4 border-r border-[#265D7A]/20">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#13293D] tracking-tight">
                             {{ displayCarriers }}
                         </div>
-                        <div class="text-[11px] font-medium text-[#9ABBC8] mt-1">
+                        <div class="text-[11px] font-semibold text-[#265D7A] mt-1">
                             Mitra Ekspedisi
                         </div>
                     </div>
                     <div>
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight">
-                            {{ stats.on_time_rate || 98 }}<span class="text-[#0C969C]">%</span>
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#13293D] tracking-tight">
+                            {{ displayLocations }}
                         </div>
-                        <div class="text-[11px] font-medium text-[#9ABBC8] mt-1">
-                            Ketepatan SLA
+                        <div class="text-[11px] font-semibold text-[#265D7A] mt-1">
+                            Pelabuhan &amp; Hub
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Kolom Kanan: Seamlessly Integrated Logistics Visual with Frosted Telemetry Overlay -->
+            <!-- Kolom Kanan: Translucent Frosted Globe Sculpture & Telemetry Overlay -->
             <div class="lg:col-span-5 relative flex items-center justify-center">
-                <div class="relative w-full max-w-lg">
-                    <!-- Integrated Vector Ocean & Cargo Vessel Graphic with Soft Background Fade -->
-                    <div class="relative rounded-3xl overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_65%,transparent_100%)]">
-                        <svg viewBox="0 0 500 360" class="w-full h-auto select-none" xmlns="http://www.w3.org/2000/svg">
+                <div class="relative w-full max-w-md">
+                    <!-- Translucent Frosted Globe Sphere (Matches Reference) -->
+                    <div class="relative rounded-full p-2">
+                        <svg viewBox="0 0 420 420" class="w-full h-auto drop-shadow-[0_28px_60px_rgba(19,41,61,0.22)] select-none" xmlns="http://www.w3.org/2000/svg">
                             <defs>
-                                <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#032F30" stop-opacity="0.9" />
-                                    <stop offset="100%" stop-color="#031716" stop-opacity="0.3" />
-                                </linearGradient>
-                                <linearGradient id="hullGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#052526" />
-                                    <stop offset="50%" stop-color="#0A7075" />
-                                    <stop offset="100%" stop-color="#0C969C" />
+                                <radialGradient id="globeGlass" cx="35%" cy="30%" r="70%">
+                                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.96" />
+                                    <stop offset="55%" stop-color="#D9F2EE" stop-opacity="0.88" />
+                                    <stop offset="100%" stop-color="#67C7C6" stop-opacity="0.72" />
+                                </radialGradient>
+                                <linearGradient id="globeArc" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#13293D" />
+                                    <stop offset="50%" stop-color="#265D7A" />
+                                    <stop offset="100%" stop-color="#67C7C6" />
                                 </linearGradient>
                             </defs>
 
-                            <!-- Subtle Oceanic Depth Contours -->
-                            <path d="M 0,260 Q 125,235 250,260 T 500,260" fill="none" stroke="rgba(107,163,190,0.18)" stroke-width="1.5" />
-                            <path d="M 0,285 Q 125,265 250,285 T 500,285" fill="none" stroke="rgba(12,150,156,0.22)" stroke-width="2" />
-                            <path d="M 0,310 Q 125,295 250,310 T 500,310" fill="none" stroke="rgba(10,112,117,0.28)" stroke-width="2.5" />
+                            <!-- Main Frosted Sphere -->
+                            <circle cx="210" cy="210" r="178" fill="url(#globeGlass)" stroke="rgba(255,255,255,0.9)" stroke-width="2" />
 
-                            <!-- Intercontinental Corridors -->
-                            <path d="M 90,80 Q 250,30 410,110" fill="none" stroke="#0C969C" stroke-width="2" stroke-dasharray="6 6" opacity="0.6" />
-                            <circle cx="90" cy="80" r="5" fill="#10B981" />
-                            <text x="102" y="84" fill="#6BA3BE" font-size="11" font-family="monospace">IDJKT</text>
+                            <!-- Abstract Continents Silhouette (Subtle Ice-Teal) -->
+                            <path d="M105,140 Q145,105 190,128 T235,165 Q215,215 170,225 T110,195 Z" fill="#67C7C6" fill-opacity="0.42" />
+                            <path d="M245,105 Q295,95 330,138 T315,205 Q270,215 245,175 Z" fill="#265D7A" fill-opacity="0.28" />
+                            <path d="M165,245 Q225,235 270,275 T240,335 Q185,330 158,285 Z" fill="#67C7C6" fill-opacity="0.36" />
 
-                            <circle cx="410" cy="110" r="5" fill="#F59E0B" />
-                            <text x="422" y="114" fill="#F59E0B" font-size="11" font-family="monospace">NLRTM</text>
+                            <!-- Meridian Grid Lines -->
+                            <ellipse cx="210" cy="210" rx="95" ry="178" fill="none" stroke="rgba(38,93,122,0.16)" stroke-width="1.2" />
+                            <ellipse cx="210" cy="210" rx="178" ry="62" fill="none" stroke="rgba(38,93,122,0.16)" stroke-width="1.2" />
 
-                            <!-- Modern Minimalist Container Vessel -->
-                            <!-- Stack Row 1 -->
-                            <rect x="180" y="180" width="28" height="16" rx="2" fill="#0A7075" stroke="#032F30" stroke-width="1.5" />
-                            <rect x="212" y="180" width="28" height="16" rx="2" fill="#274D60" stroke="#032F30" stroke-width="1.5" />
-                            <rect x="244" y="180" width="28" height="16" rx="2" fill="#0C969C" stroke="#032F30" stroke-width="1.5" />
-                            <rect x="276" y="180" width="28" height="16" rx="2" fill="#6BA3BE" stroke="#032F30" stroke-width="1.5" />
-                            <rect x="308" y="180" width="28" height="16" rx="2" fill="#0A7075" stroke="#032F30" stroke-width="1.5" />
+                            <!-- Global Corridor Arcs -->
+                            <path d="M 122,195 Q 205,110 298,142" fill="none" stroke="url(#globeArc)" stroke-width="2.5" stroke-dasharray="6 5" />
+                            <path d="M 122,195 Q 225,245 315,215" fill="none" stroke="#265D7A" stroke-width="2" stroke-opacity="0.55" />
 
-                            <!-- Stack Row 2 -->
-                            <rect x="196" y="160" width="28" height="16" rx="2" fill="#0C969C" stroke="#032F30" stroke-width="1.5" />
-                            <rect x="228" y="160" width="28" height="16" rx="2" fill="#6BA3BE" stroke="#032F30" stroke-width="1.5" />
-                            <rect x="260" y="160" width="28" height="16" rx="2" fill="#274D60" stroke="#032F30" stroke-width="1.5" />
-                            <rect x="292" y="160" width="28" height="16" rx="2" fill="#0C969C" stroke="#032F30" stroke-width="1.5" />
+                            <!-- Port Nodes -->
+                            <circle cx="122" cy="195" r="7" fill="#10B981" stroke="#FFFFFF" stroke-width="2.5" />
+                            <text x="108" y="220" fill="#13293D" font-size="11" font-weight="bold" font-family="monospace">IDJKT</text>
 
-                            <!-- Superstructure Bridge -->
-                            <polygon points="345,135 380,135 375,200 345,200" fill="#032F30" stroke="#0A7075" stroke-width="1.5" />
-                            <rect x="350" y="145" width="22" height="6" rx="1" fill="#6BA3BE" opacity="0.8" />
-                            <line x1="362" y1="135" x2="362" y2="115" stroke="#6BA3BE" stroke-width="2" />
-                            <circle cx="362" cy="112" r="3" fill="#0C969C" />
+                            <circle cx="298" cy="142" r="7" fill="#F59E0B" stroke="#FFFFFF" stroke-width="2.5" />
+                            <text x="275" y="128" fill="#13293D" font-size="11" font-weight="bold" font-family="monospace">NLRTM</text>
 
-                            <!-- Vessel Hull -->
-                            <path d="M 120,200 L 155,250 L 400,250 L 420,200 Z" fill="url(#hullGrad)" stroke="#6BA3BE" stroke-width="1.5" />
-                            <line x1="120" y1="200" x2="420" y2="200" stroke="#6BA3BE" stroke-width="2" />
+                            <circle cx="315" cy="215" r="5" fill="#265D7A" stroke="#FFFFFF" stroke-width="2" />
+                            <text x="295" y="238" fill="#265D7A" font-size="10" font-weight="bold" font-family="monospace">SGSIN</text>
                         </svg>
                     </div>
 
-                    <!-- Floating Frosted Glass Telemetry Overlay Card (Solar Power Reference Style) -->
-                    <div class="absolute -bottom-6 right-2 sm:right-6 backdrop-blur-xl bg-[#0A7075]/20 border border-white/10 rounded-2xl p-4 sm:p-5 shadow-[0_16px_36px_rgba(0,0,0,0.5)] max-w-xs transition-transform duration-300 hover:-translate-y-1">
-                        <div class="flex items-center justify-between gap-3 pb-2.5 border-b border-white/10">
+                    <!-- Floating Frosted Glass Telemetry Overlay Card -->
+                    <div class="sm:absolute -bottom-4 right-0 sm:right-2 backdrop-blur-2xl bg-white/85 border border-white/95 rounded-2xl p-4 sm:p-5 shadow-[0_18px_40px_rgba(19,41,61,0.14)] max-w-xs mx-auto transition-transform duration-300 hover:-translate-y-1">
+                        <div class="flex items-center justify-between gap-3 pb-2.5 border-b border-[#265D7A]/15">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-[#0C969C] shadow-[0_0_8px_#0C969C]"></span>
-                                <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Navigasi Aktif</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] shadow-[0_0_8px_#67C7C6]"></span>
+                                <span class="text-xs font-mono font-bold text-[#13293D] uppercase tracking-wider">Navigasi Aktif</span>
                             </div>
-                            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#032F30] text-[#6BA3BE] border border-white/10">
+                            <span class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#13293D] text-[#A7E4DB]">
                                 21.4 KTS
                             </span>
                         </div>
                         <div class="mt-2.5 flex items-center justify-between text-xs">
                             <div>
-                                <span class="text-[10px] text-[#9ABBC8] font-mono block">KORIDOR MARITIM</span>
-                                <strong class="font-mono text-white text-xs">IDJKT &rarr; NLRTM</strong>
+                                <span class="text-[10px] text-[#265D7A] font-mono font-semibold block">KORIDOR MARITIM</span>
+                                <strong class="font-mono text-[#13293D] text-xs">IDJKT &rarr; NLRTM</strong>
                             </div>
                             <div class="text-right">
-                                <span class="text-[10px] text-[#9ABBC8] font-mono block">STATUS</span>
-                                <span class="text-xs font-mono font-bold text-emerald-400">On Schedule</span>
+                                <span class="text-[10px] text-[#265D7A] font-mono font-semibold block">STATUS</span>
+                                <span class="text-xs font-mono font-bold text-emerald-800">On Schedule</span>
                             </div>
                         </div>
                     </div>

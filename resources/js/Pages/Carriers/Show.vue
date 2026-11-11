@@ -19,53 +19,53 @@ const isAdmin = computed(() => page.props.auth?.user?.role === 'admin');
         <Head :title="`Carrier ${carrier.name}`" />
 
         <div class="max-w-2xl mx-auto">
-            <div class="bg-[#0A7075]/15 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-6 shadow-xl flex items-center justify-between">
+            <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 mb-6 shadow-[0_16px_40px_rgba(19,41,61,0.08)] flex items-center justify-between">
                 <div>
                     <div class="flex items-center gap-2.5">
-                        <h1 class="text-xl font-extrabold tracking-tight text-white">{{ carrier.name }}</h1>
-                        <span class="px-2.5 py-0.5 rounded font-mono font-bold text-xs bg-[#0C969C]/15 text-[#7DE2E6] border border-[#0C969C]/35">
+                        <h1 class="text-xl font-extrabold tracking-tight text-[#13293D]">{{ carrier.name }}</h1>
+                        <span class="px-2.5 py-0.5 rounded font-mono font-bold text-xs bg-[#13293D] text-[#A7E4DB]">
                             {{ carrier.code }}
                         </span>
                     </div>
-                    <p class="text-xs font-light text-[#9ABBC8] mt-0.5">Detail profil operator logistik.</p>
+                    <p class="text-xs font-normal text-[#265D7A] mt-0.5">Detail profil operator logistik.</p>
                 </div>
                 <div class="flex gap-2">
-                    <Link href="/carriers" class="px-3.5 py-1.5 border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-semibold rounded-full text-[#D6E6EA] hover:text-white transition inline-flex items-center gap-1.5">
+                    <Link href="/carriers" class="px-3.5 py-1.5 border border-[#265D7A]/20 bg-white/80 hover:bg-white text-xs font-semibold rounded-full text-[#13293D] transition inline-flex items-center gap-1.5">
                         <i class="bi bi-arrow-left"></i>
                         <span>Kembali</span>
                     </Link>
-                    <Link v-if="isAdmin" :href="`/carriers/${carrier.id}/edit`" class="px-4 py-1.5 bg-[#274D60] hover:bg-[#0A7075] text-white text-xs font-semibold rounded-full transition inline-flex items-center gap-1.5 shadow-lg shadow-black/25">
+                    <Link v-if="isAdmin" :href="`/carriers/${carrier.id}/edit`" class="px-4 py-1.5 bg-[#265D7A] hover:bg-[#13293D] text-white text-xs font-semibold rounded-full transition inline-flex items-center gap-1.5 shadow-md shadow-[#13293D]/15">
                         <i class="bi bi-pencil"></i>
                         <span>Edit</span>
                     </Link>
                 </div>
             </div>
 
-            <div class="bg-[#0A7075]/15 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl space-y-4 text-xs">
-                <div class="flex justify-between py-2 border-b border-white/10">
-                    <span class="text-[#9ABBC8]">Moda Transportasi:</span>
-                    <span class="font-mono font-bold text-white">{{ carrier.transport_mode }}</span>
+            <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 shadow-[0_16px_40px_rgba(19,41,61,0.08)] space-y-4 text-xs">
+                <div class="flex justify-between py-2 border-b border-[#265D7A]/10">
+                    <span class="text-[#265D7A]">Moda Transportasi:</span>
+                    <span class="font-mono font-bold text-[#13293D]">{{ carrier.transport_mode }}</span>
                 </div>
-                <div class="flex justify-between py-2 border-b border-white/10">
-                    <span class="text-[#9ABBC8]">Email Kontak:</span>
-                    <span class="font-semibold text-white">{{ carrier.contact_email || '-' }}</span>
+                <div class="flex justify-between py-2 border-b border-[#265D7A]/10">
+                    <span class="text-[#265D7A]">Email Kontak:</span>
+                    <span class="font-semibold text-[#13293D]">{{ carrier.contact_email || '-' }}</span>
                 </div>
-                <div class="flex justify-between py-2 border-b border-white/10">
-                    <span class="text-[#9ABBC8]">Telepon:</span>
-                    <span class="font-mono font-semibold text-white">{{ carrier.contact_phone || '-' }}</span>
+                <div class="flex justify-between py-2 border-b border-[#265D7A]/10">
+                    <span class="text-[#265D7A]">Telepon:</span>
+                    <span class="font-mono font-semibold text-[#13293D]">{{ carrier.contact_phone || '-' }}</span>
                 </div>
-                <div class="flex justify-between py-2 border-b border-white/10">
-                    <span class="text-[#9ABBC8]">Status Operasional:</span>
-                    <span v-if="carrier.is_active" class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-bold text-[10px]">
+                <div class="flex justify-between py-2 border-b border-[#265D7A]/10">
+                    <span class="text-[#265D7A]">Status Operasional:</span>
+                    <span v-if="carrier.is_active" class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-900 border border-emerald-600/30 font-bold text-[10px]">
                         Aktif
                     </span>
-                    <span v-else class="px-2.5 py-0.5 rounded-full bg-white/10 text-[#9ABBC8] border border-white/15 font-bold text-[10px]">
+                    <span v-else class="px-2.5 py-0.5 rounded-full bg-[#EAF6F4] text-[#265D7A] border border-[#265D7A]/20 font-bold text-[10px]">
                         Nonaktif
                     </span>
                 </div>
                 <div class="flex justify-between py-2">
-                    <span class="text-[#9ABBC8]">Total Shipments Terkait:</span>
-                    <span class="font-bold font-mono text-[#7DE2E6]">{{ carrier.shipments_count || 0 }} pengiriman</span>
+                    <span class="text-[#265D7A]">Total Shipments Terkait:</span>
+                    <span class="font-bold font-mono text-[#265D7A]">{{ carrier.shipments_count || 0 }} pengiriman</span>
                 </div>
             </div>
         </div>

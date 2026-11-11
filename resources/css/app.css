@@ -7,90 +7,98 @@
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-canvas: #031716;
-    --color-ocean: #032F30;
-    --color-teal-primary: #0A7075;
-    --color-teal-accent: #0C969C;
-    --color-steel-light: #6BA3BE;
-    --color-ocean-slate: #274D60;
-    --color-charcoal: #F8FAFC;
-    --color-hairline: rgba(255, 255, 255, 0.10);
-    --color-faint: #9ABBC8;
+    --color-canvas: #EDF7F6;
+    --color-frost-mist: #D9F2EE;
+    --color-navy-deep: #13293D;
+    --color-ocean-steel: #265D7A;
+    --color-teal-bright: #67C7C6;
+    --color-mint-ice: #A7E4DB;
+    --color-charcoal: #13293D;
+    --color-faint: #265D7A;
 }
 
 :root {
-    color-scheme: dark;
-    --colors-canvas: #031716;
-    --colors-ocean: #032F30;
-    --colors-accent: #0C969C;
-    --colors-accent-dark: #0A7075;
-    --colors-highlight: #6BA3BE;
-    --colors-cta: #274D60;
-    --colors-body: #F8FAFC;
-    --colors-muted: #9ABBC8;
-    --colors-hairline: rgba(255, 255, 255, 0.10);
+    color-scheme: light;
+    --colors-canvas: #EDF7F6;
+    --colors-navy: #13293D;
+    --colors-steel: #265D7A;
+    --colors-accent: #67C7C6;
+    --colors-mint: #A7E4DB;
+    --colors-body: #13293D;
+    --colors-muted: #265D7A;
 }
 
 body {
-    background-color: #031716;
+    background-color: #EDF7F6;
     background-image:
-        radial-gradient(circle at 82% 14%, rgba(12, 150, 156, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 10% 82%, rgba(10, 112, 117, 0.14) 0%, transparent 50%),
-        linear-gradient(145deg, #031716 0%, #032324 50%, #032F30 100%);
+        radial-gradient(circle 720px at 98% 4%, rgba(19, 41, 61, 0.72) 0%, rgba(38, 93, 122, 0.62) 32%, rgba(103, 199, 198, 0.45) 60%, rgba(167, 228, 219, 0.25) 80%, transparent 100%),
+        radial-gradient(circle at 5% 90%, rgba(103, 199, 198, 0.28) 0%, rgba(167, 228, 219, 0.18) 45%, transparent 70%),
+        radial-gradient(circle at 92% 88%, rgba(38, 93, 122, 0.22) 0%, rgba(103, 199, 198, 0.18) 50%, transparent 75%),
+        linear-gradient(135deg, #EFF7F6 0%, #E3F4F1 45%, #D4F0EB 100%);
     background-attachment: fixed;
-    color: #F8FAFC;
+    color: #13293D;
+    min-height: 100vh;
+}
+
+@media (max-width: 767px) {
+    body {
+        background-image:
+            radial-gradient(circle 220px at 96% 3%, rgba(38, 93, 122, 0.35) 0%, rgba(103, 199, 198, 0.28) 45%, rgba(167, 228, 219, 0.18) 75%, transparent 100%),
+            radial-gradient(circle at 8% 85%, rgba(103, 199, 198, 0.24) 0%, transparent 65%),
+            linear-gradient(135deg, #F1F8F7 0%, #E5F4F2 50%, #D9F2EE 100%);
+    }
 }
 
 /* Frosted Glassmorphism Container */
 .glass-card {
-    background: rgba(10, 112, 117, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(217, 242, 238, 0.45) 100%);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 24px;
-    box-shadow: 0 16px 36px 0 rgba(0, 0, 0, 0.40);
+    box-shadow: 0 16px 40px -10px rgba(19, 41, 61, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-    border-color: rgba(12, 150, 156, 0.35);
-    box-shadow: 0 0 24px rgba(12, 150, 156, 0.20);
+    border-color: rgba(103, 199, 198, 0.85);
+    box-shadow: 0 20px 48px -8px rgba(19, 41, 61, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .dark-input {
-    background-color: rgba(3, 23, 22, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #F8FAFC;
+    background-color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(38, 93, 122, 0.22);
+    color: #13293D;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dark-input::placeholder {
-    color: #6B8B97;
+    color: rgba(38, 93, 122, 0.60);
 }
 
 .dark-input:focus {
     outline: none;
-    border-color: #0C969C;
-    box-shadow: 0 0 0 3px rgba(12, 150, 156, 0.22);
+    border-color: #265D7A;
+    box-shadow: 0 0 0 3px rgba(103, 199, 198, 0.35);
 }
 
 /* Global Leaflet Dark Canvas overrides */
 .leaflet-container {
-    background: #031716 !important;
+    background: #13293D !important;
     font-family: var(--font-sans) !important;
 }
 
 .leaflet-popup-content-wrapper {
-    background: #032F30 !important;
-    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    background: #13293D !important;
+    border: 1px solid rgba(167, 228, 219, 0.35) !important;
     border-radius: 16px !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45) !important;
     color: #F8FAFC !important;
 }
 
 .leaflet-popup-tip {
-    background: #032F30 !important;
-    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    background: #13293D !important;
+    border: 1px solid rgba(167, 228, 219, 0.35) !important;
 }
 
 .custom-leaflet-pin {
@@ -99,12 +107,12 @@ body {
 }
 
 .leaflet-bar a {
-    background-color: #032324 !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: #13293D !important;
+    border-color: rgba(255, 255, 255, 0.20) !important;
     color: #F8FAFC !important;
 }
 
 .leaflet-bar a:hover {
-    background-color: #0A7075 !important;
+    background-color: #265D7A !important;
     color: #FFFFFF !important;
 }

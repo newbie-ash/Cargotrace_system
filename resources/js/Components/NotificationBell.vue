@@ -52,14 +52,14 @@ onUnmounted(() => {
         <button
             @click.stop="toggleDropdown"
             type="button"
-            class="relative p-2 rounded-xl border border-white/10 bg-[#031716]/60 hover:bg-[#0A7075]/30 text-[#D6E6EA] hover:text-white transition cursor-pointer"
+            class="relative p-2 rounded-xl border border-[#265D7A]/20 bg-white/80 hover:bg-[#EAF6F4] text-[#265D7A] hover:text-[#13293D] transition cursor-pointer"
             title="Notifikasi Pengiriman"
             aria-label="Notifikasi Pengiriman"
         >
             <i class="bi bi-bell text-sm"></i>
             <span
                 v-if="notifications.unread_count > 0"
-                class="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-[#0C969C] text-[#031716] font-mono text-[9px] font-extrabold shadow-[0_0_8px_#0C969C]"
+                class="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-[#13293D] text-[#A7E4DB] font-mono text-[9px] font-extrabold shadow-sm"
             >
                 {{ notifications.unread_count > 9 ? '9+' : notifications.unread_count }}
             </span>
@@ -68,13 +68,13 @@ onUnmounted(() => {
         <!-- Dropdown Card -->
         <div
             v-if="isOpen"
-            class="absolute right-0 mt-2 w-80 sm:w-96 bg-[#032324]/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_12px_40px_0_rgba(0,0,0,0.6)] z-50 overflow-hidden font-sans"
+            class="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-2xl rounded-2xl border border-white shadow-[0_16px_48px_0_rgba(19,41,61,0.18)] z-50 overflow-hidden font-sans"
         >
             <!-- Dropdown Header -->
-            <div class="p-3.5 bg-[#031716]/90 border-b border-white/10 flex items-center justify-between">
+            <div class="p-3.5 bg-[#EAF6F4] border-b border-[#265D7A]/15 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <span class="font-bold text-xs text-white uppercase tracking-wider">Notifikasi Kargo</span>
-                    <span v-if="notifications.unread_count > 0" class="px-2 py-0.5 rounded-full bg-[#0A7075]/35 text-[#6BA3BE] border border-[#0C969C]/30 text-[10px] font-bold font-mono">
+                    <span class="font-bold text-xs text-[#13293D] uppercase tracking-wider">Notifikasi Kargo</span>
+                    <span v-if="notifications.unread_count > 0" class="px-2 py-0.5 rounded-full bg-[#13293D] text-[#A7E4DB] text-[10px] font-bold font-mono">
                         {{ notifications.unread_count }} baru
                     </span>
                 </div>
@@ -82,43 +82,43 @@ onUnmounted(() => {
                     v-if="notifications.unread_count > 0"
                     @click="markAllRead"
                     type="button"
-                    class="text-[11px] font-semibold text-[#0C969C] hover:text-[#6BA3BE] cursor-pointer"
+                    class="text-[11px] font-bold text-[#265D7A] hover:text-[#13293D] cursor-pointer"
                 >
                     Tandai Semua Dibaca
                 </button>
             </div>
 
             <!-- Notification Items List -->
-            <div class="max-h-80 overflow-y-auto divide-y divide-white/10 text-xs">
+            <div class="max-h-80 overflow-y-auto divide-y divide-[#265D7A]/10 text-xs">
                 <div
                     v-for="item in notifications.recent"
                     :key="item.id"
                     @click="openNotification(item)"
-                    :class="['p-3.5 hover:bg-white/5 cursor-pointer transition flex items-start gap-3', !item.read ? 'bg-[#0A7075]/15' : 'bg-transparent']"
+                    :class="['p-3.5 hover:bg-[#EAF6F4]/70 cursor-pointer transition flex items-start gap-3', !item.read ? 'bg-[#A7E4DB]/25' : 'bg-transparent']"
                 >
                     <div class="mt-1">
-                        <span v-if="!item.read" class="w-2 h-2 rounded-full bg-[#0C969C] block"></span>
-                        <span v-else class="w-2 h-2 rounded-full bg-[#274D60] block"></span>
+                        <span v-if="!item.read" class="w-2 h-2 rounded-full bg-[#265D7A] block"></span>
+                        <span v-else class="w-2 h-2 rounded-full bg-[#67C7C6]/50 block"></span>
                     </div>
 
                     <div class="flex-1 min-w-0">
-                        <div class="font-bold text-white text-xs truncate">
+                        <div class="font-bold text-[#13293D] text-xs truncate">
                             {{ item.data?.title || 'Pemberitahuan Pengiriman' }}
                         </div>
-                        <p class="text-[11px] font-light text-[#D6E6EA] line-clamp-2 mt-0.5 leading-relaxed">
+                        <p class="text-[11px] font-normal text-[#265D7A] line-clamp-2 mt-0.5 leading-relaxed">
                             {{ item.data?.message || '-' }}
                         </p>
-                        <div class="mt-1.5 flex items-center gap-2 text-[10px] text-[#9ABBC8] font-mono">
+                        <div class="mt-1.5 flex items-center gap-2 text-[10px] text-[#265D7A] font-mono">
                             <span>{{ item.created_at }}</span>
-                            <span v-if="item.data?.shipment_number" class="text-[#7DE2E6] font-bold">
+                            <span v-if="item.data?.shipment_number" class="text-[#13293D] font-bold">
                                 &bull; {{ item.data.shipment_number }}
                             </span>
                         </div>
                     </div>
                 </div>
 
-                <div v-if="!notifications.recent?.length" class="p-8 text-center text-[#9ABBC8] text-xs">
-                    <i class="bi bi-bell-slash text-2xl text-[#6BA3BE] mb-2 block"></i>
+                <div v-if="!notifications.recent?.length" class="p-8 text-center text-[#265D7A] text-xs">
+                    <i class="bi bi-bell-slash text-2xl text-[#67C7C6] mb-2 block"></i>
                     Belum ada notifikasi terkini.
                 </div>
             </div>

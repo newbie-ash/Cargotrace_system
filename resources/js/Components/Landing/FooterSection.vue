@@ -10,34 +10,33 @@ defineProps({
 </script>
 
 <template>
-    <footer class="bg-[#021110] text-[#9ABBC8] py-16 px-4 sm:px-8 border-t border-white/10 text-xs relative z-10">
+    <footer class="bg-white/60 backdrop-blur-2xl text-[#265D7A] py-16 px-4 sm:px-8 border-t border-white/85 text-xs relative z-10 shadow-[0_-12px_36px_rgba(19,41,61,0.04)]">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
-                <div class="flex items-center gap-2.5 font-extrabold text-base text-white mb-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#0C969C] shadow-[0_0_8px_#0C969C]"></span>
+                <div class="flex items-center gap-2.5 font-extrabold text-base text-[#13293D] mb-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] shadow-[0_0_8px_#67C7C6]"></span>
                     <span>Delixie Platform</span>
                 </div>
-                <p class="max-w-md text-xs font-light leading-relaxed text-[#9ABBC8]">
-                    Global Shipment Visibility & Real-Time Logistics Platform. Dibangun menggunakan Laravel 12, Vue 3, Inertia.js, Tailwind CSS v4, Leaflet.js, dan Chart.js.
+                <p class="max-w-md text-xs font-normal leading-relaxed text-[#265D7A]">
+                    Global Shipment Visibility &amp; Real-Time Logistics Platform. Dibangun menggunakan Laravel 12, Vue 3, Inertia.js, Tailwind CSS v4, Leaflet.js, dan Chart.js.
                 </p>
             </div>
 
             <div class="flex flex-wrap items-center gap-4 text-xs">
-                <span class="px-4 py-2 rounded-xl bg-[#032324] border border-white/10 font-mono text-[#6BA3BE]">
+                <span class="px-4 py-2 rounded-xl bg-[#EAF6F4] border border-[#265D7A]/20 font-mono font-semibold text-[#13293D]">
                     REST API v1 (Sanctum Protected)
                 </span>
                 <Link
                     :href="authUser ? '/dashboard' : '/login'"
-                    class="px-6 py-2.5 rounded-full bg-[#274D60] hover:bg-[#0A7075] text-white font-semibold transition shadow-md"
+                    class="px-6 py-2.5 rounded-full bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold transition shadow-md shadow-[#13293D]/15"
                 >
                     {{ authUser ? 'Dashboard Operasional' : 'Portal Login' }} &rarr;
                 </Link>
             </div>
         </div>
-
-        <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-light text-[#6BA3BE]">
-            <span>&copy; {{ new Date().getFullYear() }} Delixie Logistics Engineering. All Rights Reserved.</span>
-            <span>Peta &copy; Esri World Dark Canvas &bull; Telemetri oleh Open-Meteo &amp; Nominatim OSM</span>
+        <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-[#265D7A]/15 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] font-medium text-[#265D7A]">
+            <span>&copy; {{ new Date().getFullYear() }} Delixie Platform &bull; Web Programming 2 Final Project.</span>
+            <span>Visibilitas Rantai Pasok Terintegrasi.</span>
         </div>
     </footer>
 </template>
