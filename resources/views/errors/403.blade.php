@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>403 - Akses Ditolak | CargoTrace</title>
+    <title>403 - Akses Ditolak | Delixie</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -12,12 +12,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #020617;
+            background-color: #0B1120;
             background-image:
-                radial-gradient(circle at 80% 15%, rgba(6, 182, 212, 0.16), transparent 45%),
+                radial-gradient(circle at 80% 15%, rgba(37, 99, 235, 0.16), transparent 45%),
                 radial-gradient(circle at 15% 85%, rgba(245, 158, 11, 0.10), transparent 45%),
-                linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
             color: #F8FAFC;
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -28,8 +28,8 @@
             padding: 1.5rem;
         }
         .error-card {
-            background: rgba(15, 23, 42, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(30, 41, 59, 0.50);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px;
@@ -42,10 +42,10 @@
         .error-code {
             font-size: 3.75rem;
             font-weight: 800;
-            color: #22D3EE;
+            color: #3B82F6;
             line-height: 1;
             margin-bottom: 0.5rem;
-            text-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
+            text-shadow: 0 0 24px rgba(37, 99, 235, 0.45);
         }
     </style>
 </head>
@@ -64,7 +64,7 @@
         @endphp
 
         <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
-            <a href="{{ $homeRoute }}" class="btn fw-bold py-2 px-4" style="background: #FFFFFF; color: #020617; border-radius: 9999px;">
+            <a href="{{ $homeRoute }}" class="btn fw-bold py-2 px-4" style="background: #FFFFFF; color: #0B1120; border-radius: 9999px;">
                 <i class="bi {{ $homeIcon }} me-1"></i> {{ $homeLabel }}
             </a>
             @auth

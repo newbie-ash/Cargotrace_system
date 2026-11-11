@@ -19,16 +19,16 @@ const logout = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-cyber-grid bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-400 selection:text-slate-950">
+    <div class="min-h-screen bg-cyber-grid bg-[#0B1120] text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
         <!-- Top Glowing Multimodal Accent Line -->
-        <div class="h-0.5 bg-gradient-to-r from-cyan-400 via-amber-400 to-emerald-400 sticky top-0 z-50"></div>
+        <div class="h-0.5 bg-gradient-to-r from-blue-600 via-amber-500 to-emerald-500 sticky top-0 z-50"></div>
 
         <!-- Customer Top Navbar (when role is customer) -->
         <header v-if="isCustomer" class="sticky top-0.5 z-40 bg-slate-900/75 backdrop-blur-xl border-b border-white/10 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-lg">
             <div class="flex items-center gap-8">
-                <Link href="/dashboard" class="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-white hover:text-cyan-400 transition">
-                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee] animate-pulse"></span>
-                    <span>CargoTrace</span>
+                <Link href="/dashboard" class="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-white hover:text-blue-400 transition">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-[0_0_12px_#2563eb] animate-pulse"></span>
+                    <span>Delixie</span>
                 </Link>
                 <nav class="hidden md:flex items-center gap-2 text-xs font-semibold">
                     <Link
@@ -52,7 +52,7 @@ const logout = () => {
                 <NotificationBell />
                 <div class="text-right hidden sm:block">
                     <div class="text-xs font-bold text-white">{{ user.name }}</div>
-                    <div class="text-[10px] text-cyan-400 font-mono font-semibold uppercase tracking-wider">{{ user.company_name || 'Customer' }}</div>
+                    <div class="text-[10px] text-blue-400 font-mono font-semibold uppercase tracking-wider">{{ user.company_name || 'Customer' }}</div>
                 </div>
                 <button @click="logout" class="p-2 text-xs font-semibold text-rose-400 hover:bg-rose-500/15 rounded-xl transition border border-transparent hover:border-rose-500/30 cursor-pointer" title="Keluar">
                     <i class="bi bi-box-arrow-right text-base"></i>
@@ -70,9 +70,9 @@ const logout = () => {
                 <div class="flex flex-col flex-1 overflow-y-auto p-4">
                     <!-- Brand -->
                     <div class="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
-                        <Link href="/dashboard" class="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-white hover:text-cyan-400 transition">
-                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee] animate-pulse"></span>
-                            <span>CargoTrace</span>
+                        <Link href="/dashboard" class="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-white hover:text-blue-400 transition">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-[0_0_12px_#2563eb] animate-pulse"></span>
+                            <span>Delixie</span>
                         </Link>
                         <button @click="sidebarOpen = false" class="lg:hidden p-1 text-slate-400 hover:text-white cursor-pointer">
                             <i class="bi bi-x-lg"></i>
@@ -82,7 +82,7 @@ const logout = () => {
                     <!-- User Badge -->
                     <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 mb-5">
                         <div class="font-bold text-xs text-white truncate">{{ user.name }}</div>
-                        <div class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider mt-0.5">
+                        <div class="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider mt-0.5">
                             {{ isAdmin ? 'ADMINISTRATOR' : 'LOGISTICS OPERATOR' }}
                         </div>
                     </div>
@@ -163,7 +163,7 @@ const logout = () => {
                     <button @click="sidebarOpen = true" class="p-1.5 rounded-lg border border-white/10 text-white cursor-pointer">
                         <i class="bi bi-list text-xl"></i>
                     </button>
-                    <span class="font-extrabold text-base text-white">CargoTrace</span>
+                    <span class="font-extrabold text-base text-white">Delixie</span>
                     <div class="flex items-center gap-2">
                         <NotificationBell />
                         <button @click="logout" class="text-rose-400 p-1 cursor-pointer">

@@ -58,7 +58,7 @@ class HandleInertiaRequests extends Middleware
                     'created_at' => $n->created_at?->diffForHumans() ?? 'Baru saja',
                 ]) : [],
             ],
-            'appName' => config('app.name', 'CargoTrace'),
+            'appName' => config('app.name', 'Delixie'),
         ]);
     }
 }

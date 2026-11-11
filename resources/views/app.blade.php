@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title inertia>{{ config('app.name', 'CargoTrace') }}</title>
+    <title inertia>{{ config('app.name', 'Delixie') }}</title>
 
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @inertiaHead
 </head>
-<body class="font-sans antialiased text-slate-100 bg-slate-950 min-h-screen selection:bg-cyan-400 selection:text-slate-950">
+<body class="font-sans antialiased text-slate-100 bg-[#0B1120] min-h-screen selection:bg-blue-600 selection:text-white">
     @inertia
 </body>
 </html>

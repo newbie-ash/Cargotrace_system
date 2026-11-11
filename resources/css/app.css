@@ -7,7 +7,7 @@
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-canvas: #020617;
+    --color-canvas: #0B1120;
     --color-charcoal: #F8FAFC;
     --color-hairline: rgba(255, 255, 255, 0.12);
     --color-faint: #94A3B8;
@@ -15,45 +15,47 @@
 
 :root {
     color-scheme: dark;
-    --colors-canvas: #020617;
-    --colors-accent: #22D3EE;
+    --colors-canvas: #0B1120;
+    --colors-accent: #2563EB;
+    --colors-amber: #F59E0B;
     --colors-body: #F8FAFC;
     --colors-muted: #94A3B8;
     --colors-hairline: rgba(255, 255, 255, 0.12);
 }
 
 body {
-    background-color: #020617;
+    background-color: #0B1120;
     background-image:
-        radial-gradient(circle at 85% 10%, rgba(245, 158, 11, 0.10) 0%, transparent 40%),
-        radial-gradient(circle at 12% 78%, rgba(6, 182, 212, 0.14) 0%, transparent 45%),
-        linear-gradient(135deg, #020617 0%, #0B162C 50%, #0F172A 100%);
+        radial-gradient(circle at 85% 10%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 12% 78%, rgba(37, 99, 235, 0.14) 0%, transparent 45%),
+        linear-gradient(135deg, #0B1120 0%, #0E172A 50%, #0F172A 100%);
     background-attachment: fixed;
     color: #F8FAFC;
 }
 
 .bg-cyber-grid {
     background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 48px 48px;
 }
 
 .glass-card {
-    background: rgba(15, 23, 42, 0.58);
+    background: rgba(30, 41, 59, 0.42);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 20px;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
 }
 
 .glass-card:hover {
-    border-color: rgba(34, 211, 238, 0.28);
+    border-color: rgba(37, 99, 235, 0.35);
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.25);
 }
 
 .dark-input {
-    background-color: rgba(2, 6, 23, 0.65);
+    background-color: rgba(11, 17, 32, 0.72);
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: #F8FAFC;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -65,6 +67,6 @@ body {
 
 .dark-input:focus {
     outline: none;
-    border-color: rgba(34, 211, 238, 0.6);
-    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+    border-color: rgba(37, 99, 235, 0.65);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
 }
