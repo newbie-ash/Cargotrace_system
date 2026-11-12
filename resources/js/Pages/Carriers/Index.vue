@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import EmptyState from '@/Components/EmptyState.vue';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     carriers: {
@@ -31,10 +32,22 @@ const filter = () => {
     });
 };
 
+const carrierToDelete = ref(null);
+const deleting = ref(false);
+
 const deleteCarrier = (carrier) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus carrier ${carrier.name}?`)) {
-        router.delete(`/carriers/${carrier.id}`);
-    }
+    carrierToDelete.value = carrier;
+};
+
+const executeDeleteCarrier = () => {
+    if (!carrierToDelete.value) return;
+    deleting.value = true;
+    router.delete(`/carriers/${carrierToDelete.value.id}`, {
+        onFinish: () => {
+            deleting.value = false;
+            carrierToDelete.value = null;
+        },
+    });
 };
 </script>
 
@@ -156,5 +169,17 @@ const deleteCarrier = (carrier) => {
                 </div>
             </div>
         </div>
+
+        <!-- Confirm Delete Carrier Modal -->
+        <ConfirmDialog
+            :show="!!carrierToDelete"
+            title="Hapus Data Carrier?"
+            message="Carrier beserta tarif dan relasi operasional terkait akan dihapus. Pastikan tidak ada kargo aktif yang tertaut."
+            :item-name="carrierToDelete ? `${carrierToDelete.code} - ${carrierToDelete.name}` : ''"
+            confirm-text="Ya, Hapus Carrier"
+            :loading="deleting"
+            @close="carrierToDelete = null"
+            @confirm="executeDeleteCarrier"
+        />
     </AuthenticatedLayout>
 </template>

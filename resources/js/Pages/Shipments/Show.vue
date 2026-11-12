@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ShipmentRouteMap from '@/Components/ShipmentRouteMap.vue';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
     shipment: {
@@ -294,120 +295,122 @@ const statusBadgeClass = (st) => {
         </div>
 
         <!-- Modal 1: Append Checkpoint -->
-        <div v-if="showCheckpointModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#13293D]/45 backdrop-blur-sm">
-            <div class="bg-white/95 backdrop-blur-2xl rounded-3xl border border-white p-6 max-w-lg w-full shadow-2xl">
-                <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#265D7A]/15">
+        <Modal :show="showCheckpointModal" max-width="lg" @close="showCheckpointModal = false">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#265D7A]/15">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-[#265D7A]"></span>
                     <h3 class="text-sm font-bold text-[#13293D]">Catat Checkpoint Tracking Baru</h3>
-                    <button @click="showCheckpointModal = false" aria-label="Tutup Modal" class="text-[#265D7A] hover:text-[#13293D] cursor-pointer">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
+                </div>
+                <button @click="showCheckpointModal = false" aria-label="Tutup Modal" class="text-[#265D7A] hover:text-[#13293D] cursor-pointer p-1">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <form @submit.prevent="submitCheckpoint" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-[#13293D] mb-1">Lokasi Checkpoint</label>
+                    <select v-model="checkpointForm.location_id" @change="onLocationSelect" class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
+                        <option value="">Titik Lepas Pantai / Koordinat Langsung</option>
+                        <option v-for="loc in locations" :key="loc.id" :value="loc.id">
+                            {{ loc.code }} &bull; {{ loc.name }} ({{ loc.country }})
+                        </option>
+                    </select>
                 </div>
 
-                <form @submit.prevent="submitCheckpoint" class="space-y-4 text-xs">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block font-bold text-[#13293D] mb-1">Lokasi Checkpoint</label>
-                        <select v-model="checkpointForm.location_id" @change="onLocationSelect" class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
-                            <option value="">Titik Lepas Pantai / Koordinat Langsung</option>
-                            <option v-for="loc in locations" :key="loc.id" :value="loc.id">
-                                {{ loc.code }} &bull; {{ loc.name }} ({{ loc.country }})
-                            </option>
+                        <label class="block font-bold text-[#13293D] mb-1">Status Progresi <span class="text-rose-600">*</span></label>
+                        <select v-model="checkpointForm.status" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
+                            <option value="CREATED">CREATED</option>
+                            <option value="BOOKED">BOOKED</option>
+                            <option value="PICKED_UP">PICKED_UP</option>
+                            <option value="IN_TRANSIT">IN_TRANSIT</option>
+                            <option value="DELIVERED">DELIVERED</option>
+                            <option value="CANCELLED">CANCELLED</option>
                         </select>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block font-bold text-[#13293D] mb-1">Status Progresi <span class="text-rose-600">*</span></label>
-                            <select v-model="checkpointForm.status" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
-                                <option value="CREATED">CREATED</option>
-                                <option value="BOOKED">BOOKED</option>
-                                <option value="PICKED_UP">PICKED_UP</option>
-                                <option value="IN_TRANSIT">IN_TRANSIT</option>
-                                <option value="DELIVERED">DELIVERED</option>
-                                <option value="CANCELLED">CANCELLED</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-[#13293D] mb-1">Tipe Event <span class="text-rose-600">*</span></label>
-                            <select v-model="checkpointForm.event_type" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
-                                <option value="NORMAL">NORMAL</option>
-                                <option value="EXCEPTION">EXCEPTION</option>
-                                <option value="SYSTEM">SYSTEM</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block font-bold text-[#13293D] mb-1">Latitude</label>
-                            <input v-model="checkpointForm.latitude" type="number" step="0.0000001" placeholder="Contoh: 1.290270" class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl font-mono text-[#13293D]" />
-                        </div>
-                        <div>
-                            <label class="block font-bold text-[#13293D] mb-1">Longitude</label>
-                            <input v-model="checkpointForm.longitude" type="number" step="0.0000001" placeholder="Contoh: 103.851959" class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl font-mono text-[#13293D]" />
-                        </div>
-                    </div>
-
                     <div>
-                        <label class="block font-bold text-[#13293D] mb-1">Waktu Kejadian (Timestamp) <span class="text-rose-600">*</span></label>
-                        <input v-model="checkpointForm.occurred_at" type="datetime-local" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]" />
-                        <span class="text-[10px] text-[#265D7A]">Waktu tidak boleh lebih lampau dari checkpoint terakhir.</span>
+                        <label class="block font-bold text-[#13293D] mb-1">Tipe Event <span class="text-rose-600">*</span></label>
+                        <select v-model="checkpointForm.event_type" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
+                            <option value="NORMAL">NORMAL</option>
+                            <option value="EXCEPTION">EXCEPTION</option>
+                            <option value="SYSTEM">SYSTEM</option>
+                        </select>
                     </div>
+                </div>
 
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block font-bold text-[#13293D] mb-1">Deskripsi Checkpoint <span class="text-rose-600">*</span></label>
-                        <textarea v-model="checkpointForm.description" rows="2" placeholder="Catatan aktivitas kargo di pelabuhan / lepas pantai..." required class="w-full p-2.5 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D] placeholder-[#265D7A]/60"></textarea>
+                        <label class="block font-bold text-[#13293D] mb-1">Latitude</label>
+                        <input v-model="checkpointForm.latitude" type="number" step="0.0000001" placeholder="Contoh: 1.290270" class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl font-mono text-[#13293D]" />
                     </div>
+                    <div>
+                        <label class="block font-bold text-[#13293D] mb-1">Longitude</label>
+                        <input v-model="checkpointForm.longitude" type="number" step="0.0000001" placeholder="Contoh: 103.851959" class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl font-mono text-[#13293D]" />
+                    </div>
+                </div>
 
-                    <div class="pt-3 border-t border-[#265D7A]/15 flex justify-end gap-2">
-                        <button type="button" @click="showCheckpointModal = false" class="px-4 py-2 border border-[#265D7A]/20 bg-white hover:bg-[#EAF6F4] rounded-full text-[#13293D] font-semibold cursor-pointer">
-                            Batal
-                        </button>
-                        <button type="submit" :disabled="checkpointForm.processing" class="px-5 py-2 bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold rounded-full disabled:opacity-60 cursor-pointer shadow-md">
-                            Simpan Checkpoint
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                <div>
+                    <label class="block font-bold text-[#13293D] mb-1">Waktu Kejadian (Timestamp) <span class="text-rose-600">*</span></label>
+                    <input v-model="checkpointForm.occurred_at" type="datetime-local" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]" />
+                    <span class="text-[10px] text-[#265D7A]">Waktu tidak boleh lebih lampau dari checkpoint terakhir.</span>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#13293D] mb-1">Deskripsi Checkpoint <span class="text-rose-600">*</span></label>
+                    <textarea v-model="checkpointForm.description" rows="2" placeholder="Catatan aktivitas kargo di pelabuhan / lepas pantai..." required class="w-full p-2.5 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D] placeholder-[#265D7A]/60"></textarea>
+                </div>
+
+                <div class="pt-3 border-t border-[#265D7A]/15 flex justify-end gap-2">
+                    <button type="button" @click="showCheckpointModal = false" class="px-4 py-2 border border-[#265D7A]/20 bg-white hover:bg-[#EAF6F4] rounded-full text-[#13293D] font-semibold cursor-pointer">
+                        Batal
+                    </button>
+                    <button type="submit" :disabled="checkpointForm.processing" class="px-5 py-2 bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold rounded-full disabled:opacity-60 cursor-pointer shadow-md">
+                        Simpan Checkpoint
+                    </button>
+                </div>
+            </form>
+        </Modal>
 
         <!-- Modal 2: Transition Status -->
-        <div v-if="showTransitionModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#13293D]/45 backdrop-blur-sm">
-            <div class="bg-white/95 backdrop-blur-2xl rounded-3xl border border-white p-6 max-w-md w-full shadow-2xl">
-                <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#265D7A]/15">
+        <Modal :show="showTransitionModal" max-width="md" @close="showTransitionModal = false">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#265D7A]/15">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-[#67C7C6]"></span>
                     <h3 class="text-sm font-bold text-[#13293D]">Transisi Status Pengiriman</h3>
-                    <button @click="showTransitionModal = false" aria-label="Tutup Modal" class="text-[#265D7A] hover:text-[#13293D] cursor-pointer">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
+                </div>
+                <button @click="showTransitionModal = false" aria-label="Tutup Modal" class="text-[#265D7A] hover:text-[#13293D] cursor-pointer p-1">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <form @submit.prevent="submitTransition" class="space-y-4 text-xs">
+                <p class="text-[#265D7A]">Status saat ini: <strong class="text-[#13293D] font-mono">{{ shipment.current_status }}</strong></p>
+
+                <div>
+                    <label class="block font-bold text-[#13293D] mb-1">Status Baru <span class="text-rose-600">*</span></label>
+                    <select v-model="transitionForm.status" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
+                        <option value="">Pilih Status Baru...</option>
+                        <option v-for="st in ['CREATED', 'BOOKED', 'PICKED_UP', 'IN_TRANSIT', 'DELIVERED', 'CANCELLED']" :key="st" :value="st">
+                            {{ st }}
+                        </option>
+                    </select>
                 </div>
 
-                <form @submit.prevent="submitTransition" class="space-y-4 text-xs">
-                    <p class="text-[#265D7A]">Status saat ini: <strong class="text-[#13293D] font-mono">{{ shipment.current_status }}</strong></p>
+                <div>
+                    <label class="block font-bold text-[#13293D] mb-1">Alasan Perubahan Status</label>
+                    <textarea v-model="transitionForm.reason" rows="2" placeholder="Catatan log audit transisi status..." class="w-full p-2.5 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D] placeholder-[#265D7A]/60"></textarea>
+                </div>
 
-                    <div>
-                        <label class="block font-bold text-[#13293D] mb-1">Status Baru <span class="text-rose-600">*</span></label>
-                        <select v-model="transitionForm.status" required class="w-full h-10 px-3 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D]">
-                            <option value="">Pilih Status Baru...</option>
-                            <option v-for="st in ['CREATED', 'BOOKED', 'PICKED_UP', 'IN_TRANSIT', 'DELIVERED', 'CANCELLED']" :key="st" :value="st">
-                                {{ st }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block font-bold text-[#13293D] mb-1">Alasan Perubahan Status</label>
-                        <textarea v-model="transitionForm.reason" rows="2" placeholder="Catatan log audit transisi status..." class="w-full p-2.5 bg-[#EAF6F4] border border-[#265D7A]/20 rounded-xl text-[#13293D] placeholder-[#265D7A]/60"></textarea>
-                    </div>
-
-                    <div class="pt-3 border-t border-[#265D7A]/15 flex justify-end gap-2">
-                        <button type="button" @click="showTransitionModal = false" class="px-4 py-2 border border-[#265D7A]/20 bg-white hover:bg-[#EAF6F4] rounded-full text-[#13293D] font-semibold cursor-pointer">
-                            Batal
-                        </button>
-                        <button type="submit" :disabled="transitionForm.processing" class="px-5 py-2 bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold rounded-full disabled:opacity-60 cursor-pointer shadow-md">
-                            Perbarui Status
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                <div class="pt-3 border-t border-[#265D7A]/15 flex justify-end gap-2">
+                    <button type="button" @click="showTransitionModal = false" class="px-4 py-2 border border-[#265D7A]/20 bg-white hover:bg-[#EAF6F4] rounded-full text-[#13293D] font-semibold cursor-pointer">
+                        Batal
+                    </button>
+                    <button type="submit" :disabled="transitionForm.processing" class="px-5 py-2 bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold rounded-full disabled:opacity-60 cursor-pointer shadow-md">
+                        Perbarui Status
+                    </button>
+                </div>
+            </form>
+        </Modal>
     </AuthenticatedLayout>
 </template>

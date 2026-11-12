@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import EmptyState from '@/Components/EmptyState.vue';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     locations: {
@@ -31,10 +32,22 @@ const filter = () => {
     });
 };
 
+const locationToDelete = ref(null);
+const deleting = ref(false);
+
 const deleteLocation = (location) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus lokasi ${location.name}?`)) {
-        router.delete(`/locations/${location.id}`);
-    }
+    locationToDelete.value = location;
+};
+
+const executeDeleteLocation = () => {
+    if (!locationToDelete.value) return;
+    deleting.value = true;
+    router.delete(`/locations/${locationToDelete.value.id}`, {
+        onFinish: () => {
+            deleting.value = false;
+            locationToDelete.value = null;
+        },
+    });
 };
 </script>
 
@@ -162,5 +175,17 @@ const deleteLocation = (location) => {
                 </div>
             </div>
         </div>
+
+        <!-- Confirm Delete Location Modal -->
+        <ConfirmDialog
+            :show="!!locationToDelete"
+            title="Hapus Data Lokasi / Hub?"
+            message="Simpul pelabuhan atau bandara ini akan dihapus dari master data global."
+            :item-name="locationToDelete ? `${locationToDelete.code} - ${locationToDelete.name}` : ''"
+            confirm-text="Ya, Hapus Lokasi"
+            :loading="deleting"
+            @close="locationToDelete = null"
+            @confirm="executeDeleteLocation"
+        />
     </AuthenticatedLayout>
 </template>

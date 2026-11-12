@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import EmptyState from '@/Components/EmptyState.vue';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     shipments: {
@@ -84,10 +85,22 @@ const toggleSort = (col) => {
     filter();
 };
 
+const shipmentToDelete = ref(null);
+const deleting = ref(false);
+
 const deleteShipment = (shipment) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus shipment ${shipment.shipment_number}?`)) {
-        router.delete(`/shipments/${shipment.id}`);
-    }
+    shipmentToDelete.value = shipment;
+};
+
+const executeDeleteShipment = () => {
+    if (!shipmentToDelete.value) return;
+    deleting.value = true;
+    router.delete(`/shipments/${shipmentToDelete.value.id}`, {
+        onFinish: () => {
+            deleting.value = false;
+            shipmentToDelete.value = null;
+        },
+    });
 };
 
 const statusBadgeClass = (st) => {
@@ -336,5 +349,17 @@ const statusBadgeClass = (st) => {
                 </div>
             </div>
         </div>
+
+        <!-- Confirm Delete Shipment Modal -->
+        <ConfirmDialog
+            :show="!!shipmentToDelete"
+            title="Hapus Data Pengiriman?"
+            message="Manifest kargo beserta seluruh riwayat tracking event dan log auditnya akan dihapus secara permanen."
+            :item-name="shipmentToDelete?.shipment_number || ''"
+            confirm-text="Ya, Hapus Shipment"
+            :loading="deleting"
+            @close="shipmentToDelete = null"
+            @confirm="executeDeleteShipment"
+        />
     </AuthenticatedLayout>
 </template>

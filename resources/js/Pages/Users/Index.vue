@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import EmptyState from '@/Components/EmptyState.vue';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     users: {
@@ -28,10 +29,22 @@ const filter = () => {
     });
 };
 
+const userToDelete = ref(null);
+const deleting = ref(false);
+
 const deleteUser = (user) => {
-    if (confirm(`Apakah Anda yakin ingin menghapus akun ${user.name}?`)) {
-        router.delete(`/users/${user.id}`);
-    }
+    userToDelete.value = user;
+};
+
+const executeDeleteUser = () => {
+    if (!userToDelete.value) return;
+    deleting.value = true;
+    router.delete(`/users/${userToDelete.value.id}`, {
+        onFinish: () => {
+            deleting.value = false;
+            userToDelete.value = null;
+        },
+    });
 };
 </script>
 
@@ -149,5 +162,17 @@ const deleteUser = (user) => {
                 </div>
             </div>
         </div>
+
+        <!-- Confirm Delete User Modal -->
+        <ConfirmDialog
+            :show="!!userToDelete"
+            title="Hapus Akun Pengguna?"
+            message="Akun ini tidak lagi dapat mengakses portal Delixie setelah dihapus."
+            :item-name="userToDelete ? `${userToDelete.name} (${userToDelete.email})` : ''"
+            confirm-text="Ya, Hapus Akun"
+            :loading="deleting"
+            @close="userToDelete = null"
+            @confirm="executeDeleteUser"
+        />
     </AuthenticatedLayout>
 </template>
