@@ -1,5 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import DelixieLogo from '@/Components/DelixieLogo.vue';
 
 defineProps({
     authUser: {
@@ -13,9 +14,12 @@ defineProps({
     <footer class="bg-white/60 backdrop-blur-2xl text-[#265D7A] py-16 px-4 sm:px-8 border-t border-white/85 text-xs relative z-10 shadow-[0_-12px_36px_rgba(19,41,61,0.04)]">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
-                <div class="flex items-center gap-2.5 font-extrabold text-base text-[#13293D] mb-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] shadow-[0_0_8px_#67C7C6]"></span>
-                    <span>Delixie Platform</span>
+                <div class="mb-2.5">
+                    <DelixieLogo
+                        size-class="w-7 h-7"
+                        wordmark-class="font-extrabold text-base text-[#13293D]"
+                        wordmark-text="Delixie Platform"
+                    />
                 </div>
                 <p class="max-w-md text-xs font-normal leading-relaxed text-[#265D7A]">
                     Global Shipment Visibility &amp; Real-Time Logistics Platform. Dibangun menggunakan Laravel 12, Vue 3, Inertia.js, Tailwind CSS v4, Leaflet.js, dan Chart.js.

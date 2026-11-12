@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import DelixieLogo from '@/Components/DelixieLogo.vue';
 
 defineProps({
     authUser: {
@@ -55,13 +56,15 @@ onUnmounted(() => {
             <!-- Logo Delixie -->
             <Link
                 href="/"
-                class="flex items-center gap-2 font-bold tracking-tight hover:text-[#265D7A] transition group shrink-0"
-                :class="isScrolled ? 'text-sm sm:text-base' : 'text-base sm:text-lg'"
+                class="flex items-center hover:opacity-90 transition group shrink-0"
             >
-                <span class="relative flex" :class="isScrolled ? 'h-2 w-2' : 'h-2.5 w-2.5'">
-                    <span class="relative inline-flex rounded-full bg-[#67C7C6] shadow-[0_0_10px_#67C7C6]" :class="isScrolled ? 'h-2 w-2' : 'h-2.5 w-2.5'"></span>
-                </span>
-                <span class="text-[#13293D] font-extrabold tracking-tight">Delixie</span>
+                <DelixieLogo
+                    :size-class="isScrolled ? 'w-6 h-6' : 'w-7 h-7'"
+                    :wordmark-class="[
+                        'font-extrabold tracking-tight text-[#13293D] transition-all duration-300',
+                        isScrolled ? 'text-sm sm:text-base' : 'text-base sm:text-lg'
+                    ].join(' ')"
+                />
             </Link>
 
             <!-- Nav Links -->

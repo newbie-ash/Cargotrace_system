@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
 import NotificationBell from '@/Components/NotificationBell.vue';
+import DelixieLogo from '@/Components/DelixieLogo.vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user || {});
@@ -26,9 +27,8 @@ const logout = () => {
         <!-- Customer Top Navbar -->
         <header v-if="isCustomer" class="sticky top-0.5 z-40 bg-white/75 backdrop-blur-2xl border-b border-white/85 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-8">
-                <Link href="/dashboard" class="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-[#13293D] hover:text-[#265D7A] transition">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] shadow-[0_0_10px_#67C7C6]"></span>
-                    <span>Delixie</span>
+                <Link href="/dashboard" class="flex items-center hover:opacity-90 transition group">
+                    <DelixieLogo size-class="w-7 h-7" wordmark-class="font-extrabold text-xl tracking-tight text-[#13293D]" />
                 </Link>
                 <nav class="hidden md:flex items-center gap-2 text-xs font-semibold">
                     <Link
@@ -70,9 +70,8 @@ const logout = () => {
                 <div class="flex flex-col flex-1 overflow-y-auto p-4">
                     <!-- Brand -->
                     <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#265D7A]/15">
-                        <Link href="/dashboard" class="flex items-center gap-2.5 font-extrabold text-xl tracking-tight text-[#13293D] hover:text-[#265D7A] transition">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] shadow-[0_0_10px_#67C7C6]"></span>
-                            <span>Delixie</span>
+                        <Link href="/dashboard" class="flex items-center hover:opacity-90 transition group">
+                            <DelixieLogo size-class="w-7 h-7" wordmark-class="font-extrabold text-xl tracking-tight text-[#13293D]" />
                         </Link>
                         <button @click="sidebarOpen = false" class="lg:hidden p-1 text-[#265D7A] hover:text-[#13293D] cursor-pointer" aria-label="Tutup Menu">
                             <i class="bi bi-x-lg"></i>
@@ -163,7 +162,7 @@ const logout = () => {
                     <button @click="sidebarOpen = true" class="p-1.5 rounded-lg border border-[#265D7A]/20 text-[#13293D] cursor-pointer" aria-label="Buka Menu">
                         <i class="bi bi-list text-xl"></i>
                     </button>
-                    <span class="font-extrabold text-base text-[#13293D]">Delixie</span>
+                    <DelixieLogo size-class="w-6 h-6" wordmark-class="font-extrabold text-base text-[#13293D]" />
                     <div class="flex items-center gap-2">
                         <NotificationBell />
                         <button @click="logout" class="text-rose-700 p-1 cursor-pointer" aria-label="Keluar">

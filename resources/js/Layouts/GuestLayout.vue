@@ -1,5 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import DelixieLogo from '@/Components/DelixieLogo.vue';
 </script>
 
 <template>
@@ -7,9 +8,11 @@ import { Link } from '@inertiajs/vue3';
         <div class="w-full max-w-md relative z-10">
             <!-- Brand Header -->
             <div class="text-center mb-8">
-                <Link href="/" class="inline-flex items-center gap-2.5 font-extrabold text-2xl tracking-tight text-[#13293D] hover:text-[#265D7A] transition">
-                    <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] shadow-[0_0_10px_#67C7C6]"></span>
-                    <span>Delixie</span>
+                <Link href="/" class="inline-flex items-center hover:opacity-90 transition group">
+                    <DelixieLogo
+                        size-class="w-9 h-9"
+                        wordmark-class="font-extrabold text-2xl tracking-tight text-[#13293D]"
+                    />
                 </Link>
                 <p class="text-xs font-medium text-[#265D7A] mt-1.5">Global Shipment Visibility &amp; Tracking Platform</p>
             </div>
