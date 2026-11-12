@@ -42,8 +42,10 @@ const dateFrom = ref(props.filters.date_from || '');
 const dateTo = ref(props.filters.date_to || '');
 const sortBy = ref(props.filters.sort_by || 'id');
 const sortDirection = ref(props.filters.sort_direction || 'desc');
+const isLoading = ref(false);
 
 const filter = () => {
+    isLoading.value = true;
     router.get('/shipments', {
         search: search.value || undefined,
         status: status.value || undefined,
@@ -58,10 +60,14 @@ const filter = () => {
     }, {
         preserveState: true,
         replace: true,
+        onFinish: () => {
+            isLoading.value = false;
+        },
     });
 };
 
 const resetFilter = () => {
+    isLoading.value = true;
     search.value = '';
     status.value = '';
     carrierId.value = '';
@@ -72,7 +78,13 @@ const resetFilter = () => {
     dateTo.value = '';
     sortBy.value = 'id';
     sortDirection.value = 'desc';
-    router.get('/shipments', {}, { preserveState: true, replace: true });
+    router.get('/shipments', {}, {
+        preserveState: true,
+        replace: true,
+        onFinish: () => {
+            isLoading.value = false;
+        },
+    });
 };
 
 const toggleSort = (col) => {
@@ -245,7 +257,22 @@ const statusBadgeClass = (st) => {
                             <th class="py-3.5 px-4 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-[#265D7A]/10">
+                    <!-- Skeleton Loading State -->
+                    <tbody v-if="isLoading" class="divide-y divide-[#265D7A]/10 animate-pulse" aria-busy="true">
+                        <tr v-for="i in 5" :key="`skel-${i}`" class="hover:bg-white/40">
+                            <td class="py-4 px-4"><div class="h-4 w-28 bg-[#13293D]/15 rounded"></div></td>
+                            <td class="py-4 px-4"><div class="h-4 w-24 bg-[#67C7C6]/20 rounded"></div></td>
+                            <td class="py-4 px-4"><div class="h-4 w-32 bg-[#265D7A]/15 rounded"></div></td>
+                            <td v-if="!isCustomer" class="py-4 px-4"><div class="h-4 w-24 bg-[#265D7A]/15 rounded"></div></td>
+                            <td class="py-4 px-4"><div class="h-5 w-20 bg-[#67C7C6]/25 rounded-md"></div></td>
+                            <td class="py-4 px-4"><div class="h-4 w-20 bg-[#265D7A]/15 rounded"></div></td>
+                            <td class="py-4 px-4"><div class="h-4 w-24 bg-[#265D7A]/15 rounded"></div></td>
+                            <td class="py-4 px-4 text-right"><div class="h-6 w-14 bg-[#265D7A]/15 rounded-lg ml-auto"></div></td>
+                        </tr>
+                    </tbody>
+
+                    <!-- Loaded Shipments Data -->
+                    <tbody v-else class="divide-y divide-[#265D7A]/10">
                         <tr v-for="s in shipments.data" :key="s.id" class="hover:bg-white/60 transition">
                             <td class="py-3.5 px-4 font-mono font-bold">
                                 <Link :href="`/shipments/${s.id}`" class="hover:underline text-[#13293D]">

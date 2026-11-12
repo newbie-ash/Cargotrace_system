@@ -3,7 +3,7 @@ import '../css/app.css';
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 
-const appName = 'CargoTrace';
+const appName = 'Delixie';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -21,7 +21,7 @@ createInertiaApp({
             .mount(el);
     },
     progress: {
-        color: '#1A1A1C',
-        showSpinner: true,
+        color: '#67C7C6',
+        showSpinner: false,
     },
 });

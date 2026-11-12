@@ -4,6 +4,7 @@ import { Link, usePage, router } from '@inertiajs/vue3';
 import NotificationBell from '@/Components/NotificationBell.vue';
 import DelixieLogo from '@/Components/DelixieLogo.vue';
 import DynamicIslandToast from '@/Components/DynamicIslandToast.vue';
+import SkeletonLoader from '@/Components/SkeletonLoader.vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user || {});
@@ -16,6 +17,11 @@ const sidebarOpen = ref(false);
 const sidebarCollapsed = ref(false);
 const quickSearch = ref('');
 const quickSearchInput = ref(null);
+const isNavigating = ref(false);
+const navSkeletonVariant = ref('cards');
+let navTimer = null;
+let removeStartListener = null;
+let removeFinishListener = null;
 
 const toggleCollapse = () => {
     sidebarCollapsed.value = !sidebarCollapsed.value;
@@ -50,10 +56,34 @@ onMounted(() => {
         sidebarCollapsed.value = false;
     }
     window.addEventListener('keydown', handleKeydown);
+
+    removeStartListener = router.on('start', (event) => {
+        if (event.detail?.visit?.preserveState || event.detail?.visit?.prefetch) return;
+        const path = event.detail?.visit?.url?.pathname || '';
+        if (/^\/shipments\/\d+/.test(path)) {
+            navSkeletonVariant.value = 'detail';
+        } else if (/^\/(shipments|carriers|locations|users)/.test(path)) {
+            navSkeletonVariant.value = 'table';
+        } else {
+            navSkeletonVariant.value = 'cards';
+        }
+        if (navTimer) clearTimeout(navTimer);
+        navTimer = setTimeout(() => {
+            isNavigating.value = true;
+        }, 120);
+    });
+
+    removeFinishListener = router.on('finish', () => {
+        if (navTimer) clearTimeout(navTimer);
+        isNavigating.value = false;
+    });
 });
 
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
+    if (navTimer) clearTimeout(navTimer);
+    if (removeStartListener) removeStartListener();
+    if (removeFinishListener) removeFinishListener();
 });
 </script>
 
@@ -62,8 +92,15 @@ onUnmounted(() => {
         <!-- Dynamic Island Flash Notification -->
         <DynamicIslandToast />
 
-        <!-- Top Subtle Brand Accent Line -->
-        <div class="h-0.5 bg-gradient-to-r from-[#13293D] via-[#265D7A] to-[#67C7C6] sticky top-0 z-50"></div>
+        <!-- Top Subtle Brand Accent Line / Global Progress Pulse Beam -->
+        <div class="h-0.5 relative sticky top-0 z-50 overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-[#13293D] via-[#265D7A] to-[#67C7C6]"></div>
+            <div
+                v-if="isNavigating"
+                class="absolute inset-0 bg-gradient-to-r from-transparent via-[#67C7C6] to-transparent animate-pulse"
+                aria-hidden="true"
+            ></div>
+        </div>
 
         <!-- Customer Floating Liquid Pill Navbar -->
         <div v-if="isCustomer" class="sticky top-3 z-40 px-4 lg:px-8 mt-3 mb-2 pointer-events-none flex justify-center">
@@ -375,14 +412,16 @@ onUnmounted(() => {
 
                 <!-- Page Content Body -->
                 <main class="flex-1 p-4 lg:p-8 max-w-7xl mx-auto w-full">
-                    <slot />
+                    <SkeletonLoader v-if="isNavigating" :variant="navSkeletonVariant" />
+                    <slot v-else />
                 </main>
             </div>
         </div>
 
         <!-- Customer Main View Container -->
         <main v-if="isCustomer" class="flex-1 p-4 lg:p-8 max-w-7xl mx-auto w-full">
-            <slot />
+            <SkeletonLoader v-if="isNavigating" :variant="navSkeletonVariant" />
+            <slot v-else />
         </main>
     </div>
 </template>
