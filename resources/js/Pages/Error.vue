@@ -68,7 +68,7 @@ const reloadPage = () => {
 <template>
     <Head :title="`${status} - ${errorDetails.title} | Delixie`" />
 
-    <div class="min-h-screen bg-transparent text-[#13293D] flex flex-col justify-between p-6 relative overflow-hidden font-sans selection:bg-[#67C7C6] selection:text-[#13293D]">
+    <div class="min-h-screen bg-transparent text-[#13293D] flex flex-col justify-between p-6 relative overflow-hidden font-sans selection:bg-teal-bright selection:text-[#13293D]">
         <!-- Ambient Radial Gradient Background Accents -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
             <div class="absolute top-10 right-10 w-96 h-96 rounded-full bg-gradient-to-br from-[#13293D] via-[#265D7A] to-[#67C7C6] opacity-30 blur-[90px]"></div>

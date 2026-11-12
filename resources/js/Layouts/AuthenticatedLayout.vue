@@ -88,7 +88,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-transparent text-[#13293D] flex flex-col font-sans selection:bg-[#67C7C6] selection:text-[#13293D]">
+    <div class="min-h-screen bg-transparent text-[#13293D] flex flex-col font-sans selection:bg-teal-bright selection:text-[#13293D]">
         <!-- Dynamic Island Flash Notification -->
         <DynamicIslandToast />
 

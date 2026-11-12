@@ -21,7 +21,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @inertiaHead
 </head>
-<body class="font-sans antialiased text-[#13293D] min-h-screen selection:bg-[#67C7C6] selection:text-[#13293D]">
+<body class="font-sans antialiased text-[#13293D] min-h-screen selection:bg-teal-bright selection:text-[#13293D]">
     @inertia
 </body>
 </html>
