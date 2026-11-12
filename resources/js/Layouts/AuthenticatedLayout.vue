@@ -3,10 +3,10 @@ import { ref, computed } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
 import NotificationBell from '@/Components/NotificationBell.vue';
 import DelixieLogo from '@/Components/DelixieLogo.vue';
+import DynamicIslandToast from '@/Components/DynamicIslandToast.vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user || {});
-const flash = computed(() => page.props.flash || {});
 
 const isAdmin = computed(() => user.value.role === 'admin');
 const isOperator = computed(() => user.value.role === 'operator');
@@ -21,6 +21,9 @@ const logout = () => {
 
 <template>
     <div class="min-h-screen bg-transparent text-[#13293D] flex flex-col font-sans selection:bg-[#67C7C6] selection:text-[#13293D]">
+        <!-- Dynamic Island Flash Notification -->
+        <DynamicIslandToast />
+
         <!-- Top Subtle Brand Accent Line -->
         <div class="h-0.5 bg-gradient-to-r from-[#13293D] via-[#265D7A] to-[#67C7C6] sticky top-0 z-50"></div>
 
@@ -173,17 +176,6 @@ const logout = () => {
 
                 <!-- Page Content Body -->
                 <main class="flex-1 p-4 lg:p-8 max-w-7xl mx-auto w-full">
-                    <!-- Flash Messages -->
-                    <div v-if="flash.success" class="mb-5 p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-600/30 text-emerald-950 flex items-center gap-2 text-xs font-semibold">
-                        <i class="bi bi-check-circle-fill text-emerald-700 text-sm"></i>
-                        <span>{{ flash.success }}</span>
-                    </div>
-
-                    <div v-if="flash.error" class="mb-5 p-3.5 rounded-2xl bg-rose-500/15 border border-rose-600/30 text-rose-950 flex items-center gap-2 text-xs font-semibold">
-                        <i class="bi bi-exclamation-triangle-fill text-rose-700 text-sm"></i>
-                        <span>{{ flash.error }}</span>
-                    </div>
-
                     <slot />
                 </main>
             </div>
@@ -191,16 +183,6 @@ const logout = () => {
 
         <!-- Customer Main View Container -->
         <main v-if="isCustomer" class="flex-1 p-4 lg:p-8 max-w-7xl mx-auto w-full">
-            <div v-if="flash.success" class="mb-5 p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-600/30 text-emerald-950 flex items-center gap-2 text-xs font-semibold">
-                <i class="bi bi-check-circle-fill text-emerald-700 text-sm"></i>
-                <span>{{ flash.success }}</span>
-            </div>
-
-            <div v-if="flash.error" class="mb-5 p-3.5 rounded-2xl bg-rose-500/15 border border-rose-600/30 text-rose-950 flex items-center gap-2 text-xs font-semibold">
-                <i class="bi bi-exclamation-triangle-fill text-rose-700 text-sm"></i>
-                <span>{{ flash.error }}</span>
-            </div>
-
             <slot />
         </main>
     </div>

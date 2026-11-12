@@ -1,10 +1,12 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import DelixieLogo from '@/Components/DelixieLogo.vue';
+import DynamicIslandToast from '@/Components/DynamicIslandToast.vue';
 </script>
 
 <template>
     <div class="min-h-screen bg-transparent text-[#13293D] flex flex-col items-center justify-center p-4 relative overflow-hidden selection:bg-[#67C7C6] selection:text-[#13293D]">
+        <DynamicIslandToast />
         <div class="w-full max-w-md relative z-10">
             <!-- Brand Header -->
             <div class="text-center mb-8">
