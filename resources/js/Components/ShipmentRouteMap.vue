@@ -292,7 +292,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Map Container -->
-        <div v-if="hasValidCoordinates" class="relative w-full" :style="{ height }">
+        <div v-if="hasValidCoordinates" class="relative w-full ocean-map-container" :style="{ height }">
             <div ref="mapContainer" class="w-full h-full z-10"></div>
         </div>
 
@@ -308,6 +308,14 @@ onUnmounted(() => {
 </template>
 
 <style>
+/* Leaflet Ocean Tint styling matching 3D Globe (#13293D ocean + #265D7A land) */
+.ocean-map-container .leaflet-container {
+    background: linear-gradient(180deg, #1A3A54 0%, #13293D 50%, #0C1B28 100%) !important;
+}
+.ocean-map-container .leaflet-tile-pane {
+    filter: brightness(0.9) sepia(1) hue-rotate(170deg) saturate(3.2);
+}
+
 /* Leaflet Dark Canvas styling overrides */
 .leaflet-popup-content-wrapper {
     background: #13293D !important;

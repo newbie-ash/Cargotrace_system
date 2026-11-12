@@ -2,6 +2,8 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { feature } from 'topojson-client';
+import countries110m from 'world-atlas/countries-110m.json';
 
 const props = defineProps({
     carriers: {
@@ -121,23 +123,58 @@ const initWorldMap = () => {
         zoomControl: false,
         scrollWheelZoom: false,
         worldCopyJump: true,
-        attributionControl: true,
+        attributionControl: false,
     });
 
     L.control.zoom({ position: 'topright' }).addTo(map);
 
-    // Esri World Dark Gray Canvas nested inside light frosted Bento Card (Matches Reference)
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri',
-        maxZoom: 16,
-        maxNativeZoom: 10,
+    // 1. Vector Countries layer styled identical to 3D Globe (#265D7A land with #67C7C6 coastlines)
+    // Unwrap antimeridian coordinates (Russia & Fiji) and omit Antarctica so 2D Mercator has zero horizontal wrap artifacts
+    const unwrapRing = (ring) => {
+        if (!ring.length) return ring;
+        const result = [[ring[0][0], ring[0][1]]];
+        for (let i = 1; i < ring.length; i++) {
+            let [lng, lat] = ring[i];
+            const prevLng = result[i - 1][0];
+            while (lng - prevLng > 180) lng -= 360;
+            while (lng - prevLng < -180) lng += 360;
+            result.push([lng, lat]);
+        }
+        return result;
+    };
+
+    const rawCountries = feature(countries110m, countries110m.objects.countries);
+    const cleanCountries = {
+        ...rawCountries,
+        features: rawCountries.features
+            .filter((f) => String(f.id) !== '010')
+            .map((f) => ({
+                ...f,
+                geometry: {
+                    ...f.geometry,
+                    coordinates: f.geometry.type === 'Polygon'
+                        ? f.geometry.coordinates.map(unwrapRing)
+                        : f.geometry.coordinates.map((poly) => poly.map(unwrapRing)),
+                },
+            })),
+    };
+
+    L.geoJSON(cleanCountries, {
+        style: {
+            fillColor: '#265D7A',
+            fillOpacity: 0.94,
+            color: '#67C7C6',
+            weight: 1.1,
+            opacity: 0.85,
+        },
     }).addTo(map);
 
+    // 2. Subtle reference tile for city and ocean labels
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
         attribution: '',
         maxZoom: 16,
         maxNativeZoom: 10,
-        opacity: 0.75,
+        opacity: 0.40,
     }).addTo(map);
 
     layerGroup = L.layerGroup().addTo(map);
@@ -286,7 +323,7 @@ onUnmounted(() => {
                     </div>
 
                     <!-- Real Interactive Dark Canvas World Map Framed Inside Light Frosted Card -->
-                    <div class="relative rounded-2xl bg-[#13293D] border border-[#265D7A]/40 overflow-hidden flex-1 min-h-[300px] flex flex-col shadow-inner">
+                    <div class="relative rounded-2xl bg-[#13293D] border border-[#265D7A]/40 overflow-hidden flex-1 min-h-[300px] flex flex-col shadow-inner bento-world-map">
                         <div ref="worldMapRef" class="w-full flex-1 min-h-[260px] sm:min-h-[310px] z-10"></div>
 
                         <!-- Telemetry Legend & Corridor Footer -->
@@ -478,3 +515,22 @@ onUnmounted(() => {
         </div>
     </section>
 </template>
+
+<style>
+/* Leaflet Ocean styling matching 3D Globe (#13293D ocean + #265D7A land) */
+.bento-world-map .leaflet-container {
+    background: linear-gradient(180deg, #1A3A54 0%, #13293D 50%, #0C1B28 100%) !important;
+}
+.bento-world-map .leaflet-tile-pane {
+    filter: brightness(0.9) sepia(1) hue-rotate(170deg) saturate(3.2);
+}
+.bento-world-map .leaflet-bar a {
+    background-color: #13293D !important;
+    border-color: rgba(103, 199, 198, 0.3) !important;
+    color: #A7E4DB !important;
+}
+.bento-world-map .leaflet-bar a:hover {
+    background-color: #265D7A !important;
+    color: #FFFFFF !important;
+}
+</style>
