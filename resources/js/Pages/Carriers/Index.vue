@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import EmptyState from '@/Components/EmptyState.vue';
 
 const props = defineProps({
     carriers: {
@@ -129,8 +130,12 @@ const deleteCarrier = (carrier) => {
                             </td>
                         </tr>
                         <tr v-if="!carriers.data?.length">
-                            <td colspan="7" class="py-8 text-center text-[#265D7A]">
-                                Tidak ada data carrier yang cocok.
+                            <td colspan="7" class="p-0">
+                                <EmptyState
+                                    icon="bi-truck"
+                                    title="Tidak Ada Carrier Ditemukan"
+                                    description="Tidak ada data carrier yang cocok dengan pencarian atau filter moda yang dipilih."
+                                />
                             </td>
                         </tr>
                     </tbody>

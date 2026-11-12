@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import EmptyState from '@/Components/EmptyState.vue';
 
 const props = defineProps({
     locations: {
@@ -135,8 +136,12 @@ const deleteLocation = (location) => {
                             </td>
                         </tr>
                         <tr v-if="!locations.data?.length">
-                            <td colspan="7" class="py-8 text-center text-[#265D7A]">
-                                Tidak ada data lokasi yang sesuai filter.
+                            <td colspan="7" class="p-0">
+                                <EmptyState
+                                    icon="bi-geo-alt"
+                                    title="Tidak Ada Lokasi / Hub Ditemukan"
+                                    description="Tidak ada fasilitas pelabuhan atau bandara yang cocok dengan parameter filter."
+                                />
                             </td>
                         </tr>
                     </tbody>

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import EmptyState from '@/Components/EmptyState.vue';
 
 const props = defineProps({
     users: {
@@ -122,8 +123,12 @@ const deleteUser = (user) => {
                             </td>
                         </tr>
                         <tr v-if="!users.data?.length">
-                            <td colspan="6" class="py-8 text-center text-[#265D7A]">
-                                Tidak ada data pengguna yang cocok.
+                            <td colspan="6" class="p-0">
+                                <EmptyState
+                                    icon="bi-people"
+                                    title="Tidak Ada Pengguna Ditemukan"
+                                    description="Tidak ada akun administrator, operator, atau customer yang sesuai pencarian."
+                                />
                             </td>
                         </tr>
                     </tbody>

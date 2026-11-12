@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import EmptyState from '@/Components/EmptyState.vue';
 
 const props = defineProps({
     shipments: {
@@ -294,10 +295,22 @@ const statusBadgeClass = (st) => {
                             </td>
                         </tr>
                         <tr v-if="!shipments.data?.length">
-                            <td :colspan="isCustomer ? 7 : 8" class="py-12 text-center text-[#265D7A]">
-                                <i class="bi bi-inbox text-3xl text-[#67C7C6] mb-2 block"></i>
-                                <span class="font-bold text-[#13293D]">Tidak ada kargo yang sesuai filter</span>
-                                <p class="text-[11px] text-[#265D7A] mt-0.5">Coba ubah kata kunci pencarian atau reset parameter filter.</p>
+                            <td :colspan="isCustomer ? 7 : 8" class="p-0">
+                                <EmptyState
+                                    icon="bi-box-seam"
+                                    title="Tidak Ada Kargo Ditemukan"
+                                    description="Ubah kata kunci pencarian atau sesuaikan filter status, carrier, dan tanggal."
+                                >
+                                    <template #action>
+                                        <button
+                                            type="button"
+                                            @click="resetFilter"
+                                            class="px-4 py-1.5 bg-[#265D7A] hover:bg-[#13293D] text-white text-xs font-semibold rounded-full transition cursor-pointer shadow-sm"
+                                        >
+                                            Reset Filter
+                                        </button>
+                                    </template>
+                                </EmptyState>
                             </td>
                         </tr>
                     </tbody>
