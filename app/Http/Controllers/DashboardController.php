@@ -63,11 +63,13 @@ class DashboardController extends Controller
             ->toArray();
 
         // Recent Shipments
-        $recentShipments = (clone $shipmentQuery)
-            ->with(['carrier', 'originLocation', 'destinationLocation'])
-            ->latest('id')
-            ->take(5)
-            ->get();
+        $recentShipmentsQuery = (clone $shipmentQuery)
+            ->with(['carrier', 'originLocation', 'destinationLocation', 'trackingEvents.location', 'exceptions'])
+            ->latest('id');
+
+        $recentShipments = $user->isCustomer()
+            ? $recentShipmentsQuery->take(10)->get()
+            : $recentShipmentsQuery->take(5)->get();
 
         $stats = [
             'total_shipments' => $totalShipments,
@@ -84,6 +86,7 @@ class DashboardController extends Controller
             'carrier_distribution' => $carrierCounts,
             'recent_shipments' => $recentShipments,
             'recent_audits' => $user->isAdmin() ? AuditLog::with('user')->latest('id')->take(6)->get() : [],
+            'synced_at' => now()->toIso8601String(),
         ];
 
         return Inertia::render('Dashboard/Index', [

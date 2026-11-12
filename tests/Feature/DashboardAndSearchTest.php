@@ -195,4 +195,56 @@ class DashboardAndSearchTest extends TestCase
                 ->where('shipments.data.0.id', $s1->id)
             );
     }
+
+    public function test_customer_dashboard_renders_isolated_shipments_with_realtime_tracking_props(): void
+    {
+        $shipmentService = app(ShipmentService::class);
+
+        // Other customer
+        $otherCustomer = User::create([
+            'name' => 'Other Client',
+            'email' => 'other.client@cargotrace.app',
+            'password' => bcrypt('password'),
+            'role' => 'customer',
+            'company_name' => 'Foreign Cargo Inc',
+        ]);
+
+        // Shipment belonging to this->customer
+        $myShipment = $shipmentService->createShipment([
+            'customer_id' => $this->customer->id,
+            'carrier_id' => $this->carrierA->id,
+            'origin_location_id' => $this->origin->id,
+            'destination_location_id' => $this->destination->id,
+            'cargo_type' => 'Textile Rolls',
+            'expected_departure' => now()->addDay(),
+            'expected_arrival' => now()->addDays(7),
+        ], creatorId: $this->admin->id);
+
+        // Shipment belonging to other customer
+        $otherShipment = $shipmentService->createShipment([
+            'customer_id' => $otherCustomer->id,
+            'carrier_id' => $this->carrierB->id,
+            'origin_location_id' => $this->origin->id,
+            'destination_location_id' => $this->destination->id,
+            'cargo_type' => 'Steel Pipes',
+            'expected_departure' => now()->addDays(2),
+            'expected_arrival' => now()->addDays(14),
+        ], creatorId: $this->admin->id);
+
+        $this->actingAs($this->customer);
+
+        $this->get('/dashboard')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('Dashboard/Index')
+                ->where('stats.total_shipments', 1)
+                ->has('stats.recent_shipments', 1)
+                ->where('stats.recent_shipments.0.id', $myShipment->id)
+                ->where('stats.recent_shipments.0.shipment_number', $myShipment->shipment_number)
+                ->has('stats.recent_shipments.0.carrier')
+                ->has('stats.recent_shipments.0.origin_location')
+                ->has('stats.recent_shipments.0.destination_location')
+                ->has('stats.recent_shipments.0.tracking_events')
+                ->has('stats.synced_at')
+            );
+    }
 }

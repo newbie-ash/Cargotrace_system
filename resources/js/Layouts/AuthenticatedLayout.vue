@@ -102,76 +102,184 @@ onUnmounted(() => {
             ></div>
         </div>
 
-        <!-- Customer Floating Liquid Pill Navbar -->
-        <div v-if="isCustomer" class="sticky top-3 z-40 px-4 lg:px-8 mt-3 mb-2 pointer-events-none flex justify-center">
-            <header
-                class="pointer-events-auto w-full max-w-6xl rounded-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 sm:gap-5 backdrop-blur-2xl relative overflow-visible transition-all duration-300"
+        <!-- Customer Layout (Opsi A: Desktop Floating Liquid Glass Left Sidebar + Mobile Floating Bottom Bar) -->
+        <div v-if="isCustomer" class="flex flex-1 min-h-screen">
+            <!-- Desktop Floating Liquid Glass Left Sidebar -->
+            <aside
+                class="hidden lg:flex lg:flex-col lg:justify-between w-64 shrink-0 m-4 mr-0 rounded-3xl sticky top-4 overflow-hidden relative transition-all duration-300"
                 style="
-                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(217, 242, 238, 0.50) 50%, rgba(255, 255, 255, 0.82) 100%);
-                    box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95), inset 0 -2px 6px 0 rgba(103, 199, 198, 0.22), 0 14px 36px -8px rgba(19, 41, 61, 0.12);
-                    border: 1px solid rgba(255, 255, 255, 0.95);
+                    height: calc(100vh - 2rem);
+                    background: linear-gradient(160deg, rgba(19, 41, 61, 0.94) 0%, rgba(38, 93, 122, 0.88) 58%, rgba(103, 199, 198, 0.78) 100%);
+                    backdrop-filter: blur(24px) saturate(150%);
+                    -webkit-backdrop-filter: blur(24px) saturate(150%);
+                    border: 1px solid rgba(255, 255, 255, 0.35);
+                    box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.45), inset 0 -2px 10px 0 rgba(103, 199, 198, 0.25), 0 20px 44px -10px rgba(19, 41, 61, 0.28);
                 "
             >
-                <!-- Specular Top Highlight clipped cleanly to pill shape -->
-                <div class="absolute inset-0 rounded-full overflow-hidden pointer-events-none" aria-hidden="true">
-                    <div class="absolute inset-x-10 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/95 to-transparent"></div>
-                </div>
+                <!-- Specular Top Light & Subtle Liquid Glow -->
+                <div class="absolute inset-x-6 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none" aria-hidden="true"></div>
+                <div class="absolute -bottom-16 -right-12 w-44 h-44 rounded-full bg-[#A7E4DB]/25 blur-2xl pointer-events-none" aria-hidden="true"></div>
 
-                <!-- Brand + Nav Pills -->
-                <div class="flex items-center gap-3 sm:gap-6 relative z-10 min-w-0">
-                    <Link href="/dashboard" class="flex items-center hover:opacity-90 transition group shrink-0">
-                        <DelixieLogo size-class="w-7 h-7" wordmark-class="font-extrabold text-base sm:text-lg tracking-tight text-[#13293D]" />
+                <div class="p-4 flex flex-col flex-1 overflow-y-auto relative z-10">
+                    <!-- Brand Header in Frost Pill -->
+                    <Link
+                        href="/dashboard"
+                        class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md shadow-sm hover:bg-white transition mb-5 group"
+                    >
+                        <DelixieLogo size-class="w-7 h-7" wordmark-class="font-extrabold text-lg tracking-tight text-[#13293D]" />
+                        <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-[#EAF6F4] text-[#265D7A] uppercase">PORTAL</span>
                     </Link>
 
-                    <nav class="flex items-center gap-1 sm:gap-1.5 text-xs font-semibold" aria-label="Navigasi Customer">
+                    <!-- Customer Company Badge -->
+                    <div class="rounded-2xl bg-white/12 border border-white/20 p-3.5 mb-5 backdrop-blur-md">
+                        <div class="text-[10px] font-mono uppercase tracking-wider text-[#A7E4DB] font-bold">Akun Klien</div>
+                        <div class="font-bold text-xs text-white truncate mt-0.5">{{ user.name }}</div>
+                        <div class="text-[10px] font-mono text-[#D9F2EE] truncate mt-0.5">{{ user.company_name || user.email }}</div>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <nav class="space-y-1.5 text-xs font-semibold" aria-label="Navigasi Customer">
+                        <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#A7E4DB]/80 px-3 pb-1">
+                            Menu Utama
+                        </div>
                         <Link
                             href="/dashboard"
-                            class="px-3 sm:px-4 py-1.5 rounded-full transition whitespace-nowrap"
-                            :class="$page.url.startsWith('/dashboard') ? 'bg-[#13293D] text-[#A7E4DB] font-bold shadow-sm' : 'text-[#265D7A] hover:text-[#13293D] hover:bg-white/75'"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition"
+                            :class="$page.url.startsWith('/dashboard')
+                                ? 'bg-gradient-to-r from-[#A7E4DB] to-[#67C7C6] text-[#13293D] font-bold shadow-lg shadow-[#13293D]/25'
+                                : 'text-[#EAF6F4] hover:bg-white/15 hover:text-white'"
                         >
-                            Dashboard
+                            <i class="bi bi-grid-1x2-fill text-sm shrink-0"></i>
+                            <span>Dashboard Tracking</span>
                         </Link>
                         <Link
                             href="/shipments"
-                            class="px-3 sm:px-4 py-1.5 rounded-full transition whitespace-nowrap"
-                            :class="$page.url.startsWith('/shipments') ? 'bg-[#13293D] text-[#A7E4DB] font-bold shadow-sm' : 'text-[#265D7A] hover:text-[#13293D] hover:bg-white/75'"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition"
+                            :class="$page.url.startsWith('/shipments')
+                                ? 'bg-gradient-to-r from-[#A7E4DB] to-[#67C7C6] text-[#13293D] font-bold shadow-lg shadow-[#13293D]/25'
+                                : 'text-[#EAF6F4] hover:bg-white/15 hover:text-white'"
                         >
-                            Kargo Saya
+                            <i class="bi bi-box-seam-fill text-sm shrink-0"></i>
+                            <span>Kargo Saya</span>
                         </Link>
                     </nav>
                 </div>
 
-                <!-- Right Controls: Quick Track + Notification + User + Logout -->
-                <div class="flex items-center gap-2.5 sm:gap-3.5 relative z-10 shrink-0">
-                    <form @submit.prevent="submitQuickSearch" class="hidden lg:flex items-center relative">
-                        <i class="bi bi-search absolute left-3 text-[#265D7A] text-[11px] pointer-events-none"></i>
+                <!-- Sidebar Footer -->
+                <div class="p-4 border-t border-white/15 relative z-10 space-y-2.5">
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-[11px] text-[#D9F2EE] font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                        <span class="truncate">Live Telemetry Aktif</span>
+                    </div>
+                    <button
+                        @click="logout"
+                        class="w-full flex items-center justify-center gap-2 py-2.5 px-3 text-xs font-bold text-rose-100 bg-rose-500/20 hover:bg-rose-500/35 border border-rose-300/25 rounded-2xl transition cursor-pointer"
+                    >
+                        <i class="bi bi-box-arrow-right text-sm shrink-0"></i>
+                        <span>Keluar Akun</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Customer Main Content Column -->
+            <div class="flex-1 flex flex-col min-w-0">
+                <!-- Clean Top Utility Bar (Desktop & Mobile) -->
+                <header class="sticky top-0.5 z-30 px-4 lg:px-6 py-3 flex items-center justify-between gap-3 bg-white/85 lg:bg-white/75 backdrop-blur-xl border-b border-slate-200/70">
+                    <!-- Mobile Brand -->
+                    <Link href="/dashboard" class="lg:hidden flex items-center shrink-0">
+                        <DelixieLogo size-class="w-6 h-6" wordmark-class="font-extrabold text-base tracking-tight text-[#13293D]" />
+                    </Link>
+
+                    <!-- Desktop Context -->
+                    <div class="hidden lg:flex items-center gap-2.5">
+                        <span class="text-xs font-bold text-[#13293D]">Customer Portal</span>
+                        <span class="text-slate-300">/</span>
+                        <span class="text-[11px] font-mono text-[#265D7A]">{{ user.company_name || 'Global Cargo Tracking' }}</span>
+                    </div>
+
+                    <!-- Quick Track Search -->
+                    <form @submit.prevent="submitQuickSearch" class="flex-1 max-w-md relative">
+                        <i class="bi bi-search absolute left-3.5 top-2.5 text-[#265D7A] text-xs pointer-events-none"></i>
                         <input
                             ref="quickSearchInput"
                             v-model="quickSearch"
                             type="text"
-                            placeholder="Cari Resi... (Ctrl+K)"
+                            placeholder="Lacak cepat No. Resi / Kargo..."
                             aria-label="Cari Nomor Resi"
-                            class="w-44 focus:w-56 transition-all duration-200 h-8 pl-8 pr-3 rounded-full bg-white/85 border border-[#265D7A]/20 text-[11px] text-[#13293D] placeholder-[#265D7A]/60 focus:outline-none focus:ring-2 focus:ring-[#67C7C6]/50 focus:border-[#265D7A]"
+                            class="w-full h-9 pl-9 pr-14 rounded-full bg-white border border-slate-200 text-xs text-[#13293D] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#67C7C6]/50 focus:border-[#265D7A] transition shadow-xs"
                         />
+                        <kbd class="hidden sm:inline-block absolute right-3 top-2 px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono text-[9px] font-bold text-[#265D7A] pointer-events-none">
+                            Ctrl+K
+                        </kbd>
                     </form>
 
-                    <NotificationBell />
-
-                    <div class="text-right hidden md:block">
-                        <div class="text-xs font-bold text-[#13293D] leading-tight">{{ user.name }}</div>
-                        <div class="text-[10px] text-[#265D7A] font-mono font-bold uppercase tracking-wider">{{ user.company_name || 'Customer' }}</div>
+                    <!-- Right Utilities -->
+                    <div class="flex items-center gap-2.5 shrink-0">
+                        <NotificationBell />
+                        <div class="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200">
+                            <div class="w-8 h-8 rounded-full bg-[#13293D] text-[#A7E4DB] flex items-center justify-center font-mono font-bold text-xs">
+                                {{ (user.name || 'C').slice(0, 2).toUpperCase() }}
+                            </div>
+                            <div class="hidden xl:block text-left">
+                                <div class="text-xs font-bold text-[#13293D] leading-tight">{{ user.name }}</div>
+                                <div class="text-[10px] text-[#265D7A] font-mono leading-tight">Customer</div>
+                            </div>
+                        </div>
                     </div>
+                </header>
 
-                    <button
-                        @click="logout"
-                        class="p-2 text-xs font-semibold text-rose-700 hover:bg-rose-500/15 rounded-full transition border border-transparent hover:border-rose-500/30 cursor-pointer"
-                        title="Keluar"
-                        aria-label="Keluar"
-                    >
-                        <i class="bi bi-box-arrow-right text-sm"></i>
-                    </button>
-                </div>
-            </header>
+                <!-- Customer Page Content -->
+                <main class="flex-1 p-4 lg:p-6 pb-24 lg:pb-8 max-w-7xl mx-auto w-full">
+                    <SkeletonLoader v-if="isNavigating" :variant="navSkeletonVariant" />
+                    <slot v-else />
+                </main>
+            </div>
+
+            <!-- Mobile Floating Liquid Glass Bottom Bar (< 1024px) -->
+            <nav
+                aria-label="Navigasi Mobile Customer"
+                class="lg:hidden fixed bottom-3 inset-x-4 z-40 rounded-full px-3 py-2 flex items-center justify-around shadow-2xl"
+                style="
+                    background: linear-gradient(135deg, rgba(19, 41, 61, 0.94) 0%, rgba(38, 93, 122, 0.90) 55%, rgba(103, 199, 198, 0.80) 100%);
+                    backdrop-filter: blur(20px) saturate(150%);
+                    -webkit-backdrop-filter: blur(20px) saturate(150%);
+                    border: 1px solid rgba(255, 255, 255, 0.35);
+                    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.45), 0 16px 32px rgba(19, 41, 61, 0.35);
+                "
+            >
+                <Link
+                    href="/dashboard"
+                    class="flex flex-col items-center gap-0.5 px-3 py-1 rounded-full transition text-[10px] font-semibold"
+                    :class="$page.url.startsWith('/dashboard') ? 'bg-[#A7E4DB] text-[#13293D] font-bold' : 'text-[#EAF6F4]'"
+                >
+                    <i class="bi bi-grid-1x2-fill text-sm"></i>
+                    <span>Dashboard</span>
+                </Link>
+                <Link
+                    href="/shipments"
+                    class="flex flex-col items-center gap-0.5 px-3 py-1 rounded-full transition text-[10px] font-semibold"
+                    :class="$page.url.startsWith('/shipments') ? 'bg-[#A7E4DB] text-[#13293D] font-bold' : 'text-[#EAF6F4]'"
+                >
+                    <i class="bi bi-box-seam-fill text-sm"></i>
+                    <span>Kargo</span>
+                </Link>
+                <button
+                    type="button"
+                    @click="quickSearchInput?.focus()"
+                    class="flex flex-col items-center gap-0.5 px-3 py-1 rounded-full transition text-[10px] font-semibold text-[#EAF6F4] cursor-pointer"
+                >
+                    <i class="bi bi-search text-sm"></i>
+                    <span>Lacak</span>
+                </button>
+                <button
+                    type="button"
+                    @click="logout"
+                    class="flex flex-col items-center gap-0.5 px-3 py-1 rounded-full transition text-[10px] font-semibold text-rose-200 cursor-pointer"
+                >
+                    <i class="bi bi-box-arrow-right text-sm"></i>
+                    <span>Keluar</span>
+                </button>
+            </nav>
         </div>
 
         <!-- Admin & Operator Layout (Collapsible Sidebar + Main Area) -->
@@ -417,11 +525,5 @@ onUnmounted(() => {
                 </main>
             </div>
         </div>
-
-        <!-- Customer Main View Container -->
-        <main v-if="isCustomer" class="flex-1 p-4 lg:p-8 max-w-7xl mx-auto w-full">
-            <SkeletonLoader v-if="isNavigating" :variant="navSkeletonVariant" />
-            <slot v-else />
-        </main>
     </div>
 </template>
