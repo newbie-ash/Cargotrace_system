@@ -162,6 +162,26 @@ onUnmounted(() => {
                             <i class="bi bi-box-seam-fill text-sm shrink-0"></i>
                             <span>Kargo Saya</span>
                         </Link>
+                        <Link
+                            href="/documents"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition"
+                            :class="$page.url.startsWith('/documents')
+                                ? 'bg-gradient-to-r from-[#A7E4DB] to-[#67C7C6] text-[#13293D] font-bold shadow-lg shadow-[#13293D]/25'
+                                : 'text-[#EAF6F4] hover:bg-white/15 hover:text-white'"
+                        >
+                            <i class="bi bi-file-earmark-text-fill text-sm shrink-0"></i>
+                            <span>Dokumen &amp; e-B/L</span>
+                        </Link>
+                        <Link
+                            href="/calculator"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition"
+                            :class="$page.url.startsWith('/calculator')
+                                ? 'bg-gradient-to-r from-[#A7E4DB] to-[#67C7C6] text-[#13293D] font-bold shadow-lg shadow-[#13293D]/25'
+                                : 'text-[#EAF6F4] hover:bg-white/15 hover:text-white'"
+                        >
+                            <i class="bi bi-calculator-fill text-sm shrink-0"></i>
+                            <span>Kalkulator Tarif &amp; CO₂</span>
+                        </Link>
                     </nav>
                 </div>
 

@@ -621,78 +621,55 @@ const statusBadgeClass = (st) => {
                 </div>
             </div>
 
-            <!-- Bottom History Table (TransGlobal style) -->
-            <div class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-slate-100">
-                    <div>
-                        <h2 class="text-xs font-bold text-[#13293D] uppercase tracking-wider">
-                            Riwayat Pengiriman (All Shipments)
-                        </h2>
-                        <p class="text-[11px] text-[#265D7A]">Daftar komprehensif kargo yang tercatat di akun Anda</p>
+            <!-- De-Noised Shortcut Hub: Quick Navigation Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Link
+                    href="/shipments"
+                    class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs hover:border-[#67C7C6] transition group flex items-center justify-between"
+                >
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[#EAF6F4] text-[#265D7A] flex items-center justify-center text-base group-hover:bg-[#13293D] group-hover:text-[#A7E4DB] transition">
+                            <i class="bi bi-box-seam-fill"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-[#13293D]">Kargo Saya (Shipments)</div>
+                            <div class="text-[11px] text-[#265D7A]">Katalog &amp; dual view tracking</div>
+                        </div>
                     </div>
-                    <Link href="/shipments" class="text-xs font-bold text-[#265D7A] hover:text-[#13293D] inline-flex items-center gap-1 transition">
-                        <span>Buka Halaman Kargo Saya</span>
-                        <i class="bi bi-arrow-right"></i>
-                    </Link>
-                </div>
+                    <i class="bi bi-arrow-right text-slate-400 group-hover:text-[#13293D] transition"></i>
+                </Link>
 
-                <div v-if="customerShipments.length" class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="border-b border-slate-200 text-[#265D7A] uppercase font-mono text-[10px]">
-                                <th class="py-2.5 px-3">No. Shipment</th>
-                                <th class="py-2.5 px-3">Carrier</th>
-                                <th class="py-2.5 px-3">Rute</th>
-                                <th class="py-2.5 px-3">Muatan</th>
-                                <th class="py-2.5 px-3">Status</th>
-                                <th class="py-2.5 px-3">Kondisi ETA</th>
-                                <th class="py-2.5 px-3 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <tr v-for="s in customerShipments" :key="s.id" class="hover:bg-slate-50 transition">
-                                <td class="py-3 px-3 font-mono font-bold text-[#265D7A]">
-                                    <Link :href="`/shipments/${s.id}`" class="hover:underline text-[#13293D]">
-                                        {{ s.shipment_number }}
-                                    </Link>
-                                </td>
-                                <td class="py-3 px-3 text-[#13293D] font-semibold">
-                                    {{ s.carrier?.name || '-' }}
-                                </td>
-                                <td class="py-3 px-3 font-mono text-[11px] text-[#265D7A] font-semibold">
-                                    {{ s.origin_location?.code }} &rarr; {{ s.destination_location?.code }}
-                                </td>
-                                <td class="py-3 px-3 text-[#13293D]">
-                                    {{ s.cargo_type || '-' }}
-                                </td>
-                                <td class="py-3 px-3">
-                                    <span :class="['px-2.5 py-0.5 rounded border text-[10px] font-mono font-bold', statusBadgeClass(s.current_status)]">
-                                        {{ s.current_status }}
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <span v-if="s.is_delayed" class="px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-mono font-bold inline-flex items-center gap-1">
-                                        <i class="bi bi-clock-history"></i>
-                                        <span>DELAY (+{{ s.delay_duration_hours }}j)</span>
-                                    </span>
-                                    <span v-else class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-mono font-bold inline-flex items-center gap-1">
-                                        <i class="bi bi-check-circle"></i>
-                                        <span>ON-TIME</span>
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3 text-right">
-                                    <Link :href="`/shipments/${s.id}`" class="px-3 py-1 text-xs border border-slate-200 bg-white hover:bg-[#13293D] hover:text-[#A7E4DB] text-[#13293D] rounded-lg transition inline-flex items-center gap-1 font-semibold cursor-pointer">
-                                        <span>Detail</span>
-                                        <i class="bi bi-chevron-right text-[10px]"></i>
-                                    </Link>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-else class="py-8 text-center text-xs text-slate-400">
-                    Belum ada riwayat pengiriman.
-                </div>
+                <Link
+                    href="/documents"
+                    class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs hover:border-[#67C7C6] transition group flex items-center justify-between"
+                >
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-base group-hover:bg-[#13293D] group-hover:text-[#A7E4DB] transition">
+                            <i class="bi bi-file-earmark-text-fill"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-[#13293D]">Dokumen &amp; e-B/L</div>
+                            <div class="text-[11px] text-emerald-800">Cetak &amp; arsip Bill of Lading resmi</div>
+                        </div>
+                    </div>
+                    <i class="bi bi-arrow-right text-slate-400 group-hover:text-[#13293D] transition"></i>
+                </Link>
+
+                <Link
+                    href="/calculator"
+                    class="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xs hover:border-[#67C7C6] transition group flex items-center justify-between"
+                >
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-base group-hover:bg-[#13293D] group-hover:text-[#A7E4DB] transition">
+                            <i class="bi bi-calculator-fill"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xs text-[#13293D]">Kalkulator Tarif &amp; CO₂</div>
+                            <div class="text-[11px] text-amber-800">Simulasi biaya &amp; jejak emisi rute</div>
+                        </div>
+                    </div>
+                    <i class="bi bi-arrow-right text-slate-400 group-hover:text-[#13293D] transition"></i>
+                </Link>
             </div>
         </div>
 

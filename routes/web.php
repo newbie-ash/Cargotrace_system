@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotificationController;
@@ -52,6 +54,13 @@ Route::middleware('auth')->group(function () {
     // Shipments: Common visibility (index & show) with controller-level customer isolation
     Route::get('/shipments', [ShipmentController::class, 'index'])->name('shipments.index');
     Route::get('/shipments/{shipment}', [ShipmentController::class, 'show'])->name('shipments.show')->whereNumber('shipment');
+
+    // Centralized e-Bill of Lading Documents Hub
+    Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
+
+    // Dedicated Tariff & Carbon Footprint Simulator
+    Route::get('/calculator', [CalculatorController::class, 'index'])->name('calculator.index');
+    Route::post('/calculator/estimate', [CalculatorController::class, 'estimate'])->name('calculator.estimate');
 
     // Shipments: Operations for Operator & Admin
     Route::middleware('role:admin,operator')->group(function () {
