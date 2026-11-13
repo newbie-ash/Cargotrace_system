@@ -109,11 +109,11 @@ onUnmounted(() => {
                 class="hidden lg:flex lg:flex-col lg:justify-between w-64 shrink-0 m-4 mr-0 rounded-3xl sticky top-4 overflow-hidden relative transition-all duration-300"
                 style="
                     height: calc(100vh - 2rem);
-                    background: linear-gradient(160deg, rgba(19, 41, 61, 0.94) 0%, rgba(38, 93, 122, 0.88) 58%, rgba(103, 199, 198, 0.78) 100%);
+                    background: linear-gradient(160deg, rgba(19, 41, 61, 0.96) 0%, rgba(38, 93, 122, 0.92) 58%, rgba(103, 199, 198, 0.85) 100%);
                     backdrop-filter: blur(24px) saturate(150%);
                     -webkit-backdrop-filter: blur(24px) saturate(150%);
-                    border: 1px solid rgba(255, 255, 255, 0.35);
-                    box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.45), inset 0 -2px 10px 0 rgba(103, 199, 198, 0.25), 0 20px 44px -10px rgba(19, 41, 61, 0.28);
+                    border: 1.5px solid rgba(255, 255, 255, 0.40);
+                    box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.55), 0 0 25px rgba(103, 199, 198, 0.25), inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.60), inset 0 -2px 10px 0 rgba(103, 199, 198, 0.25);
                 "
             >
                 <!-- Specular Top Light & Subtle Liquid Glow -->
@@ -183,50 +183,66 @@ onUnmounted(() => {
 
             <!-- Customer Main Content Column -->
             <div class="flex-1 flex flex-col min-w-0">
-                <!-- Clean Top Utility Bar (Desktop & Mobile) -->
-                <header class="sticky top-0.5 z-30 px-4 lg:px-6 py-3 flex items-center justify-between gap-3 bg-white/85 lg:bg-white/75 backdrop-blur-xl border-b border-slate-200/70">
-                    <!-- Mobile Brand -->
-                    <Link href="/dashboard" class="lg:hidden flex items-center shrink-0">
-                        <DelixieLogo size-class="w-6 h-6" wordmark-class="font-extrabold text-base tracking-tight text-[#13293D]" />
-                    </Link>
+                <!-- Customer Floating Liquid Pill Header (No solid white background) -->
+                <div class="sticky top-2 z-30 px-4 lg:px-6 pt-2 pb-1 pointer-events-none flex justify-center">
+                    <header
+                        class="pointer-events-auto w-full rounded-full px-4 sm:px-6 py-2 flex items-center justify-between gap-3 backdrop-blur-2xl relative overflow-visible transition-all duration-300"
+                        style="
+                            background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(217, 242, 238, 0.12) 48%, rgba(19, 41, 61, 0.32) 100%);
+                            backdrop-filter: blur(24px) saturate(140%);
+                            -webkit-backdrop-filter: blur(24px) saturate(140%);
+                            border: 1px solid rgba(255, 255, 255, 0.38);
+                            box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.45), inset 0 -1.5px 5px 0 rgba(103, 199, 198, 0.20), 0 14px 32px -6px rgba(19, 41, 61, 0.30);
+                        "
+                    >
+                        <!-- Specular Top Highlight -->
+                        <div class="absolute inset-0 rounded-full overflow-hidden pointer-events-none" aria-hidden="true">
+                            <div class="absolute inset-x-8 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent"></div>
+                        </div>
 
-                    <!-- Desktop Context -->
-                    <div class="hidden lg:flex items-center gap-2.5">
-                        <span class="text-xs font-bold text-[#13293D]">Customer Portal</span>
-                        <span class="text-slate-300">/</span>
-                        <span class="text-[11px] font-mono text-[#265D7A]">{{ user.company_name || 'Global Cargo Tracking' }}</span>
-                    </div>
+                        <!-- Mobile Brand -->
+                        <Link href="/dashboard" class="lg:hidden flex items-center shrink-0 relative z-10">
+                            <DelixieLogo size-class="w-6 h-6" wordmark-class="font-extrabold text-base tracking-tight text-white drop-shadow-xs" />
+                        </Link>
 
-                    <!-- Quick Track Search -->
-                    <form @submit.prevent="submitQuickSearch" class="flex-1 max-w-md relative">
-                        <i class="bi bi-search absolute left-3.5 top-2.5 text-[#265D7A] text-xs pointer-events-none"></i>
-                        <input
-                            ref="quickSearchInput"
-                            v-model="quickSearch"
-                            type="text"
-                            placeholder="Lacak cepat No. Resi / Kargo..."
-                            aria-label="Cari Nomor Resi"
-                            class="w-full h-9 pl-9 pr-14 rounded-full bg-white border border-slate-200 text-xs text-[#13293D] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#67C7C6]/50 focus:border-[#265D7A] transition shadow-xs"
-                        />
-                        <kbd class="hidden sm:inline-block absolute right-3 top-2 px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono text-[9px] font-bold text-[#265D7A] pointer-events-none">
-                            Ctrl+K
-                        </kbd>
-                    </form>
+                        <!-- Desktop Context Breadcrumb -->
+                        <div class="hidden lg:flex items-center gap-2 relative z-10 text-xs">
+                            <span class="font-bold text-white drop-shadow-xs">Customer Portal</span>
+                            <span class="text-white/40">/</span>
+                            <span class="text-[11px] font-mono text-[#A7E4DB] font-semibold">{{ user.company_name || 'Global Cargo Tracking' }}</span>
+                        </div>
 
-                    <!-- Right Utilities -->
-                    <div class="flex items-center gap-2.5 shrink-0">
-                        <NotificationBell />
-                        <div class="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200">
-                            <div class="w-8 h-8 rounded-full bg-[#13293D] text-[#A7E4DB] flex items-center justify-center font-mono font-bold text-xs">
-                                {{ (user.name || 'C').slice(0, 2).toUpperCase() }}
-                            </div>
-                            <div class="hidden xl:block text-left">
-                                <div class="text-xs font-bold text-[#13293D] leading-tight">{{ user.name }}</div>
-                                <div class="text-[10px] text-[#265D7A] font-mono leading-tight">Customer</div>
+                        <!-- Quick Track Search in Glass Pill -->
+                        <form @submit.prevent="submitQuickSearch" class="flex-1 max-w-md relative z-10">
+                            <i class="bi bi-search absolute left-3.5 top-2 text-[#A7E4DB] text-xs pointer-events-none"></i>
+                            <input
+                                ref="quickSearchInput"
+                                v-model="quickSearch"
+                                type="text"
+                                placeholder="Lacak cepat No. Resi / Kargo..."
+                                aria-label="Cari Nomor Resi"
+                                class="w-full h-8 pl-9 pr-14 rounded-full bg-white/15 border border-white/25 text-xs text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#67C7C6]/60 focus:border-[#67C7C6] transition shadow-inner"
+                            />
+                            <kbd class="hidden sm:inline-block absolute right-3 top-1.5 px-1.5 py-0.5 rounded bg-white/15 border border-white/20 font-mono text-[9px] font-bold text-[#A7E4DB] pointer-events-none">
+                                Ctrl+K
+                            </kbd>
+                        </form>
+
+                        <!-- Right Utilities: Bell + Avatar -->
+                        <div class="flex items-center gap-2.5 shrink-0 relative z-10">
+                            <NotificationBell />
+                            <div class="hidden sm:flex items-center gap-2 pl-2 border-l border-white/20">
+                                <div class="w-7 h-7 rounded-full bg-[#13293D] border border-white/30 text-[#A7E4DB] flex items-center justify-center font-mono font-bold text-xs shadow-xs">
+                                    {{ (user.name || 'C').slice(0, 2).toUpperCase() }}
+                                </div>
+                                <div class="hidden xl:block text-left">
+                                    <div class="text-xs font-bold text-white leading-tight drop-shadow-xs">{{ user.name }}</div>
+                                    <div class="text-[10px] text-[#A7E4DB] font-mono leading-tight">Customer</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </header>
+                    </header>
+                </div>
 
                 <!-- Customer Page Content -->
                 <main class="flex-1 p-4 lg:p-6 pb-24 lg:pb-8 max-w-7xl mx-auto w-full">
