@@ -306,9 +306,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl overflow-hidden shadow-[0_16px_40px_rgba(19,41,61,0.08)] mb-6 relative">
+    <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs mb-6 relative">
         <!-- Map Header Toolbar -->
-        <div class="p-3.5 sm:p-4 border-b border-[#265D7A]/15 flex flex-wrap items-center justify-between gap-3 bg-white/60">
+        <div class="p-3.5 sm:p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 bg-white">
             <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
                 <div class="w-8 h-8 rounded-xl bg-[#EAF6F4] border border-[#265D7A]/20 flex items-center justify-center text-[#265D7A] shrink-0">
                     <i :class="['bi text-xs', liveMode ? 'bi-broadcast-pin text-emerald-600' : 'bi-map-fill']"></i>

@@ -4,6 +4,9 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DashboardCharts from '@/Components/DashboardCharts.vue';
 import ShipmentRouteMap from '@/Components/ShipmentRouteMap.vue';
+import VehicleGraphic from '@/Components/VehicleGraphic.vue';
+import BillOfLadingModal from '@/Components/BillOfLadingModal.vue';
+import { estimateCarbonFootprint } from '@/Utils/carbonCalculator';
 
 const props = defineProps({
     stats: {
@@ -23,6 +26,36 @@ const customerShipments = computed(() => props.stats.recent_shipments || []);
 const selectedShipmentId = ref(null);
 const shipmentSearch = ref('');
 const statusFilterTab = ref('ALL'); // ALL, IN_TRANSIT, DELIVERED, DELAYED
+const showBolModal = ref(false);
+const copiedLink = ref(false);
+
+const copyPublicTrackingLink = (shipmentNumber) => {
+    if (!shipmentNumber) return;
+    const url = `${window.location.origin}/?track=${encodeURIComponent(shipmentNumber)}`;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+            copiedLink.value = true;
+            setTimeout(() => {
+                copiedLink.value = false;
+            }, 2500);
+        });
+    }
+};
+
+const selectedCarbon = computed(() => {
+    return estimateCarbonFootprint(selectedShipment.value);
+});
+
+const latestWeather = computed(() => {
+    if (!selectedShipment.value) return null;
+    const events = selectedShipment.value.tracking_events || [];
+    for (let i = events.length - 1; i >= 0; i--) {
+        if (events[i].weather_snapshot) {
+            return events[i].weather_snapshot;
+        }
+    }
+    return null;
+});
 
 watch(
     () => customerShipments.value,
@@ -406,11 +439,12 @@ const statusBadgeClass = (st) => {
 
                 <!-- Right Column: Cargo Spec Overview & Real-Time Track Monitoring Map -->
                 <div class="flex-1 min-w-0 w-full flex flex-col gap-4">
-                    <!-- Cargo Spec Banner (TransGlobal style) -->
-                    <div v-if="selectedShipment" class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
+                    <!-- Hero Vehicle Showcase & Telemetry Cockpit (Haulboard & TransGlobal style) -->
+                    <div v-if="selectedShipment" class="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-xs overflow-hidden">
+                        <!-- Top Header & Action Buttons -->
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
                             <div>
-                                <div class="flex items-center gap-2 mb-1">
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
                                     <span class="text-xs font-mono font-bold text-[#265D7A] uppercase">Resi Pengiriman</span>
                                     <span :class="['px-2 py-0.5 rounded border text-[10px] font-mono font-bold', statusBadgeClass(selectedShipment.current_status)]">
                                         {{ selectedShipment.current_status }}
@@ -421,50 +455,151 @@ const statusBadgeClass = (st) => {
                                     <span v-else class="px-2 py-0.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-mono font-bold">
                                         SESUAI JADWAL
                                     </span>
+                                    <span class="px-2 py-0.5 rounded-full bg-[#13293D] text-[#A7E4DB] text-[10px] font-mono font-bold uppercase">
+                                        {{ selectedShipment.carrier?.transport_mode || 'SEA' }} FREIGHT
+                                    </span>
                                 </div>
-                                <h3 class="text-xl font-extrabold text-[#13293D] font-mono">
+                                <h3 class="text-xl sm:text-2xl font-black text-[#13293D] font-mono tracking-tight">
                                     {{ selectedShipment.shipment_number }}
                                 </h3>
                             </div>
 
-                            <Link
-                                :href="`/shipments/${selectedShipment.id}`"
-                                class="px-4 py-2 rounded-xl bg-[#265D7A] hover:bg-[#13293D] text-white text-xs font-semibold inline-flex items-center gap-1.5 transition shadow-xs cursor-pointer self-start sm:self-auto"
-                            >
-                                <span>Lihat Laporan Lengkap</span>
-                                <i class="bi bi-arrow-right text-xs"></i>
-                            </Link>
+                            <!-- 3 Quick Executive Action Buttons -->
+                            <div class="flex flex-wrap items-center gap-2 self-start md:self-auto">
+                                <!-- 1. Copy Public Tracking Link -->
+                                <button
+                                    type="button"
+                                    @click="copyPublicTrackingLink(selectedShipment.shipment_number)"
+                                    class="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:border-[#67C7C6] bg-slate-50 hover:bg-white text-xs font-semibold text-[#13293D] inline-flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
+                                    :title="'Salin tautan pelacakan publik untuk consignee'"
+                                >
+                                    <i :class="['bi text-xs', copiedLink ? 'bi-check2 text-emerald-600 font-bold' : 'bi-share text-[#265D7A]']"></i>
+                                    <span>{{ copiedLink ? 'Link Tersalin!' : 'Bagi Link Lacak' }}</span>
+                                </button>
+
+                                <!-- 2. Download / Print Bill of Lading (B/L) -->
+                                <button
+                                    type="button"
+                                    @click="showBolModal = true"
+                                    class="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:border-[#67C7C6] bg-slate-50 hover:bg-white text-xs font-semibold text-[#13293D] inline-flex items-center gap-1.5 transition cursor-pointer shadow-2xs"
+                                    title="Cetak atau unduh dokumen Bill of Lading resmi"
+                                >
+                                    <i class="bi bi-file-earmark-text text-[#265D7A]"></i>
+                                    <span>e-Bill of Lading</span>
+                                </button>
+
+                                <!-- 3. Full Details Link -->
+                                <Link
+                                    :href="`/shipments/${selectedShipment.id}`"
+                                    class="px-4 py-1.5 rounded-xl bg-[#265D7A] hover:bg-[#13293D] text-white text-xs font-semibold inline-flex items-center gap-1.5 transition shadow-xs cursor-pointer"
+                                >
+                                    <span>Detail Kargo</span>
+                                    <i class="bi bi-arrow-right text-xs"></i>
+                                </Link>
+                            </div>
                         </div>
 
-                        <!-- 4 Spec Metrics Chips -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
-                                <div class="text-[10px] font-mono uppercase text-[#265D7A] font-bold">Armada Carrier</div>
-                                <div class="font-bold text-[#13293D] truncate mt-0.5">{{ selectedShipment.carrier?.name || '-' }}</div>
-                                <div class="text-[10px] text-slate-500 font-mono">{{ selectedShipment.carrier?.transport_mode || 'MARITIME' }}</div>
-                            </div>
-
-                            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
-                                <div class="text-[10px] font-mono uppercase text-[#265D7A] font-bold">Muatan Kargo</div>
-                                <div class="font-bold text-[#13293D] truncate mt-0.5">{{ selectedShipment.cargo_type || 'General Cargo' }}</div>
-                                <div class="text-[10px] text-slate-500 font-mono">{{ selectedShipment.weight_kg ? `${selectedShipment.weight_kg} kg` : 'Dry Container' }}</div>
-                            </div>
-
-                            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
-                                <div class="text-[10px] font-mono uppercase text-[#265D7A] font-bold">Rute Pelabuhan</div>
-                                <div class="font-bold text-[#13293D] truncate mt-0.5">
-                                    {{ selectedShipment.origin_location?.code }} &rarr; {{ selectedShipment.destination_location?.code }}
+                        <!-- Central Cockpit: Telemetry Chips & 3D Vehicle Graphic (Haulboard Style) -->
+                        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center my-1 bg-gradient-to-b from-slate-50/80 to-white p-4 rounded-xl border border-slate-100">
+                            <!-- Left Telemetry Column -->
+                            <div class="space-y-3">
+                                <div class="bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs">
+                                    <span class="text-[10px] font-mono uppercase text-[#265D7A] font-bold block">Armada Carrier</span>
+                                    <div class="font-extrabold text-[#13293D] text-sm truncate mt-0.5">{{ selectedShipment.carrier?.name || 'Carrier' }}</div>
+                                    <div class="text-[10px] text-slate-500 font-mono">{{ selectedShipment.carrier?.code || 'ID' }} &bull; {{ selectedShipment.carrier?.transport_mode }}</div>
                                 </div>
-                                <div class="text-[10px] text-slate-500 truncate">{{ selectedShipment.origin_location?.city }} to {{ selectedShipment.destination_location?.city }}</div>
+
+                                <div class="bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs">
+                                    <span class="text-[10px] font-mono uppercase text-[#265D7A] font-bold block">Muatan Kargo (Payload)</span>
+                                    <div class="font-extrabold text-[#13293D] text-sm truncate mt-0.5">{{ selectedShipment.cargo_type || 'General Cargo' }}</div>
+                                    <div class="text-[10px] text-slate-500 font-mono">
+                                        {{ selectedShipment.total_weight_kg || selectedShipment.weight_kg ? `${selectedShipment.total_weight_kg || selectedShipment.weight_kg} kg` : 'Dry Container' }} &bull; {{ selectedShipment.total_volume_cbm ? `${selectedShipment.total_volume_cbm} CBM` : 'Standard' }}
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100">
-                                <div class="text-[10px] font-mono uppercase text-[#265D7A] font-bold">Estimasi Tiba (ETA)</div>
-                                <div class="font-bold text-[#13293D] truncate mt-0.5 font-mono">
-                                    {{ (selectedShipment.estimated_arrival || selectedShipment.expected_arrival) ? new Date(selectedShipment.estimated_arrival || selectedShipment.expected_arrival).toLocaleDateString([], { day: 'numeric', month: 'short' }) : '-' }}
+                            <!-- Center: Vehicle Graphic Render (Ship / Plane / Truck) -->
+                            <div class="lg:col-span-2 flex flex-col items-center justify-center p-2 relative">
+                                <VehicleGraphic
+                                    :mode="selectedShipment.carrier?.transport_mode"
+                                    class-name="w-full max-w-md h-40 sm:h-48"
+                                />
+                                <div class="mt-1 text-center">
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#13293D] text-[#A7E4DB] text-[10px] font-mono font-bold tracking-wider">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#67C7C6] animate-pulse"></span>
+                                        <span>ARMADA AKTIF &bull; {{ selectedShipment.carrier?.transport_mode === 'AIR' ? 'CARGO FREIGHTER' : (selectedShipment.carrier?.transport_mode === 'LAND' ? 'SEMI-TRAILER TRUCK' : 'CONTAINER VESSEL') }}</span>
+                                    </span>
                                 </div>
-                                <div class="text-[10px] text-slate-500 font-mono">
-                                    {{ (selectedShipment.estimated_arrival || selectedShipment.expected_arrival) ? new Date(selectedShipment.estimated_arrival || selectedShipment.expected_arrival).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '' }}
+                            </div>
+
+                            <!-- Right Telemetry Column (Carbon & Weather) -->
+                            <div class="space-y-3">
+                                <!-- Carbon Footprint Indicator -->
+                                <div class="bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs">
+                                    <div class="flex items-center justify-between mb-0.5">
+                                        <span class="text-[10px] font-mono uppercase text-emerald-800 font-bold">Jejak Karbon (CO₂)</span>
+                                        <i class="bi bi-tree text-emerald-600 text-xs"></i>
+                                    </div>
+                                    <div class="font-black text-emerald-900 text-sm font-mono">
+                                        {{ selectedCarbon.emissionsKg }} kg CO₂e
+                                    </div>
+                                    <div class="text-[10px] text-emerald-700 font-medium">
+                                        {{ selectedCarbon.ecoRating }} &bull; GLEC Std.
+                                    </div>
+                                </div>
+
+                                <!-- Marine / Route Weather Telemetry -->
+                                <div class="bg-white p-3 rounded-xl border border-slate-200/70 shadow-2xs">
+                                    <div class="flex items-center justify-between mb-0.5">
+                                        <span class="text-[10px] font-mono uppercase text-[#265D7A] font-bold">Cuaca Rute Terkini</span>
+                                        <i class="bi bi-cloud-sun text-amber-500 text-xs"></i>
+                                    </div>
+                                    <div v-if="latestWeather" class="font-bold text-[#13293D] text-xs truncate">
+                                        {{ latestWeather.condition }} &bull; {{ latestWeather.temperature }}&deg;C
+                                    </div>
+                                    <div v-else class="font-bold text-[#13293D] text-xs truncate">
+                                        Kondisi Rute Baik &bull; 28&deg;C
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-mono">
+                                        Angin: {{ latestWeather?.wind_speed ?? 18 }} km/h &bull; Jalur Terbuka
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Route Progression Bar (Haulboard Stepper Style) -->
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <div class="flex items-center justify-between text-xs font-mono mb-2">
+                                <div class="text-left">
+                                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Keberangkatan</span>
+                                    <strong class="text-[#13293D] font-bold text-sm">{{ selectedShipment.origin_location?.code }}</strong>
+                                    <span class="text-[11px] text-[#265D7A] block truncate max-w-[140px]">{{ selectedShipment.origin_location?.city }}</span>
+                                    <span class="text-[10px] text-slate-400">
+                                        {{ selectedShipment.expected_departure ? new Date(selectedShipment.expected_departure).toLocaleDateString([], { day: 'numeric', month: 'short' }) : '-' }}
+                                    </span>
+                                </div>
+
+                                <div class="flex-1 px-4 text-center">
+                                    <div class="relative flex items-center justify-center">
+                                        <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                                            <div
+                                                class="h-full bg-gradient-to-r from-[#265D7A] to-[#67C7C6] rounded-full transition-all duration-500"
+                                                :style="{ width: selectedShipment.current_status === 'DELIVERED' ? '100%' : (selectedShipment.current_status === 'IN_TRANSIT' ? '60%' : '20%') }"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-[#265D7A] mt-1 inline-block">
+                                        {{ selectedShipment.current_status === 'DELIVERED' ? 'Muatan Tiba di Pelabuhan Akhir' : 'Dalam Perjalanan Menuju Destinasi' }}
+                                    </span>
+                                </div>
+
+                                <div class="text-right">
+                                    <span class="text-[10px] text-slate-400 uppercase font-bold block">Kedatangan (ETA)</span>
+                                    <strong class="text-emerald-700 font-bold text-sm">{{ selectedShipment.destination_location?.code }}</strong>
+                                    <span class="text-[11px] text-[#265D7A] block truncate max-w-[140px]">{{ selectedShipment.destination_location?.city }}</span>
+                                    <span class="text-[10px] text-slate-400">
+                                        {{ (selectedShipment.estimated_arrival || selectedShipment.expected_arrival) ? new Date(selectedShipment.estimated_arrival || selectedShipment.expected_arrival).toLocaleDateString([], { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '-' }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -792,5 +927,12 @@ const statusBadgeClass = (st) => {
                 </div>
             </div>
         </div>
+
+        <!-- Electronic Bill of Lading (e-B/L) Modal -->
+        <BillOfLadingModal
+            :show="showBolModal"
+            :shipment="selectedShipment"
+            @close="showBolModal = false"
+        />
     </AuthenticatedLayout>
 </template>
