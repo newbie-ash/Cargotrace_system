@@ -13,18 +13,18 @@ import DynamicIslandToast from '@/Components/DynamicIslandToast.vue';
                 <Link href="/" class="inline-flex items-center hover:opacity-90 transition group">
                     <DelixieLogo
                         size-class="w-9 h-9"
-                        wordmark-class="font-extrabold text-2xl tracking-tight text-[#13293D]"
+                        wordmark-class="font-extrabold text-2xl tracking-tight text-white drop-shadow-xs"
                     />
                 </Link>
-                <p class="text-xs font-medium text-[#265D7A] mt-1.5">Global Shipment Visibility &amp; Tracking Platform</p>
+                <p class="text-xs font-medium text-[#A7E4DB] mt-1.5">Global Shipment Visibility &amp; Tracking Platform</p>
             </div>
 
-            <!-- Card Box with Frosted Glassmorphism -->
-            <div class="bg-white/75 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 sm:p-8 shadow-[0_24px_60px_rgba(19,41,61,0.12)]">
+            <!-- Card Box with Crisp White Surface -->
+            <div class="bg-white/95 backdrop-blur-2xl border border-white rounded-3xl p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.32)]">
                 <slot />
             </div>
 
-            <div class="text-center mt-6 text-xs font-medium text-[#265D7A]">
+            <div class="text-center mt-6 text-xs font-medium text-[#A7E4DB]/80">
                 &copy; {{ new Date().getFullYear() }} Delixie &bull; Global Freight Operations
             </div>
         </div>

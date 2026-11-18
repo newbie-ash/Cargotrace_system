@@ -282,15 +282,15 @@ onUnmounted(() => {
             <!-- Section Header -->
             <div class="max-w-2xl mb-14">
                 <div class="flex items-center gap-3 mb-3">
-                    <span class="w-6 h-px bg-[#265D7A]" aria-hidden="true"></span>
-                    <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#265D7A]">
+                    <span class="w-6 h-px bg-[#67C7C6]" aria-hidden="true"></span>
+                    <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#A7E4DB]">
                         ARSITEKTUR SISTEM DELIXIE
                     </span>
                 </div>
-                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#13293D] leading-tight">
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight drop-shadow-sm">
                     Ketahanan Rantai Pasok Terintegrasi.
                 </h2>
-                <p class="text-sm sm:text-base font-normal text-[#265D7A] mt-3 leading-relaxed">
+                <p class="text-sm sm:text-base font-normal text-slate-200 mt-3 leading-relaxed">
                     Dirancang menggunakan mesin state deterministik dengan validasi jalur geospasial, kalkulasi risiko cuaca maritim, serta penegakan otoritas akses per peran.
                 </p>
             </div>
@@ -298,7 +298,7 @@ onUnmounted(() => {
             <!-- Asymmetric 12-Column Frosted Glass Bento Grid -->
             <div class="grid grid-cols-12 gap-6 sm:gap-7">
                 <!-- CARD 1: Live Intercontinental Route Visibility (8 cols x 2 rows) -->
-                <article class="col-span-12 md:col-span-8 md:row-span-2 bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
+                <article class="col-span-12 md:col-span-8 md:row-span-2 bg-white/95 backdrop-blur-2xl border border-white/95 rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
                     <div class="flex items-start justify-between gap-4 mb-6">
                         <div>
                             <span class="px-2.5 py-1 rounded-lg bg-[#EAF6F4] text-[#265D7A] border border-[#265D7A]/20 text-[10px] font-bold uppercase tracking-wider font-mono">
@@ -351,7 +351,7 @@ onUnmounted(() => {
                 </article>
 
                 <!-- CARD 2: ETA & Delay Threshold Rule (4 cols) -->
-                <article class="col-span-12 md:col-span-4 bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
+                <article class="col-span-12 md:col-span-4 bg-white/95 backdrop-blur-2xl border border-white/95 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3.5">
                             <span class="px-2.5 py-1 rounded-lg bg-[#EAF6F4] text-[#265D7A] border border-[#265D7A]/20 text-[10px] font-bold uppercase font-mono">
@@ -382,7 +382,7 @@ onUnmounted(() => {
                 </article>
 
                 <!-- CARD 3: Ekspedisi Udara, Laut & Darat (4 cols) -->
-                <article class="col-span-12 md:col-span-4 bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
+                <article class="col-span-12 md:col-span-4 bg-white/95 backdrop-blur-2xl border border-white/95 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3.5">
                             <span class="px-2.5 py-1 rounded-lg bg-[#EAF6F4] text-[#265D7A] border border-[#265D7A]/20 text-[10px] font-bold uppercase font-mono">
@@ -414,7 +414,7 @@ onUnmounted(() => {
                 </article>
 
                 <!-- CARD 4: Cuaca Pelabuhan & Geocoding (4 cols) -->
-                <article class="col-span-12 md:col-span-4 bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
+                <article class="col-span-12 md:col-span-4 bg-white/95 backdrop-blur-2xl border border-white/95 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3.5">
                             <span class="px-2.5 py-1 rounded-lg bg-[#EAF6F4] text-[#265D7A] border border-[#265D7A]/20 text-[10px] font-bold uppercase font-mono">
@@ -445,7 +445,7 @@ onUnmounted(() => {
                 </article>
 
                 <!-- CARD 5: Proactive Exception Handling (4 cols) -->
-                <article class="col-span-12 md:col-span-4 bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
+                <article class="col-span-12 md:col-span-4 bg-white/95 backdrop-blur-2xl border border-white/95 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3.5">
                             <span class="px-2.5 py-1 rounded-lg bg-[#EAF6F4] text-[#265D7A] border border-[#265D7A]/20 text-[10px] font-bold uppercase font-mono">
@@ -469,7 +469,7 @@ onUnmounted(() => {
                 </article>
 
                 <!-- CARD 6: SLA Compliance & Real-Time Gauge Ring (4 cols - Reference Layout Match) -->
-                <article class="col-span-12 md:col-span-4 bg-gradient-to-br from-white/75 to-[#A7E4DB]/40 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
+                <article class="col-span-12 md:col-span-4 bg-gradient-to-br from-white/95 to-[#EAF6F4] backdrop-blur-2xl border border-white/95 rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(19,41,61,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-[#67C7C6] flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3.5">
                             <span class="px-2.5 py-1 rounded-lg bg-white/80 text-[#265D7A] border border-[#265D7A]/20 text-[10px] font-bold uppercase font-mono">

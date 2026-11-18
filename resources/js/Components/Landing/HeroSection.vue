@@ -47,7 +47,7 @@ onMounted(() => {
 <template>
     <section
         aria-label="Hero Section Delixie"
-        class="relative min-h-[90vh] overflow-hidden bg-transparent text-[#13293D] pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
+        class="relative min-h-[90vh] overflow-hidden bg-transparent text-white pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
     >
         <!-- Ambient Organic Gradient Wave Accent (Matches Color Palette Reference) -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
@@ -62,21 +62,21 @@ onMounted(() => {
             <div class="lg:col-span-7 flex flex-col justify-between space-y-8">
                 <!-- Eyebrow Category -->
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-px bg-[#265D7A]" aria-hidden="true"></span>
-                    <span class="text-xs font-mono font-bold tracking-widest text-[#265D7A] uppercase">
+                    <span class="w-8 h-px bg-[#67C7C6]" aria-hidden="true"></span>
+                    <span class="text-xs font-mono font-bold tracking-widest text-[#A7E4DB] uppercase drop-shadow-xs">
                         VISIBILITAS LOGISTIK GLOBAL
                     </span>
                 </div>
 
                 <!-- Massive Editorial Headline -->
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-[#13293D]">
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white drop-shadow-md">
                     End-to-End
-                    <span class="text-[#265D7A] font-bold">Global</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#67C7C6] via-[#A7E4DB] to-white font-extrabold">Global</span>
                     Shipment Visibility.
                 </h1>
 
                 <!-- Concise Lightweight Narrative -->
-                <p class="text-base sm:text-lg text-[#265D7A] font-normal leading-relaxed max-w-xl">
+                <p class="text-base sm:text-lg text-slate-200 font-normal leading-relaxed max-w-xl drop-shadow-xs">
                     Pantau pergerakan kontainer interkontinental secara terverifikasi dengan validasi rute geospasial maritim, kalkulasi tarif transparan, dan peringatan keterlambatan real-time.
                 </p>
 
@@ -85,7 +85,7 @@ onMounted(() => {
                     <button
                         type="button"
                         @click="emit('scrollToTrack')"
-                        class="px-8 py-3.5 rounded-full bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold text-sm transition-all duration-300 shadow-xl shadow-[#13293D]/20 hover:-translate-y-0.5 inline-flex items-center gap-3 cursor-pointer group"
+                        class="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#67C7C6] to-[#A7E4DB] hover:brightness-110 text-[#102232] font-bold text-sm transition-all duration-300 shadow-xl shadow-[#67C7C6]/25 hover:-translate-y-0.5 inline-flex items-center gap-3 cursor-pointer group"
                     >
                         <span>Lacak Kargo Sekarang</span>
                         <i class="bi bi-arrow-right text-xs transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></i>
@@ -93,28 +93,28 @@ onMounted(() => {
                 </div>
 
                 <!-- Bottom Left: 3 Real Statistics Separated by Vertical Dividers -->
-                <div class="pt-8 mt-4 border-t border-[#265D7A]/20 grid grid-cols-3 gap-6 max-w-lg">
-                    <div class="pr-4 border-r border-[#265D7A]/20">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#13293D] tracking-tight">
-                            {{ displayShipments }}<span class="text-[#265D7A]">+</span>
+                <div class="pt-8 mt-4 border-t border-white/20 grid grid-cols-3 gap-6 max-w-lg">
+                    <div class="pr-4 border-r border-white/20">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight drop-shadow-xs">
+                            {{ displayShipments }}<span class="text-[#67C7C6]">+</span>
                         </div>
-                        <div class="text-[11px] font-semibold text-[#265D7A] mt-1">
+                        <div class="text-[11px] font-semibold text-[#A7E4DB] mt-1 font-mono">
                             Pengiriman Aktif
                         </div>
                     </div>
-                    <div class="pr-4 border-r border-[#265D7A]/20">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#13293D] tracking-tight">
+                    <div class="pr-4 border-r border-white/20">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight drop-shadow-xs">
                             {{ displayCarriers }}
                         </div>
-                        <div class="text-[11px] font-semibold text-[#265D7A] mt-1">
+                        <div class="text-[11px] font-semibold text-[#A7E4DB] mt-1 font-mono">
                             Mitra Ekspedisi
                         </div>
                     </div>
                     <div>
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#13293D] tracking-tight">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight drop-shadow-xs">
                             {{ displayLocations }}
                         </div>
-                        <div class="text-[11px] font-semibold text-[#265D7A] mt-1">
+                        <div class="text-[11px] font-semibold text-[#A7E4DB] mt-1 font-mono">
                             Pelabuhan &amp; Hub
                         </div>
                     </div>

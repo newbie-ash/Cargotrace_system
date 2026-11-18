@@ -143,7 +143,7 @@ defineExpose({
 
 <template>
     <div id="utility-hub" class="relative -mt-12 sm:-mt-16 z-30 max-w-5xl mx-auto px-4 sm:px-8">
-        <div class="rounded-3xl bg-white/70 backdrop-blur-2xl border border-white/90 p-6 sm:p-10 shadow-[0_24px_60px_rgba(19,41,61,0.10)] relative overflow-hidden transition-all duration-300">
+        <div class="rounded-3xl bg-white/95 backdrop-blur-2xl border border-white p-6 sm:p-10 shadow-[0_24px_60px_rgba(0,0,0,0.28)] relative overflow-hidden transition-all duration-300">
             <!-- 3-Tab Selector Bar -->
             <div class="flex flex-wrap gap-2 p-1.5 bg-[#EAF6F4] rounded-2xl mb-8 border border-[#265D7A]/15 relative z-10">
                 <button
