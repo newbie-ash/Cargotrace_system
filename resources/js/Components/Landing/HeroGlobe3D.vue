@@ -39,7 +39,7 @@ const hasCoords = (loc) =>
     Number.isFinite(Number(loc.latitude)) &&
     Number.isFinite(Number(loc.longitude));
 
-// Generate warm oat milk sphere texture via offscreen canvas
+// Generate dark ocean texture via offscreen canvas (Zero CORS / Zero external network dependency)
 const createOceanTexture = () => {
     const canvas = document.createElement('canvas');
     canvas.width = 128;
@@ -48,9 +48,9 @@ const createOceanTexture = () => {
     if (!ctx) return '';
 
     const grad = ctx.createLinearGradient(0, 0, 0, 64);
-    grad.addColorStop(0, '#FAF6F0');
-    grad.addColorStop(0.5, '#EFE8DE');
-    grad.addColorStop(1, '#E3D9CB');
+    grad.addColorStop(0, '#1A3A54');
+    grad.addColorStop(0.5, '#13293D');
+    grad.addColorStop(1, '#0C1B28');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 128, 64);
     return canvas.toDataURL();
@@ -68,11 +68,11 @@ const buildPointsAndArcs = () => {
             name: loc.name,
             lat: parseFloat(loc.latitude),
             lng: parseFloat(loc.longitude),
-            color: isOrigin ? '#2563EB' : isDest ? '#362117' : '#3B82F6',
+            color: isOrigin ? '#10B981' : isDest ? '#F59E0B' : '#67C7C6',
         };
     });
 
-    // Curate active flight/maritime arcs with glowing Royal Blue & White per Image 2
+    // Curate active flight/maritime arcs between real DB nodes
     const arcs = [];
     const findLoc = (code) => validLocs.find((l) => l.code === code);
 
@@ -86,7 +86,7 @@ const buildPointsAndArcs = () => {
             startLng: parseFloat(corridor1[i].longitude),
             endLat: parseFloat(corridor1[i + 1].latitude),
             endLng: parseFloat(corridor1[i + 1].longitude),
-            color: ['#2563EB', '#60A5FA', '#FFFFFF'],
+            color: ['#10B981', '#67C7C6', '#F59E0B'],
         });
     }
 
@@ -100,7 +100,7 @@ const buildPointsAndArcs = () => {
             startLng: parseFloat(corridor2[i].longitude),
             endLat: parseFloat(corridor2[i + 1].latitude),
             endLng: parseFloat(corridor2[i + 1].longitude),
-            color: ['#FFFFFF', '#2563EB'],
+            color: ['#A7E4DB', '#67C7C6'],
         });
     }
 
@@ -112,7 +112,7 @@ const buildPointsAndArcs = () => {
                 startLng: parseFloat(validLocs[i].longitude),
                 endLat: parseFloat(validLocs[i + 1].latitude),
                 endLng: parseFloat(validLocs[i + 1].longitude),
-                color: ['#2563EB', '#93C5FD', '#FFFFFF'],
+                color: ['#10B981', '#67C7C6', '#F59E0B'],
             });
         }
     }
@@ -121,8 +121,8 @@ const buildPointsAndArcs = () => {
     const rings = [];
     const jkt = findLoc('IDJKT');
     const rtm = findLoc('NLRTM');
-    if (jkt) rings.push({ lat: parseFloat(jkt.latitude), lng: parseFloat(jkt.longitude), color: '#2563EB' });
-    if (rtm) rings.push({ lat: parseFloat(rtm.latitude), lng: parseFloat(rtm.longitude), color: '#3B82F6' });
+    if (jkt) rings.push({ lat: parseFloat(jkt.latitude), lng: parseFloat(jkt.longitude), color: '#10B981' });
+    if (rtm) rings.push({ lat: parseFloat(rtm.latitude), lng: parseFloat(rtm.longitude), color: '#F59E0B' });
 
     return { points, arcs, rings };
 };
@@ -150,12 +150,12 @@ const initGlobe = () => {
         .backgroundColor('rgba(0,0,0,0)')
         .globeImageUrl(oceanTexture)
         .showAtmosphere(true)
-        .atmosphereColor('#EDE5DB')
-        .atmosphereAltitude(0.12)
+        .atmosphereColor('#67C7C6')
+        .atmosphereAltitude(0.18)
         .polygonsData(countries.features)
-        .polygonCapColor(() => '#362117') // Rich espresso chocolate landmass per Image 2
-        .polygonSideColor(() => '#2B1A12')
-        .polygonStrokeColor(() => 'rgba(54, 33, 23, 0.45)')
+        .polygonCapColor(() => 'rgba(38, 93, 122, 0.92)')
+        .polygonSideColor(() => 'rgba(103, 199, 198, 0.22)')
+        .polygonStrokeColor(() => '#67C7C6')
         .polygonAltitude(0.012)
         .pointsData(points)
         .pointColor('color')
@@ -165,23 +165,23 @@ const initGlobe = () => {
         .labelText('code')
         .labelSize(1.3)
         .labelDotRadius(0.35)
-        .labelColor(() => '#FAF7F2')
+        .labelColor(() => '#A7E4DB')
         .labelAltitude(0.038)
         .arcsData(arcs)
         .arcColor('color')
-        .arcDashLength(0.45)
-        .arcDashGap(0.16)
-        .arcDashAnimateTime(2200)
-        .arcStroke(1.5)
-        .arcAltitude(0.26)
+        .arcDashLength(0.42)
+        .arcDashGap(0.18)
+        .arcDashAnimateTime(2000)
+        .arcStroke(1.2)
+        .arcAltitude(0.24)
         .ringsData(rings)
         .ringColor('color')
         .ringMaxRadius(4.5)
         .ringPropagationSpeed(1.6)
         .ringRepeatPeriod(900);
 
-    // Initial camera centered on transatlantic / global corridor
-    globeInstance.pointOfView({ lat: 20, lng: -25, altitude: 2.15 });
+    // Initial camera centered on Indian Ocean / Asia-Europe corridor
+    globeInstance.pointOfView({ lat: 16, lng: 65, altitude: 2.15 });
 
     const controls = globeInstance.controls();
     if (controls) {
@@ -250,30 +250,30 @@ onBeforeUnmount(() => {
         <div
             v-if="isWebglSupported"
             ref="globeContainer"
-            class="w-full h-full cursor-grab active:cursor-grabbing flex items-center justify-center drop-shadow-[0_28px_60px_rgba(46,30,22,0.12)]"
+            class="w-full h-full cursor-grab active:cursor-grabbing flex items-center justify-center drop-shadow-[0_28px_60px_rgba(19,41,61,0.28)]"
             aria-label="Globe 3D Interaktif Delixie"
         ></div>
 
         <!-- Graceful SVG Fallback if WebGL is disabled or during initial mount -->
         <svg
             v-if="!isWebglSupported || !isReady"
-            :class="['w-full h-full drop-shadow-[0_28px_60px_rgba(46,30,22,0.10)]', isReady ? 'hidden' : 'absolute inset-0 pointer-events-none']"
+            :class="['w-full h-full drop-shadow-[0_28px_60px_rgba(19,41,61,0.22)]', isReady ? 'hidden' : 'absolute inset-0 pointer-events-none']"
             viewBox="0 0 420 420"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
         >
             <defs>
                 <radialGradient id="fallbackSphere" cx="35%" cy="30%" r="70%">
-                    <stop offset="0%" stop-color="#FAF6F0" />
-                    <stop offset="55%" stop-color="#EFE8DE" />
-                    <stop offset="100%" stop-color="#E3D9CB" />
+                    <stop offset="0%" stop-color="#1A3A54" />
+                    <stop offset="55%" stop-color="#13293D" />
+                    <stop offset="100%" stop-color="#0C1B28" />
                 </radialGradient>
             </defs>
-            <circle cx="210" cy="210" r="178" fill="url(#fallbackSphere)" stroke="rgba(46,30,22,0.15)" stroke-width="2" />
-            <path d="M105,140 Q145,105 190,128 T235,165 Q215,215 170,225 T110,195 Z" fill="#362117" stroke="rgba(54,33,23,0.3)" stroke-width="1" />
-            <path d="M245,105 Q295,95 330,138 T315,205 Q270,215 245,175 Z" fill="#362117" stroke="rgba(54,33,23,0.3)" stroke-width="1" />
-            <ellipse cx="210" cy="210" rx="95" ry="178" fill="none" stroke="rgba(37,99,235,0.35)" stroke-width="1.8" />
-            <ellipse cx="210" cy="210" rx="178" ry="62" fill="none" stroke="rgba(37,99,235,0.25)" stroke-width="1.4" />
+            <circle cx="210" cy="210" r="178" fill="url(#fallbackSphere)" stroke="#67C7C6" stroke-width="2" />
+            <path d="M105,140 Q145,105 190,128 T235,165 Q215,215 170,225 T110,195 Z" fill="#265D7A" fill-opacity="0.8" stroke="#67C7C6" stroke-width="1" />
+            <path d="M245,105 Q295,95 330,138 T315,205 Q270,215 245,175 Z" fill="#265D7A" fill-opacity="0.8" stroke="#67C7C6" stroke-width="1" />
+            <ellipse cx="210" cy="210" rx="95" ry="178" fill="none" stroke="rgba(103,199,198,0.25)" stroke-width="1.2" />
+            <ellipse cx="210" cy="210" rx="178" ry="62" fill="none" stroke="rgba(103,199,198,0.25)" stroke-width="1.2" />
         </svg>
     </div>
 </template>

@@ -229,20 +229,27 @@ const initMap = () => {
         const completedSlice = latLngs.slice(0, activeIdx + 1);
         const projectedSlice = latLngs.slice(activeIdx);
 
-        // Completed segment (Solid Royal Blue)
+        // Completed segment (Solid Glowing Aqua)
         if (completedSlice.length > 1) {
             L.polyline(completedSlice, {
-                color: '#2563EB',
-                weight: 4,
+                color: '#265D7A',
+                weight: 6,
+                opacity: 0.45,
+                smoothFactor: 1,
+            }).addTo(layerGroup);
+
+            L.polyline(completedSlice, {
+                color: '#67C7C6',
+                weight: 3.5,
                 opacity: 0.95,
                 smoothFactor: 1,
             }).addTo(layerGroup);
         }
 
-        // Projected segment to destination (Dashed Light Blue)
+        // Projected segment to destination (Dashed Light Teal)
         if (projectedSlice.length > 1 && status !== 'DELIVERED') {
             L.polyline(projectedSlice, {
-                color: '#93C5FD',
+                color: '#A7E4DB',
                 weight: 2.5,
                 opacity: 0.85,
                 dashArray: '6, 10',
@@ -251,7 +258,7 @@ const initMap = () => {
         } else if (completedSlice.length <= 1 && projectedSlice.length <= 1) {
             // Fallback direct line
             L.polyline(latLngs, {
-                color: '#2563EB',
+                color: '#67C7C6',
                 weight: 3,
                 opacity: 0.9,
                 dashArray: '6, 12',
@@ -299,16 +306,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="bg-white/90 backdrop-blur-2xl border border-white/95 rounded-2xl overflow-hidden shadow-xs mb-6 relative">
+    <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs mb-6 relative">
         <!-- Map Header Toolbar -->
-        <div class="p-3.5 sm:p-4 border-b border-[#2E1E16]/10 flex flex-wrap items-center justify-between gap-3 bg-white/95">
+        <div class="p-3.5 sm:p-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3 bg-white">
             <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div class="w-8 h-8 rounded-xl bg-[#FAF7F2] border border-[#2E1E16]/10 flex items-center justify-center text-[#2563EB] shrink-0">
+                <div class="w-8 h-8 rounded-xl bg-[#EAF6F4] border border-[#265D7A]/20 flex items-center justify-center text-[#265D7A] shrink-0">
                     <i :class="['bi text-xs', liveMode ? 'bi-broadcast-pin text-emerald-600' : 'bi-map-fill']"></i>
                 </div>
                 <div class="min-w-0">
                     <div class="flex items-center gap-2">
-                        <h3 class="text-xs font-bold text-[#2E1E16] uppercase tracking-wider truncate">
+                        <h3 class="text-xs font-bold text-[#13293D] uppercase tracking-wider truncate">
                             {{ liveMode ? 'Pemantauan Trek Realtime' : 'Visualisasi Rute & Geospasial' }}
                         </h3>
                         <span v-if="liveMode" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[10px] font-mono font-bold text-emerald-700 shrink-0">
@@ -316,7 +323,7 @@ onUnmounted(() => {
                             <span>LIVE</span>
                         </span>
                     </div>
-                    <p class="text-[11px] font-normal text-[#5A4A40] truncate">
+                    <p class="text-[11px] font-normal text-[#265D7A] truncate">
                         {{ shipment?.shipment_number ? `${shipment.shipment_number} &bull; ${shipment.cargo_type || 'General Cargo'}` : 'Pelacakan posisi kargo intercontinental' }}
                     </p>
                 </div>
@@ -324,12 +331,12 @@ onUnmounted(() => {
 
             <!-- Legend & Reset Button -->
             <div class="flex items-center gap-2 flex-wrap">
-                <div class="hidden md:flex items-center gap-3 text-[11px] text-[#2E1E16] px-3.5 py-1.5 bg-[#FAF7F2] rounded-xl border border-[#2E1E16]/10 font-mono">
+                <div class="hidden md:flex items-center gap-3 text-[11px] text-[#13293D] px-3.5 py-1.5 bg-[#EAF6F4] rounded-xl border border-[#265D7A]/15 font-mono">
                     <span class="inline-flex items-center gap-1.5 font-semibold">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Asal
                     </span>
                     <span class="inline-flex items-center gap-1.5 font-semibold">
-                        <span class="w-2.5 h-2.5 rounded-full bg-[#2563EB] inline-block"></span> Checkpoint
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] inline-block"></span> Checkpoint
                     </span>
                     <span class="inline-flex items-center gap-1.5 font-semibold">
                         <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> Tujuan
@@ -340,7 +347,7 @@ onUnmounted(() => {
                     @click="resetBounds"
                     type="button"
                     title="Pusatkan Rute"
-                    class="px-3.5 py-1.5 text-xs font-semibold bg-[#2563EB] hover:bg-[#1D4ED8] rounded-full text-white inline-flex items-center gap-1.5 transition cursor-pointer shadow-sm"
+                    class="px-3.5 py-1.5 text-xs font-semibold bg-[#265D7A] hover:bg-[#13293D] rounded-full text-white inline-flex items-center gap-1.5 transition cursor-pointer shadow-sm"
                 >
                     <i class="bi bi-arrows-fullscreen text-xs"></i>
                     <span>Pusatkan</span>
@@ -352,24 +359,24 @@ onUnmounted(() => {
         <div v-if="hasValidCoordinates" class="relative w-full ocean-map-container" :style="{ height }">
             <div ref="mapContainer" class="w-full h-full z-10"></div>
 
-            <!-- Floating Telemetry HUD Overlay -->
+            <!-- Floating Telemetry HUD Overlay (Yellow Express & Biswas inspired) -->
             <div
                 v-if="liveMode && shipment && activeWaypoint"
-                class="absolute bottom-3 inset-x-3 sm:inset-x-5 z-20 pointer-events-auto bg-[#2E1E16]/90 backdrop-blur-xl border border-white/20 rounded-2xl p-3 sm:p-3.5 text-white shadow-xl flex flex-wrap items-center justify-between gap-3"
+                class="absolute bottom-3 inset-x-3 sm:inset-x-5 z-20 pointer-events-auto bg-[#13293D]/85 backdrop-blur-xl border border-white/20 rounded-2xl p-3 sm:p-3.5 text-white shadow-xl flex flex-wrap items-center justify-between gap-3"
             >
                 <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-400/40 text-blue-400 flex items-center justify-center shrink-0">
+                    <div class="w-9 h-9 rounded-xl bg-[#67C7C6]/20 border border-[#67C7C6]/40 text-[#67C7C6] flex items-center justify-center shrink-0">
                         <i class="bi bi-geo-alt-fill text-sm"></i>
                     </div>
                     <div class="min-w-0">
-                        <div class="text-[10px] font-mono text-[#93C5FD] uppercase tracking-wider font-bold flex items-center gap-1.5">
+                        <div class="text-[10px] font-mono text-[#A7E4DB] uppercase tracking-wider font-bold flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                             <span>Posisi Terkini &bull; {{ activeWaypoint.type }}</span>
                         </div>
                         <div class="text-xs sm:text-sm font-extrabold truncate text-white">
                             {{ activeWaypoint.name }}
                         </div>
-                        <div class="text-[10px] text-[#EDE5DB] truncate font-mono">
+                        <div class="text-[10px] text-[#D9F2EE] truncate font-mono">
                             Menuju: <span class="text-white font-semibold">{{ shipment.destination_location?.name || shipment.destination_location?.city }}</span> ({{ shipment.destination_location?.code }})
                         </div>
                     </div>
@@ -377,14 +384,14 @@ onUnmounted(() => {
 
                 <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 ml-auto">
                     <div class="text-right hidden sm:block">
-                        <div class="text-[10px] font-mono text-[#93C5FD] uppercase font-bold">Estimasi Tiba</div>
+                        <div class="text-[10px] font-mono text-[#A7E4DB] uppercase font-bold">Estimasi Tiba</div>
                         <div class="text-xs font-bold font-mono text-white">
                             {{ (shipment.estimated_arrival || shipment.expected_arrival) ? new Date(shipment.estimated_arrival || shipment.expected_arrival).toLocaleDateString([], { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '-' }}
                         </div>
                     </div>
                     <Link
                         :href="`/shipments/${shipment.id}`"
-                        class="px-3.5 py-1.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-xs inline-flex items-center gap-1.5 transition shadow-sm cursor-pointer"
+                        class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#265D7A] to-[#67C7C6] hover:brightness-110 text-[#13293D] font-bold text-xs inline-flex items-center gap-1.5 transition shadow-sm cursor-pointer"
                     >
                         <span>Lihat Detail</span>
                         <i class="bi bi-arrow-right"></i>
@@ -394,9 +401,9 @@ onUnmounted(() => {
         </div>
 
         <!-- Fallback if coordinates missing -->
-        <div v-else class="p-8 text-center bg-white/50 text-xs text-[#5A4A40]">
-            <i class="bi bi-geo-alt-slash text-2xl text-[#2563EB] mb-2 block"></i>
-            <p class="font-bold text-[#2E1E16]">Koordinat Geospasial Belum Lengkap</p>
+        <div v-else class="p-8 text-center bg-white/50 text-xs text-[#265D7A]">
+            <i class="bi bi-geo-alt-slash text-2xl text-[#67C7C6] mb-2 block"></i>
+            <p class="font-bold text-[#13293D]">Koordinat Geospasial Belum Lengkap</p>
             <p class="text-[11px] mt-1 max-w-sm mx-auto">
                 Lokasi asal atau tujuan belum memiliki titik koordinat (latitude &amp; longitude) yang valid. Perbarui data master lokasi untuk menampilkan peta rute.
             </p>
@@ -405,34 +412,37 @@ onUnmounted(() => {
 </template>
 
 <style>
-/* Leaflet Ocean Tint styling matching Oat Milk & Espresso (#EDE5DB ocean + #362117 land) */
+/* Leaflet Ocean Tint styling matching 3D Globe (#13293D ocean + #265D7A land) */
 .ocean-map-container .leaflet-container {
-    background: #EDE5DB !important;
+    background: linear-gradient(180deg, #1A3A54 0%, #13293D 50%, #0C1B28 100%) !important;
+}
+.ocean-map-container .leaflet-tile-pane {
+    filter: brightness(0.9) sepia(1) hue-rotate(170deg) saturate(3.2);
 }
 
-/* Leaflet Canvas styling overrides */
+/* Leaflet Dark Canvas styling overrides */
 .leaflet-popup-content-wrapper {
-    background: #2E1E16 !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    background: #13293D !important;
+    border: 1px solid rgba(167, 228, 219, 0.35) !important;
     border-radius: 18px !important;
-    box-shadow: 0 16px 36px rgba(46, 30, 22, 0.35) !important;
-    color: #FAF7F2 !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5) !important;
+    color: #F8FAFC !important;
 }
 .leaflet-popup-tip {
-    background: #2E1E16 !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    background: #13293D !important;
+    border: 1px solid rgba(167, 228, 219, 0.35) !important;
 }
 .custom-leaflet-pin {
     background: transparent !important;
     border: none !important;
 }
 .leaflet-bar a {
-    background-color: #FAF7F2 !important;
-    border-color: rgba(46, 30, 22, 0.15) !important;
-    color: #2E1E16 !important;
+    background-color: #13293D !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #F8FAFC !important;
 }
 .leaflet-bar a:hover {
-    background-color: #2563EB !important;
+    background-color: #265D7A !important;
     color: #FFFFFF !important;
 }
 </style>

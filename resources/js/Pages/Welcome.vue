@@ -58,7 +58,7 @@ const handleFixieTrack = (code) => {
 <template>
     <Head title="Delixie - Global Shipment Visibility & Real-Time Logistics Platform" />
 
-    <div class="min-h-screen font-sans bg-transparent text-[#2E1E16] selection:bg-[#2563EB] selection:text-white overflow-x-hidden relative">
+    <div class="min-h-screen font-sans bg-transparent text-white selection:bg-teal-bright selection:text-[#13293D] overflow-x-hidden relative">
         <!-- 1. Floating Pill Navbar -->
         <NavbarPill :auth-user="authUser" @scroll-to="scrollToUtility" />
 
