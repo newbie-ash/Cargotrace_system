@@ -1,259 +1,210 @@
 <script setup>
-import { ref, onMounted, defineAsyncComponent } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
 const HeroGlobe3D = defineAsyncComponent(() =>
     import('@/Components/Landing/HeroGlobe3D.vue')
 );
 
-const props = defineProps({
-    stats: {
-        type: Object,
-        required: true,
-    },
+defineProps({
     locations: {
         type: Array,
         default: () => [],
     },
 });
 
-const emit = defineEmits(['scrollToTrack']);
-
-const displayShipments = ref(0);
-const displayCarriers = ref(0);
-const displayLocations = ref(0);
-
-const animateCounter = (targetRef, endValue, duration = 900) => {
-    const start = 0;
-    const startTime = performance.now();
-    const step = (now) => {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        targetRef.value = Math.round(start + (endValue - start) * eased);
-        if (progress < 1) {
-            requestAnimationFrame(step);
-        }
-    };
-    requestAnimationFrame(step);
-};
-
-onMounted(() => {
-    animateCounter(displayShipments, props.stats.total_shipments || 8, 900);
-    animateCounter(displayCarriers, props.stats.active_carriers || 7, 900);
-    animateCounter(displayLocations, props.stats.total_locations || 8, 900);
-});
+defineEmits(['scrollToTrack']);
 </script>
 
 <template>
     <section
         aria-label="Hero Section Delixie"
-        class="relative min-h-[92vh] overflow-hidden bg-transparent text-[#FAEFDB] pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
+        class="relative min-h-[88vh] lg:min-h-[92vh] overflow-hidden bg-transparent text-[#FAEFDB] pt-32 pb-20 sm:pb-24 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
     >
-        <!-- Ultra-Crisp Vector & Procedural Logistics Background (Deep Teal + Bone + Magenta Palette) -->
+        <!-- Background Layer: Ambient Lights, Geospatial Grid & Subtle Cargo Silhouettes -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
             <!-- 1. Ambient Deep Teal & Magenta Backlight Glows -->
-            <div class="absolute -top-32 -right-24 w-[720px] h-[720px] rounded-full bg-gradient-to-br from-[#02332A] via-[#0A3D32]/60 to-[#BE2388]/20 blur-[100px]"></div>
-            <div class="absolute top-1/4 right-1/4 w-[480px] h-[480px] rounded-full bg-[#BE2388]/18 blur-[120px]"></div>
+            <div class="absolute -top-32 -right-24 w-[720px] h-[720px] rounded-full bg-gradient-to-br from-[#02332A] via-[#0A3D32]/50 to-[#BE2388]/18 blur-[110px]"></div>
+            <div class="absolute top-1/4 right-1/4 w-[480px] h-[480px] rounded-full bg-[#BE2388]/15 blur-[120px]"></div>
             <div class="absolute -bottom-36 -left-28 w-[580px] h-[580px] rounded-full bg-[#001F18]/80 blur-[120px]"></div>
 
-            <!-- 2. High-Precision Geospatial SVG Logistics Grid & Animated Magenta Route Arcs -->
+            <!-- 2. High-Precision Geospatial SVG Logistics Grid & Animated Route Arcs -->
             <svg
-                class="absolute inset-0 w-full h-full opacity-75"
+                class="absolute inset-0 w-full h-full opacity-60"
                 xmlns="http://www.w3.org/2000/svg"
                 preserveAspectRatio="xMidYMid slice"
                 viewBox="0 0 1440 900"
             >
                 <defs>
-                    <!-- Coordinate Grid Pattern -->
                     <pattern id="hero-geo-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                        <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(250, 239, 219, 0.04)" stroke-width="1" />
-                        <circle cx="80" cy="80" r="1.2" fill="rgba(250, 239, 219, 0.14)" />
+                        <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(250, 239, 219, 0.035)" stroke-width="1" />
+                        <circle cx="80" cy="80" r="1" fill="rgba(250, 239, 219, 0.12)" />
                     </pattern>
 
-                    <!-- Route Gradient Arcs (Magenta & Bone) -->
                     <linearGradient id="route-asia-eu" x1="0%" y1="100%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#BE2388" stop-opacity="0.25" />
-                        <stop offset="40%" stop-color="#D42B8A" stop-opacity="0.95" />
-                        <stop offset="75%" stop-color="#FAEFDB" stop-opacity="0.85" />
-                        <stop offset="100%" stop-color="#BE2388" stop-opacity="0.35" />
+                        <stop offset="0%" stop-color="#BE2388" stop-opacity="0.2" />
+                        <stop offset="40%" stop-color="#D42B8A" stop-opacity="0.85" />
+                        <stop offset="75%" stop-color="#FAEFDB" stop-opacity="0.75" />
+                        <stop offset="100%" stop-color="#BE2388" stop-opacity="0.25" />
                     </linearGradient>
 
                     <linearGradient id="route-transpacific" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#FAEFDB" stop-opacity="0.15" />
-                        <stop offset="50%" stop-color="#BE2388" stop-opacity="0.75" />
-                        <stop offset="100%" stop-color="#D42B8A" stop-opacity="0.25" />
+                        <stop offset="0%" stop-color="#FAEFDB" stop-opacity="0.12" />
+                        <stop offset="50%" stop-color="#BE2388" stop-opacity="0.7" />
+                        <stop offset="100%" stop-color="#D42B8A" stop-opacity="0.2" />
                     </linearGradient>
 
                     <linearGradient id="route-intermodal-land" x1="100%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#FAEFDB" stop-opacity="0.65" />
-                        <stop offset="100%" stop-color="#BE2388" stop-opacity="0.20" />
+                        <stop offset="0%" stop-color="#FAEFDB" stop-opacity="0.6" />
+                        <stop offset="100%" stop-color="#BE2388" stop-opacity="0.15" />
                     </linearGradient>
-
-                    <!-- Route Glow Filter -->
-                    <filter id="route-glow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="3" result="blur" />
-                        <feMerge>
-                            <feMergeNode in="blur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
                 </defs>
 
                 <!-- Full Area Geodetic Grid -->
-                <rect width="100%" height="100%" fill="url(#hero-geo-grid)" />
+                <rect width="1440" height="900" fill="url(#hero-geo-grid)" />
 
-                <!-- Global Latitude / Longitude Curvature Guides -->
-                <path d="M-100,280 C400,220 900,340 1600,240" fill="none" stroke="rgba(250, 239, 219, 0.06)" stroke-width="1.2" stroke-dasharray="6 6" />
-                <path d="M-100,520 C500,480 1000,600 1600,490" fill="none" stroke="rgba(250, 239, 219, 0.06)" stroke-width="1.2" stroke-dasharray="6 6" />
-                <path d="M-100,760 C300,710 850,820 1600,730" fill="none" stroke="rgba(250, 239, 219, 0.05)" stroke-width="1" />
-
-                <!-- Trade Lane 1: Asia - Middle East - Europe Maritime Supercorridor (Animated Magenta Arc) -->
-                <path
-                    d="M 660,700 C 820,630 960,470 1200,310"
-                    fill="none"
-                    stroke="url(#route-asia-eu)"
-                    stroke-width="2.5"
-                    filter="url(#route-glow)"
-                    class="hero-route-line-1"
-                />
-                <!-- Trade Lane 2: Intra-Asia Aerial Express Corridor (Animated) -->
-                <path
-                    d="M 740,800 C 940,710 1100,640 1340,530"
-                    fill="none"
-                    stroke="url(#route-transpacific)"
-                    stroke-width="2"
-                    stroke-dasharray="8 8"
-                    class="hero-route-line-2"
-                />
-                <!-- Trade Lane 3: Trans-Continental Feeder Arc (Animated) -->
-                <path
-                    d="M 960,250 C 1120,210 1260,270 1420,370"
-                    fill="none"
-                    stroke="url(#route-intermodal-land)"
-                    stroke-width="1.8"
-                    stroke-dasharray="5 7"
-                    class="hero-route-line-3"
-                />
-
-                <!-- Hub Blips & Radar Rings with Real Port Coordinates -->
-                <!-- Hub 1: Jakarta Tanjung Priok (IDJKT) -->
-                <g transform="translate(710, 680)">
-                    <circle r="14" fill="none" stroke="#BE2388" stroke-width="1" class="animate-ping opacity-35" />
-                    <circle r="4" fill="#BE2388" />
-                    <text x="12" y="-6" fill="#FAEFDB" font-size="9" font-family="monospace" font-weight="bold" letter-spacing="1">IDJKT [06°S 106°E]</text>
-                </g>
-
-                <!-- Hub 2: Singapore Malacca Strait (SGSIN) -->
-                <g transform="translate(850, 570)">
-                    <circle r="12" fill="none" stroke="#D42B8A" stroke-width="1" class="animate-ping opacity-30" style="animation-delay: 0.6s;" />
-                    <circle r="3.5" fill="#D42B8A" />
-                    <text x="12" y="-6" fill="#FAEFDB" font-size="9" font-family="monospace" letter-spacing="1">SGSIN HUB</text>
-                </g>
-
-                <!-- Hub 3: Dubai Port (AEDXB) -->
-                <g transform="translate(1040, 420)">
-                    <circle r="12" fill="none" stroke="#BE2388" stroke-width="1" class="animate-ping opacity-30" style="animation-delay: 1.2s;" />
-                    <circle r="3.5" fill="#BE2388" />
-                    <text x="12" y="-6" fill="#FAEFDB" font-size="9" font-family="monospace" letter-spacing="1">AEDXB TRANSIT</text>
-                </g>
-
-                <!-- Hub 4: Rotterdam Gateway (NLRTM) -->
-                <g transform="translate(1220, 300)">
-                    <circle r="16" fill="none" stroke="#FAEFDB" stroke-width="1" class="animate-ping opacity-40" style="animation-delay: 1.8s;" />
-                    <circle r="4.5" fill="#FAEFDB" />
-                    <text x="12" y="-8" fill="#FAEFDB" font-size="9" font-family="monospace" font-weight="bold" letter-spacing="1">NLRTM [51°N 004°E]</text>
-                </g>
-
-                <!-- Geospatial Matrix Target Crosshairs -->
-                <g transform="translate(1140, 170)" stroke="rgba(190, 35, 136, 0.35)" stroke-width="1">
-                    <line x1="-12" y1="0" x2="12" y2="0" />
-                    <line x1="0" y1="-12" x2="0" y2="12" />
-                    <circle r="6" fill="none" />
-                    <text x="16" y="4" fill="rgba(250, 239, 219, 0.50)" font-size="8" font-family="monospace">RADAR-SYNC 21.4K</text>
+                <!-- Dynamic Curving Logistics Trajectories -->
+                <g fill="none">
+                    <path
+                        d="M 60 740 C 340 660, 520 460, 840 470 C 1120 480, 1260 300, 1420 220"
+                        stroke="url(#route-asia-eu)"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        class="hero-route-line-1"
+                    />
+                    <path
+                        d="M 960 780 C 1040 610, 1180 500, 1420 480"
+                        stroke="url(#route-transpacific)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        class="hero-route-line-2"
+                    />
+                    <path
+                        d="M 220 860 C 440 820, 640 760, 820 620"
+                        stroke="url(#route-intermodal-land)"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        class="hero-route-line-3"
+                    />
                 </g>
             </svg>
 
-            <!-- 3. Left Gradient Vignette (Ensures 100% crisp readability for headline & CTA) -->
-            <div class="absolute inset-0 bg-gradient-to-r from-[#012B23] via-[#012B23]/85 to-transparent w-full lg:w-3/5"></div>
-            <!-- Bottom Seamless Vignette into Utility Hub -->
-            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#012B23] to-transparent"></div>
+            <!-- 3. SUBTLE CARGO TRANSPORT SILHOUETTES (Plane, Container Ship, Freight Truck) -->
+            <!-- Opacity: 0.07, soft blend, logistics identity without typographic interference -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.07] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)]">
+                <svg
+                    class="w-full h-full object-cover"
+                    viewBox="0 0 1600 900"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <!-- Air Cargo Jet Silhouette (High Altitude Sky Corridor) -->
+                    <g transform="translate(780, 160) scale(1.1) rotate(-8)">
+                        <!-- Fuselage -->
+                        <path
+                            d="M 20 65 Q 120 52, 280 54 Q 380 56, 460 72 Q 490 80, 500 88 Q 480 94, 420 90 Q 280 88, 140 82 Q 60 80, 20 65 Z"
+                            fill="#FAEFDB"
+                        />
+                        <!-- Swept Main Wing -->
+                        <path d="M 190 70 L 110 -10 L 155 -10 L 295 72 Z" fill="#FAEFDB" />
+                        <!-- Winglet / Far Wing Tip -->
+                        <path d="M 240 85 L 340 165 L 315 165 L 210 82 Z" fill="#FAEFDB" />
+                        <!-- T-Tail & Vertical Stabilizer -->
+                        <path d="M 40 68 L 0 -5 L 35 -5 L 95 65 Z" fill="#FAEFDB" />
+                        <!-- Turbofan Engines -->
+                        <ellipse cx="205" cy="50" rx="22" ry="8" fill="#FAEFDB" />
+                        <ellipse cx="255" cy="115" rx="22" ry="8" fill="#FAEFDB" />
+                    </g>
+
+                    <!-- Maritime Container Ship Silhouette (Mid/Lower Ocean Horizon) -->
+                    <g transform="translate(180, 560) scale(0.95)">
+                        <!-- Ship Hull with Bow & Keel Lines -->
+                        <path
+                            d="M 60 120 L 780 120 C 820 120, 850 140, 870 170 L 40 170 C 32 155, 36 135, 60 120 Z"
+                            fill="#FAEFDB"
+                        />
+                        <!-- Stern Bridge / Deckhouse -->
+                        <rect x="90" y="45" width="75" height="75" rx="3" fill="#FAEFDB" />
+                        <rect x="115" y="20" width="18" height="25" rx="2" fill="#FAEFDB" />
+                        <rect x="80" y="40" width="95" height="8" rx="2" fill="#FAEFDB" />
+                        <!-- Container Stacks (Bays) -->
+                        <rect x="190" y="55" width="85" height="65" rx="2" fill="#FAEFDB" />
+                        <rect x="290" y="55" width="85" height="65" rx="2" fill="#FAEFDB" />
+                        <rect x="390" y="55" width="85" height="65" rx="2" fill="#FAEFDB" />
+                        <rect x="490" y="55" width="85" height="65" rx="2" fill="#FAEFDB" />
+                        <rect x="590" y="65" width="85" height="55" rx="2" fill="#FAEFDB" />
+                        <rect x="690" y="80" width="75" height="40" rx="2" fill="#FAEFDB" />
+                        <!-- Bow Forecastle Deck -->
+                        <polygon points="775,120 840,120 865,160 775,160" fill="#FAEFDB" />
+                    </g>
+
+                    <!-- Freight Logistics Semi-Truck Silhouette (Lower Ground Highway Corridor) -->
+                    <g transform="translate(980, 680) scale(0.85)">
+                        <!-- 40ft Container Box Trailer -->
+                        <rect x="20" y="20" width="340" height="130" rx="4" fill="#FAEFDB" />
+                        <!-- Cab / Tractor Unit -->
+                        <path
+                            d="M 370 40 L 450 35 L 490 90 L 515 110 L 515 150 L 370 150 Z"
+                            fill="#FAEFDB"
+                        />
+                        <!-- Aero Roof Deflector -->
+                        <polygon points="370,40 450,35 440,20 370,25" fill="#FAEFDB" />
+                        <!-- Wheels -->
+                        <circle cx="80" cy="165" r="18" fill="#FAEFDB" />
+                        <circle cx="130" cy="165" r="18" fill="#FAEFDB" />
+                        <circle cx="310" cy="165" r="18" fill="#FAEFDB" />
+                        <circle cx="360" cy="165" r="18" fill="#FAEFDB" />
+                        <circle cx="475" cy="165" r="18" fill="#FAEFDB" />
+                    </g>
+                </svg>
+            </div>
         </div>
 
-        <!-- Main Hero Grid: Split Asymmetrical Editorial Layout -->
-        <div class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            <!-- Kolom Kiri: Headline, Narrative & Metrics -->
-            <div class="lg:col-span-7 flex flex-col justify-between space-y-8">
-                <!-- Eyebrow Category -->
-                <div class="flex items-center gap-3">
-                    <span class="w-8 h-px bg-[#BE2388]" aria-hidden="true"></span>
-                    <span class="text-xs font-mono font-bold tracking-widest text-[#FAEFDB]/80 uppercase drop-shadow-xs">
-                        VISIBILITAS LOGISTIK GLOBAL
-                    </span>
+        <!-- Main Content Grid: Headline on Left, 3D Globe on Right -->
+        <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center relative z-10">
+            <!-- Kolom Kiri: Editorial Typography & High-Impact CTA -->
+            <div class="lg:col-span-7 flex flex-col justify-center space-y-7">
+                <!-- Status Kicker Pill -->
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#001F18]/85 border border-[#FAEFDB]/18 text-xs font-mono font-bold text-[#FAEFDB] w-fit shadow-xs">
+                    <span class="w-2 h-2 rounded-full bg-[#BE2388] animate-pulse"></span>
+                    <span>VISIBILITAS LOGISTIK GLOBAL</span>
                 </div>
 
                 <!-- Massive Editorial Headline -->
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-[#FAEFDB] drop-shadow-md">
+                <h1 class="text-4xl sm:text-6xl lg:text-[66px] font-extrabold tracking-tight leading-[1.08] text-[#FAEFDB] drop-shadow-md">
                     End-to-End
-                    <span class="block">Global Shipment</span>
-                    Visibility.
+                    <span class="block text-transparent bg-clip-text bg-gradient-to-r from-[#FAEFDB] via-[#F0D5E7] to-[#BE2388]">
+                        Global Shipment Visibility.
+                    </span>
                 </h1>
 
-                <!-- Concise Lightweight Narrative -->
-                <p class="text-base sm:text-lg text-[#FAEFDB]/85 font-normal leading-relaxed max-w-xl drop-shadow-xs">
+                <!-- Sub-Headline -->
+                <p class="text-base sm:text-lg text-[#FAEFDB]/85 font-normal leading-relaxed max-w-xl">
                     Pantau pergerakan kontainer interkontinental secara terverifikasi dengan validasi rute geospasial maritim, kalkulasi tarif transparan, dan peringatan keterlambatan real-time.
                 </p>
 
-                <!-- Solid Pill Primary CTA: Magenta Glow Button -->
+                <!-- Action Button Group -->
                 <div class="pt-2 flex flex-wrap items-center gap-4">
                     <button
                         type="button"
-                        @click="emit('scrollToTrack')"
-                        class="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#BE2388] via-[#C82A8F] to-[#D42B8A] hover:brightness-110 text-white font-bold text-sm transition-all duration-300 shadow-xl shadow-[#BE2388]/35 hover:-translate-y-0.5 inline-flex items-center gap-3 cursor-pointer group"
+                        @click="$emit('scrollToTrack')"
+                        class="px-8 py-4 rounded-full bg-gradient-to-r from-[#BE2388] via-[#C82A8F] to-[#D42B8A] hover:brightness-110 text-white font-extrabold text-sm sm:text-base transition-all duration-300 shadow-[0_12px_32px_rgba(190,35,136,0.40)] hover:-translate-y-0.5 flex items-center gap-2.5 group cursor-pointer"
                     >
                         <span>Lacak Kargo Sekarang</span>
                         <i class="bi bi-arrow-right text-xs transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></i>
                     </button>
                 </div>
-
-                <!-- Bottom Left: 3 Real Statistics Separated by Vertical Dividers -->
-                <div class="pt-8 mt-4 border-t border-[#FAEFDB]/20 grid grid-cols-3 gap-6 max-w-lg">
-                    <div class="pr-4 border-r border-[#FAEFDB]/20">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#FAEFDB] tracking-tight drop-shadow-xs">
-                            {{ displayShipments }}<span class="text-[#BE2388]">+</span>
-                        </div>
-                        <div class="text-[11px] font-semibold text-[#FAEFDB]/70 mt-1 font-mono">
-                            Pengiriman Aktif
-                        </div>
-                    </div>
-                    <div class="pr-4 border-r border-[#FAEFDB]/20">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#FAEFDB] tracking-tight drop-shadow-xs">
-                            {{ displayCarriers }}
-                        </div>
-                        <div class="text-[11px] font-semibold text-[#FAEFDB]/70 mt-1 font-mono">
-                            Mitra Ekspedisi
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#FAEFDB] tracking-tight drop-shadow-xs">
-                            {{ displayLocations }}
-                        </div>
-                        <div class="text-[11px] font-semibold text-[#FAEFDB]/70 mt-1 font-mono">
-                            Pelabuhan &amp; Hub
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Kolom Kanan: Interactive 3D Globe & Telemetry Overlay -->
-            <div class="lg:col-span-5 relative flex items-center justify-center min-h-[400px]">
+            <!-- Kolom Kanan: Interactive 3D Globe & Minimalist Telemetry Overlay -->
+            <div class="lg:col-span-5 relative flex items-center justify-center min-h-[380px] sm:min-h-[420px]">
                 <div class="relative w-full max-w-md">
-                    <!-- 3D Globe positioned alongside vector route grid -->
+                    <!-- 3D Globe -->
                     <div class="relative flex items-center justify-center opacity-95 hover:opacity-100 transition-opacity">
                         <HeroGlobe3D :locations="locations" />
                     </div>
 
-                    <!-- Floating Frosted Glass Telemetry Overlay Card (Deep Teal & Bone with Magenta Badge) -->
-                    <div class="relative z-20 mt-4 sm:mt-0 sm:absolute -bottom-4 right-0 sm:right-2 backdrop-blur-2xl bg-[#012B23]/80 border border-[#FAEFDB]/25 rounded-2xl p-4 sm:p-5 shadow-[0_18px_40px_rgba(0,0,0,0.50)] max-w-xs mx-auto transition-transform duration-300 hover:-translate-y-1">
+                    <!-- Floating Frosted Glass Telemetry Card -->
+                    <div class="relative z-20 mt-4 sm:mt-0 sm:absolute -bottom-2 right-0 sm:right-2 backdrop-blur-2xl bg-[#012B23]/85 border border-[#FAEFDB]/20 rounded-2xl p-4 sm:p-5 shadow-[0_18px_40px_rgba(0,0,0,0.50)] max-w-xs mx-auto transition-transform duration-300 hover:-translate-y-1">
                         <div class="flex items-center justify-between gap-3 pb-2.5 border-b border-[#FAEFDB]/15">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399]"></span>

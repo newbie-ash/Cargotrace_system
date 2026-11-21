@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 const props = defineProps({
     locations: {
@@ -10,9 +10,43 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    stats: {
+        type: Object,
+        default: () => ({
+            total_shipments: 8,
+            active_carriers: 7,
+            total_locations: 8,
+        }),
+    },
 });
 
 const activeTab = ref('track'); // 'track' | 'tariff' | 'hubs'
+
+// Animated Stat Counters
+const displayShipments = ref(0);
+const displayCarriers = ref(0);
+const displayLocations = ref(0);
+
+const animateCounter = (targetRef, endValue, duration = 800) => {
+    const start = 0;
+    const startTime = performance.now();
+    const step = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        targetRef.value = Math.round(start + (endValue - start) * eased);
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        }
+    };
+    requestAnimationFrame(step);
+};
+
+onMounted(() => {
+    animateCounter(displayShipments, props.stats?.total_shipments ?? 8, 800);
+    animateCounter(displayCarriers, props.stats?.active_carriers ?? 7, 800);
+    animateCounter(displayLocations, props.stats?.total_locations ?? 8, 800);
+});
 
 // Tab 1: Public Tracking
 const trackingInput = ref(props.sampleShipments[0] || '');
@@ -142,15 +176,20 @@ defineExpose({
 </script>
 
 <template>
-    <div id="utility-hub" class="relative -mt-12 sm:-mt-16 z-30 max-w-5xl mx-auto px-4 sm:px-8">
-        <div class="rounded-3xl bg-[#02332A]/90 backdrop-blur-2xl border border-[#FAEFDB]/20 p-6 sm:p-10 shadow-[0_24px_60px_rgba(0,0,0,0.50)] relative overflow-hidden transition-all duration-300 text-[#FAEFDB]">
+    <!-- SECTION 2: CENTERED TRACKING COMMAND BAR & KEY STATS STRIP -->
+    <section id="utility-hub" aria-label="Tracking Command Bar" class="relative z-30 max-w-6xl mx-auto px-6 py-20 sm:py-24">
+        <!-- Main Tabbed Glass Command Bar -->
+        <div class="rounded-[32px] bg-[#02332A]/80 backdrop-blur-2xl border border-[#FAEFDB]/18 p-6 sm:p-10 shadow-[0_24px_60px_rgba(0,0,0,0.45)] relative overflow-hidden transition-all duration-300 text-[#FAEFDB]">
+            <!-- Ambient Glow inside card -->
+            <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#BE2388]/15 blur-3xl pointer-events-none"></div>
+
             <!-- 3-Tab Selector Bar -->
-            <div class="flex flex-wrap gap-2 p-1.5 bg-[#001F18]/80 rounded-2xl mb-8 border border-[#FAEFDB]/15 relative z-10">
+            <div class="flex flex-wrap gap-2 p-1.5 bg-[#001F18]/85 rounded-2xl mb-8 border border-[#FAEFDB]/15 relative z-10">
                 <button
                     type="button"
                     @click="activeTab = 'track'"
                     :class="[
-                        'flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer',
+                        'flex-1 min-w-[120px] py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer',
                         activeTab === 'track'
                             ? 'bg-gradient-to-r from-[#BE2388] to-[#D42B8A] text-white shadow-md shadow-[#BE2388]/30'
                             : 'text-[#FAEFDB]/70 hover:text-white hover:bg-white/5'
@@ -164,7 +203,7 @@ defineExpose({
                     type="button"
                     @click="activeTab = 'tariff'"
                     :class="[
-                        'flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer',
+                        'flex-1 min-w-[120px] py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer',
                         activeTab === 'tariff'
                             ? 'bg-gradient-to-r from-[#BE2388] to-[#D42B8A] text-white shadow-md shadow-[#BE2388]/30'
                             : 'text-[#FAEFDB]/70 hover:text-white hover:bg-white/5'
@@ -178,7 +217,7 @@ defineExpose({
                     type="button"
                     @click="activeTab = 'hubs'"
                     :class="[
-                        'flex-1 min-w-[120px] py-2.5 px-4 rounded-xl text-xs font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer',
+                        'flex-1 min-w-[120px] py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all inline-flex items-center justify-center gap-2 cursor-pointer',
                         activeTab === 'hubs'
                             ? 'bg-gradient-to-r from-[#BE2388] to-[#D42B8A] text-white shadow-md shadow-[#BE2388]/30'
                             : 'text-[#FAEFDB]/70 hover:text-white hover:bg-white/5'
@@ -193,7 +232,7 @@ defineExpose({
             <div v-if="activeTab === 'track'" class="space-y-5 relative z-10">
                 <div>
                     <label for="tracking-main-input" class="block text-xs font-bold text-[#FAEFDB] mb-2">
-                        Nomor Resi / Referensi Pengiriman (Pencarian Aman Tanpa Login)
+                        Nomor Resi / Referensi Pengiriman (Pencarian Publik Tanpa Login)
                     </label>
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-1">
@@ -201,137 +240,95 @@ defineExpose({
                             <input
                                 id="tracking-main-input"
                                 v-model="trackingInput"
-                                @keyup.enter="runPublicTrack()"
                                 type="text"
-                                placeholder="Contoh: CT-2026-XXXXXX atau PO-JKT-RTM-001"
-                                class="w-full h-11 pl-11 pr-4 bg-[#01241D] border border-[#FAEFDB]/25 rounded-full text-xs font-mono text-[#FAEFDB] placeholder-[#FAEFDB]/45 focus:outline-none focus:ring-2 focus:ring-[#BE2388]/60 shadow-inner"
+                                placeholder="Contoh: TRK-2026-0001 atau PO-2026-SEA-001"
+                                class="w-full h-12 pl-11 pr-4 bg-[#01241D] border border-[#FAEFDB]/25 rounded-2xl text-sm text-[#FAEFDB] placeholder-[#FAEFDB]/45 focus:outline-none focus:ring-2 focus:ring-[#BE2388]/50 focus:border-transparent font-mono"
+                                @keyup.enter="runPublicTrack()"
                             />
                         </div>
                         <button
                             type="button"
                             @click="runPublicTrack()"
                             :disabled="trackingLoading"
-                            class="h-11 px-7 bg-gradient-to-r from-[#BE2388] to-[#D42B8A] hover:brightness-110 text-white text-xs font-extrabold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-md shadow-[#BE2388]/30 disabled:opacity-60 cursor-pointer shrink-0"
+                            class="h-12 px-8 rounded-2xl bg-gradient-to-r from-[#BE2388] to-[#D42B8A] hover:brightness-110 text-white font-bold text-sm transition-all duration-300 shadow-md shadow-[#BE2388]/30 hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer shrink-0"
                         >
-                            <i :class="trackingLoading ? 'bi bi-hourglass-split animate-spin' : 'bi bi-search'" aria-hidden="true"></i>
-                            <span>{{ trackingLoading ? 'Melacak...' : 'Lacak Resi' }}</span>
+                            <span v-if="trackingLoading" class="inline-block w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+                            <span v-else class="flex items-center gap-2">
+                                <i class="bi bi-search text-xs" aria-hidden="true"></i>
+                                <span>Lacak Pengiriman</span>
+                            </span>
                         </button>
                     </div>
 
-                    <!-- 1-Click Sample Demo Pills -->
-                    <div v-if="sampleShipments.length" class="flex flex-wrap items-center gap-2 mt-3.5">
-                        <span class="text-[11px] font-semibold text-[#FAEFDB]/70">Real Sampel Uji Coba:</span>
+                    <!-- Sample Quick Pills -->
+                    <div v-if="sampleShipments.length" class="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                        <span class="text-[#FAEFDB]/60 text-[11px] font-mono">Resi Sampel:</span>
                         <button
-                            v-for="sample in sampleShipments"
-                            :key="sample"
-                            @click="runPublicTrack(sample)"
+                            v-for="code in sampleShipments"
+                            :key="code"
                             type="button"
-                            class="px-3 py-1 rounded-lg bg-[#012B23] hover:bg-[#BE2388] text-[#FAEFDB] hover:text-white border border-[#FAEFDB]/20 text-[11px] font-mono font-bold transition cursor-pointer shadow-xs"
+                            @click="runPublicTrack(code)"
+                            class="px-2.5 py-1 rounded-lg bg-[#001F18]/80 hover:bg-[#BE2388]/30 text-[#FAEFDB]/80 hover:text-white border border-[#FAEFDB]/15 text-[11px] font-mono transition cursor-pointer"
                         >
-                            {{ sample }}
+                            {{ code }}
                         </button>
+                    </div>
+
+                    <!-- Error Alert -->
+                    <div v-if="trackingError" class="mt-4 p-4 rounded-2xl bg-rose-950/60 border border-rose-500/30 text-rose-200 text-xs flex items-center gap-2.5">
+                        <i class="bi bi-exclamation-triangle-fill text-rose-400 text-base" aria-hidden="true"></i>
+                        <span>{{ trackingError }}</span>
                     </div>
                 </div>
 
-                <!-- Error Notification -->
-                <div v-if="trackingError" class="p-3.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-200 text-xs font-semibold flex items-center gap-2">
-                    <i class="bi bi-exclamation-circle-fill text-rose-400" aria-hidden="true"></i>
-                    <span>{{ trackingError }}</span>
-                </div>
-
-                <!-- Public Tracking Result Card -->
+                <!-- Tracking Result Drawer -->
                 <Transition
                     enter-active-class="transition duration-300 ease-out"
                     enter-from-class="opacity-0 -translate-y-2"
                     enter-to-class="opacity-100 translate-y-0"
                 >
-                    <div v-if="trackingResult" class="p-5 sm:p-6 rounded-2xl bg-[#01241D]/95 border border-[#FAEFDB]/20 shadow-lg space-y-5">
-                        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#FAEFDB]/15">
+                    <div v-if="trackingResult" class="mt-6 pt-6 border-t border-[#FAEFDB]/15 space-y-4">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[#001F18]/80 border border-[#FAEFDB]/15">
                             <div>
-                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#FAEFDB]/70 block">NOMOR PENGIRIMAN</span>
-                                <strong class="text-base font-extrabold font-mono text-[#FAEFDB]">{{ trackingResult.shipment_number }}</strong>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span
-                                    v-if="trackingResult.is_delayed"
-                                    class="px-2.5 py-1 rounded-lg bg-amber-500/25 text-amber-200 border border-amber-500/40 text-[11px] font-bold"
-                                >
-                                    DELAY (+{{ trackingResult.delay_duration_hours }}j)
-                                </span>
-                                <span
-                                    v-else
-                                    class="px-2.5 py-1 rounded-lg bg-emerald-500/25 text-emerald-200 border border-emerald-500/40 text-[11px] font-bold"
-                                >
-                                    ON-TIME SLA
-                                </span>
-                                <span class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-[#BE2388] to-[#D42B8A] text-white font-mono text-[11px] font-bold">
-                                    {{ trackingResult.current_status }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Route Grid -->
-                        <div class="grid grid-cols-3 items-center gap-3 text-xs">
-                            <div>
-                                <span class="text-[10px] text-[#FAEFDB]/70 block font-mono font-semibold">ASAL (ORIGIN)</span>
-                                <strong class="font-mono text-[#FAEFDB] text-sm">{{ trackingResult.origin?.code }}</strong>
-                                <div class="text-[11px] text-[#FAEFDB]/75 truncate">{{ trackingResult.origin?.city }}</div>
-                            </div>
-                            <div class="text-center">
-                                <span class="text-[10px] font-mono text-[#FAEFDB]/80 font-bold block">{{ trackingResult.carrier?.transport_mode }}</span>
-                                <div class="h-0.5 bg-gradient-to-r from-[#BE2388] to-[#D42B8A] my-1.5 relative">
-                                    <i class="bi bi-caret-right-fill text-[#BE2388] absolute -top-2 right-0 text-xs" aria-hidden="true"></i>
+                                <span class="text-[10px] uppercase font-mono tracking-wider text-[#FAEFDB]/60 font-semibold block">HASIL PELACAKAN RESI</span>
+                                <div class="text-base font-extrabold font-mono text-[#FAEFDB]">
+                                    {{ trackingResult.tracking_number }}
                                 </div>
-                                <span class="text-[10px] text-[#FAEFDB]/75 truncate block">{{ trackingResult.carrier?.name }}</span>
+                                <div class="text-xs text-[#FAEFDB]/70 mt-0.5">
+                                    {{ trackingResult.origin?.city }} &rarr; {{ trackingResult.destination?.city }}
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <span class="text-[10px] text-[#FAEFDB]/70 block font-mono font-semibold">TUJUAN (DESTINATION)</span>
-                                <strong class="font-mono text-[#FAEFDB] text-sm">{{ trackingResult.destination?.code }}</strong>
-                                <div class="text-[11px] text-[#FAEFDB]/75 truncate">{{ trackingResult.destination?.city }}</div>
-                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#BE2388] text-white">
+                                {{ trackingResult.status }}
+                            </span>
                         </div>
 
-                        <!-- Stepper Progress Bar -->
-                        <div class="flex items-center justify-between gap-1.5 pt-1">
-                            <div
-                                v-for="step in lifecycleSteps"
-                                :key="step"
-                                class="flex-1 text-center"
-                            >
+                        <!-- Progress Step Flow -->
+                        <div class="p-4 rounded-2xl bg-[#001F18]/60 border border-[#FAEFDB]/10">
+                            <div class="flex items-center justify-between text-xs font-mono font-bold">
                                 <div
-                                    class="h-1.5 rounded-full mb-1.5 transition-colors"
-                                    :class="isStepReached(step, trackingResult.current_status) ? 'bg-[#BE2388]' : 'bg-[#0A3D32]'"
-                                ></div>
-                                <span class="text-[9px] font-mono font-bold block truncate" :class="isStepReached(step, trackingResult.current_status) ? 'text-[#FAEFDB]' : 'text-[#FAEFDB]/40'">
-                                    {{ step }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- 3 Checkpoints Terakhir -->
-                        <div v-if="trackingResult.recent_events?.length" class="pt-4 border-t border-[#FAEFDB]/15 space-y-2.5">
-                            <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#FAEFDB]/70">
-                                3 Checkpoint Terbaru
-                            </div>
-                            <div
-                                v-for="evt in trackingResult.recent_events"
-                                :key="evt.id"
-                                class="p-3 rounded-xl bg-[#001F18]/85 border border-[#FAEFDB]/15 text-xs flex items-start justify-between gap-3"
-                            >
-                                <div class="space-y-0.5">
-                                    <div class="font-bold text-[#FAEFDB] flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full" :class="evt.event_type === 'EXCEPTION' ? 'bg-amber-400' : 'bg-[#BE2388]'"></span>
-                                        <span>{{ evt.status }}</span>
-                                        <span v-if="evt.location" class="text-[11px] font-normal text-[#FAEFDB]/70">({{ evt.location.code }} &bull; {{ evt.location.city }})</span>
+                                    v-for="step in lifecycleSteps"
+                                    :key="step"
+                                    class="flex flex-col items-center gap-1.5 flex-1 text-center"
+                                >
+                                    <div
+                                        :class="[
+                                            'w-7 h-7 rounded-full flex items-center justify-center text-xs transition-colors',
+                                            isStepReached(step, trackingResult.status)
+                                                ? 'bg-[#BE2388] text-white ring-4 ring-[#BE2388]/20'
+                                                : 'bg-[#01241D] text-[#FAEFDB]/40 border border-[#FAEFDB]/15'
+                                        ]"
+                                    >
+                                        <i v-if="isStepReached(step, trackingResult.status)" class="bi bi-check-lg" aria-hidden="true"></i>
+                                        <span v-else class="w-1.5 h-1.5 rounded-full bg-[#FAEFDB]/30"></span>
                                     </div>
-                                    <p class="text-[11px] font-normal text-[#FAEFDB]/80 leading-relaxed">{{ evt.description }}</p>
-                                </div>
-                                <div class="text-right shrink-0">
-                                    <span class="text-[10px] font-mono text-[#FAEFDB]/70 block">
-                                        {{ new Date(evt.occurred_at).toLocaleDateString() }}
-                                    </span>
-                                    <span v-if="evt.weather_snapshot" class="text-[10px] font-mono font-bold text-[#FAEFDB] inline-flex items-center gap-1">
-                                        <i class="bi bi-cloud-sun text-amber-300" aria-hidden="true"></i> {{ evt.weather_snapshot.temperature }}°C
+                                    <span
+                                        :class="[
+                                            'text-[10px] hidden sm:block',
+                                            isStepReached(step, trackingResult.status) ? 'text-[#FAEFDB]' : 'text-[#FAEFDB]/40'
+                                        ]"
+                                    >
+                                        {{ step }}
                                     </span>
                                 </div>
                             </div>
@@ -351,6 +348,7 @@ defineExpose({
                             </option>
                         </select>
                     </div>
+
                     <div>
                         <label for="dest-select" class="block font-bold text-[#FAEFDB] mb-1.5">Pelabuhan / Hub Tujuan</label>
                         <select id="dest-select" v-model="calcDestId" class="w-full h-11 px-3.5 bg-[#01241D] border border-[#FAEFDB]/25 rounded-xl text-[#FAEFDB] font-medium focus:outline-none focus:border-[#BE2388]">
@@ -359,61 +357,68 @@ defineExpose({
                             </option>
                         </select>
                     </div>
+
                     <div>
-                        <label for="mode-select" class="block font-bold text-[#FAEFDB] mb-1.5">Moda Pengiriman</label>
-                        <select id="mode-select" v-model="calcMode" class="w-full h-11 px-3.5 bg-[#01241D] border border-[#FAEFDB]/25 rounded-xl text-[#FAEFDB] font-semibold focus:outline-none focus:border-[#BE2388]">
-                            <option value="SEA">SEA: Kapal Kontainer Laut (FCL/LCL)</option>
-                            <option value="AIR">AIR: Express Air Cargo Udara</option>
-                            <option value="LAND">LAND: Inland Intermodal Darat</option>
+                        <label for="mode-select" class="block font-bold text-[#FAEFDB] mb-1.5">Moda Transportasi</label>
+                        <select id="mode-select" v-model="calcMode" class="w-full h-11 px-3.5 bg-[#01241D] border border-[#FAEFDB]/25 rounded-xl text-[#FAEFDB] font-medium focus:outline-none focus:border-[#BE2388]">
+                            <option value="SEA">Laut (Sea Freight Container)</option>
+                            <option value="AIR">Udara (Air Freight Cargo)</option>
+                            <option value="LAND">Darat (Intermodal Road / Rail)</option>
                         </select>
                     </div>
+
                     <div>
-                        <label for="weight-input" class="block font-bold text-[#FAEFDB] mb-1.5">Total Bobot Kargo (Kg)</label>
+                        <label for="weight-input" class="block font-bold text-[#FAEFDB] mb-1.5">Estimasi Bobot Kargo (kg)</label>
                         <input
                             id="weight-input"
-                            v-model="calcWeight"
+                            v-model.number="calcWeight"
                             type="number"
                             min="1"
-                            max="500000"
-                            class="w-full h-11 px-3.5 bg-[#01241D] border border-[#FAEFDB]/25 rounded-xl font-mono text-[#FAEFDB] font-bold focus:outline-none focus:border-[#BE2388]"
+                            class="w-full h-11 px-3.5 bg-[#01241D] border border-[#FAEFDB]/25 rounded-xl text-[#FAEFDB] font-medium focus:outline-none focus:border-[#BE2388]"
+                            placeholder="Contoh: 250"
                         />
                     </div>
                 </div>
 
-                <button
-                    type="button"
-                    @click="runTariffEstimate"
-                    :disabled="calcLoading"
-                    class="w-full h-11 bg-gradient-to-r from-[#BE2388] to-[#D42B8A] hover:brightness-110 text-white text-xs font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg shadow-[#BE2388]/30 cursor-pointer disabled:opacity-60"
-                >
-                    <i class="bi bi-calculator text-[#FAEFDB]" aria-hidden="true"></i>
-                    <span>{{ calcLoading ? 'Mengkalkulasi...' : 'Kalkulasi Estimasi Biaya & Durasi Transit' }}</span>
-                </button>
-
-                <div v-if="calcError" class="p-3.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-200 font-semibold text-xs">
-                    {{ calcError }}
+                <div class="flex justify-end pt-2">
+                    <button
+                        type="button"
+                        @click="runTariffEstimate()"
+                        :disabled="calcLoading"
+                        class="h-11 px-6 rounded-xl bg-gradient-to-r from-[#BE2388] to-[#D42B8A] hover:brightness-110 text-white font-bold text-xs transition-all shadow-md shadow-[#BE2388]/30 flex items-center gap-2 disabled:opacity-60 cursor-pointer"
+                    >
+                        <span v-if="calcLoading" class="inline-block w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+                        <span v-else>Hitung Estimasi Biaya &amp; ETA</span>
+                    </button>
                 </div>
 
+                <!-- Tariff Error -->
+                <div v-if="calcError" class="p-3.5 rounded-xl bg-rose-950/60 border border-rose-500/30 text-rose-200 text-xs flex items-center gap-2">
+                    <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                    <span>{{ calcError }}</span>
+                </div>
+
+                <!-- Tariff Result -->
                 <Transition
                     enter-active-class="transition duration-300 ease-out"
                     enter-from-class="opacity-0 -translate-y-2"
                     enter-to-class="opacity-100 translate-y-0"
                 >
-                    <div v-if="calcResult" class="p-5 sm:p-6 rounded-2xl bg-[#01241D]/95 border border-[#FAEFDB]/20 space-y-4 text-xs shadow-lg">
-                        <div class="flex items-center justify-between border-b border-[#FAEFDB]/15 pb-3">
+                    <div v-if="calcResult" class="p-5 rounded-2xl bg-[#001F18]/80 border border-[#FAEFDB]/15 space-y-3 text-xs">
+                        <div class="flex items-center justify-between pb-3 border-b border-[#FAEFDB]/10">
                             <div>
-                                <span class="text-[10px] font-mono font-bold uppercase text-[#FAEFDB]/70 block">{{ calcResult.service_name }}</span>
+                                <span class="text-[10px] text-[#FAEFDB]/60 font-mono font-semibold block">KORIDOR RUTE</span>
                                 <div class="font-bold text-[#FAEFDB]">
                                     {{ calcResult.origin.code }} ({{ calcResult.origin.city }}) &rarr; {{ calcResult.destination.code }} ({{ calcResult.destination.city }})
                                 </div>
                             </div>
-                            <span class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-[#BE2388] to-[#D42B8A] text-white font-mono font-bold">
+                            <span class="px-2.5 py-1 rounded-lg bg-[#BE2388] text-white font-mono font-bold">
                                 ~{{ calcResult.distance_km }} km
                             </span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-1">
-                            <div class="p-4 rounded-xl bg-[#001F18]/85 border border-[#FAEFDB]/15">
+                            <div class="p-4 rounded-xl bg-[#001F18]/90 border border-[#FAEFDB]/15">
                                 <span class="text-[10px] text-[#FAEFDB]/70 block font-mono font-semibold">ESTIMASI BIAYA</span>
                                 <div class="text-lg font-extrabold font-mono text-[#FAEFDB] mt-0.5">
                                     {{ formatIdr(calcResult.total_cost_idr) }}
@@ -422,7 +427,7 @@ defineExpose({
                                     &asymp; ${{ Number(calcResult.total_cost_usd).toFixed(2) }} USD
                                 </span>
                             </div>
-                            <div class="p-4 rounded-xl bg-[#001F18]/85 border border-[#FAEFDB]/15">
+                            <div class="p-4 rounded-xl bg-[#001F18]/90 border border-[#FAEFDB]/15">
                                 <span class="text-[10px] text-[#FAEFDB]/70 block font-mono font-semibold">ESTIMASI TRANSIT</span>
                                 <div class="text-lg font-extrabold font-mono text-emerald-400 mt-0.5">
                                     {{ calcResult.estimated_transit_days }} Hari
@@ -431,12 +436,6 @@ defineExpose({
                                     &asymp; {{ calcResult.estimated_transit_hours }} Jam (Bobot {{ calcResult.effective_weight_kg }} kg)
                                 </span>
                             </div>
-                        </div>
-
-                        <div class="text-[10px] text-[#FAEFDB]/70 font-mono flex flex-wrap justify-between gap-2 pt-1 font-semibold">
-                            <span>Base: ${{ calcResult.breakdown.base_fee_usd }}</span>
-                            <span>Weight: ${{ calcResult.breakdown.weight_cost_usd }}</span>
-                            <span>Distance: ${{ calcResult.breakdown.distance_cost_usd }}</span>
                         </div>
                     </div>
                 </Transition>
@@ -475,5 +474,33 @@ defineExpose({
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- 3 KEY STATS: HORIZONTALLY IN A SINGLE MINIMAL ROW DIRECTLY BENEATH IT -->
+        <div class="mt-8 pt-8 border-t border-[#FAEFDB]/15 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+            <div class="sm:border-r border-[#FAEFDB]/15 sm:pr-4">
+                <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#FAEFDB] tracking-tight">
+                    {{ displayShipments }}<span class="text-[#BE2388]">+</span>
+                </div>
+                <div class="text-xs font-semibold text-[#FAEFDB]/70 mt-1.5 font-mono uppercase tracking-wider">
+                    Pengiriman Aktif
+                </div>
+            </div>
+            <div class="sm:border-r border-[#FAEFDB]/15 sm:pr-4">
+                <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#FAEFDB] tracking-tight">
+                    {{ displayCarriers }}
+                </div>
+                <div class="text-xs font-semibold text-[#FAEFDB]/70 mt-1.5 font-mono uppercase tracking-wider">
+                    Mitra Ekspedisi
+                </div>
+            </div>
+            <div>
+                <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#FAEFDB] tracking-tight">
+                    {{ displayLocations }}
+                </div>
+                <div class="text-xs font-semibold text-[#FAEFDB]/70 mt-1.5 font-mono uppercase tracking-wider">
+                    Pelabuhan &amp; Hub
+                </div>
+            </div>
+        </div>
+    </section>
 </template>

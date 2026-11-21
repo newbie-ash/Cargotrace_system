@@ -41,12 +41,20 @@ const handleKeydown = (e) => {
     }
 };
 
+const handleScroll = () => {
+    if (window.scrollY > 40 && showTooltip.value) {
+        showTooltip.value = false;
+    }
+};
+
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 });
 
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
+    window.removeEventListener('scroll', handleScroll);
 });
 </script>
 
@@ -106,38 +114,34 @@ onUnmounted(() => {
                     </button>
                 </div>
 
-                <!-- Speech Bubble Dialogue -->
-                <div class="mt-3 p-3.5 rounded-2xl bg-[#001F18]/80 border border-[#FAEFDB]/15 leading-relaxed text-[#FAEFDB]/85 font-normal">
-                    <p>
-                        Halo! Saya <strong class="font-bold text-[#FAEFDB]">Fixie</strong>, asisten navigasi kargo Delixie. Mau lacak kontainer antar benua, kalkulasi tarif rute, atau cek jaringan hub?
+                <!-- Fixie Interactive Body -->
+                <div class="pt-4 space-y-3 relative z-10">
+                    <p class="text-xs text-[#FAEFDB]/85 leading-relaxed">
+                        Halo! Saya <strong>Fixie</strong>, asisten navigasi logistik kargo Delixie. Ketik nomor resi atau pilih opsi cepat berikut:
                     </p>
-                </div>
 
-                <!-- Quick Track Input -->
-                <div class="mt-3 space-y-1.5">
-                    <label for="fixie-track-input" class="text-[10px] uppercase font-mono tracking-wider text-[#FAEFDB]/70 font-bold block">
-                        Ketik Resi Instan
-                    </label>
-                    <div class="flex gap-2">
-                        <input
-                            id="fixie-track-input"
-                            v-model="quickSearchCode"
-                            @keyup.enter="handleQuickTrack(quickSearchCode)"
-                            type="text"
-                            placeholder="Contoh: CT-2026-0001"
-                            class="flex-1 h-9 px-3 bg-[#01241D] border border-[#FAEFDB]/25 rounded-xl text-xs font-mono text-[#FAEFDB] placeholder-[#FAEFDB]/45 focus:outline-none focus:ring-2 focus:ring-[#BE2388]/50"
-                        />
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1">
+                            <i class="bi bi-search absolute left-3 top-2.5 text-[#FAEFDB]/50" aria-hidden="true"></i>
+                            <input
+                                v-model="quickSearchCode"
+                                type="text"
+                                placeholder="Contoh: TRK-2026-0001"
+                                class="w-full h-9 pl-8 pr-3 bg-[#01241D] border border-[#FAEFDB]/20 rounded-xl text-xs font-mono text-[#FAEFDB] placeholder-[#FAEFDB]/40 focus:outline-none focus:border-[#BE2388]"
+                                @keyup.enter="handleQuickTrack(quickSearchCode)"
+                            />
+                        </div>
                         <button
                             type="button"
                             @click="handleQuickTrack(quickSearchCode)"
-                            class="px-4 h-9 bg-gradient-to-r from-[#BE2388] to-[#D42B8A] hover:brightness-110 text-white font-bold rounded-full transition cursor-pointer text-xs shrink-0 shadow-sm"
+                            class="h-9 px-3.5 rounded-xl bg-[#BE2388] hover:bg-[#D42B8A] text-white font-bold font-mono transition cursor-pointer"
                         >
-                            Lacak
+                            Cari
                         </button>
                     </div>
                 </div>
 
-                <!-- Quick Action Chips -->
+                <!-- Quick Action Buttons -->
                 <div class="mt-3 pt-3 border-t border-[#FAEFDB]/15 space-y-2">
                     <div class="text-[10px] uppercase font-mono tracking-wider text-[#FAEFDB]/70 font-bold">
                         Pilihan Cepat
@@ -173,9 +177,9 @@ onUnmounted(() => {
             </div>
         </Transition>
 
-        <!-- Tooltip & Main FAB Row -->
+        <!-- Tooltip & Main Circular FAB Button -->
         <div class="flex items-center gap-3">
-            <!-- Frosted Glass Tooltip (Deep Teal & Bone per Image 1) -->
+            <!-- Frosted Glass Tooltip (Auto-collapses on scroll or dismiss) -->
             <Transition
                 enter-active-class="transition duration-300 ease-out"
                 enter-from-class="opacity-0 translate-x-2"
@@ -201,7 +205,7 @@ onUnmounted(() => {
                 </div>
             </Transition>
 
-            <!-- Magenta FAB Button (Exact match with Image 1 bottom right mascot) -->
+            <!-- Compact Circular Magenta FAB Button -->
             <button
                 @click="toggleAssistant"
                 type="button"

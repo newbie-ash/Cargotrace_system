@@ -11,36 +11,38 @@ defineProps({
 </script>
 
 <template>
-    <footer class="bg-[#001F18]/90 backdrop-blur-2xl text-[#FAEFDB]/80 py-16 px-4 sm:px-8 border-t border-[#FAEFDB]/15 text-xs relative z-10 shadow-[0_-12px_36px_rgba(0,0,0,0.45)]">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div>
-                <div class="mb-2.5">
-                    <DelixieLogo
-                        size-class="w-7 h-7"
-                        wordmark-class="font-extrabold text-base text-[#FAEFDB]"
-                        wordmark-text="Delixie Platform"
-                    />
-                </div>
-                <p class="max-w-md text-xs font-normal leading-relaxed text-[#FAEFDB]/75">
-                    Global Shipment Visibility &amp; Real-Time Logistics Platform. Dibangun menggunakan Laravel 12, Vue 3, Inertia.js, Tailwind CSS v4, Leaflet.js, dan Chart.js.
-                </p>
+    <!-- SECTION 5: MINIMALIST SINGLE-ROW FOOTER -->
+    <footer class="border-t border-white/10 bg-[#001F18]/90 backdrop-blur-2xl py-8 px-6 sm:px-12 text-xs relative z-10">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <!-- Left: Logo & Copyright -->
+            <div class="flex items-center gap-3">
+                <DelixieLogo
+                    size-class="w-6 h-6"
+                    wordmark-class="font-extrabold text-sm text-[#FAEFDB]"
+                    wordmark-text="Delixie Platform"
+                />
+                <span class="text-[#FAEFDB]/40 font-mono hidden sm:inline">&bull;</span>
+                <span class="text-[#FAEFDB]/60 text-xs">
+                    &copy; {{ new Date().getFullYear() }} Delixie Platform.
+                </span>
             </div>
 
-            <div class="flex flex-wrap items-center gap-4 text-xs">
-                <span class="px-4 py-2 rounded-xl bg-[#012B23] border border-[#FAEFDB]/20 font-mono font-semibold text-[#FAEFDB]">
-                    REST API v1 (Sanctum Protected)
-                </span>
+            <!-- Center: REST API v1 Info -->
+            <div class="font-mono text-xs text-[#FAEFDB]/70 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>REST API v1 (Sanctum Protected)</span>
+            </div>
+
+            <!-- Right: Portal Login / Dashboard Link Pill -->
+            <div>
                 <Link
                     :href="authUser ? '/dashboard' : '/login'"
-                    class="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#BE2388] to-[#D42B8A] hover:brightness-110 text-white font-bold transition shadow-md shadow-[#BE2388]/25 cursor-pointer"
+                    class="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#BE2388] to-[#D42B8A] hover:brightness-110 text-white font-bold text-xs transition shadow-md shadow-[#BE2388]/25 inline-flex items-center gap-1.5 cursor-pointer"
                 >
-                    {{ authUser ? 'Dashboard Operasional' : 'Portal Login' }} &rarr;
+                    <span>{{ authUser ? 'Dashboard Operasional' : 'Portal Login' }}</span>
+                    <i class="bi bi-arrow-right text-xs" aria-hidden="true"></i>
                 </Link>
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-[#FAEFDB]/15 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] font-medium text-[#FAEFDB]/60">
-            <span>&copy; {{ new Date().getFullYear() }} Delixie Platform &bull; Web Programming 2 Final Project.</span>
-            <span class="text-[#FAEFDB]/80 font-mono">Deep Teal &bull; Bone &bull; Magenta Palette</span>
         </div>
     </footer>
 </template>

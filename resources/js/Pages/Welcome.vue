@@ -58,27 +58,28 @@ const handleFixieTrack = (code) => {
 <template>
     <Head title="Delixie - Global Shipment Visibility & Real-Time Logistics Platform" />
 
-    <div class="min-h-screen font-sans bg-transparent text-white selection:bg-teal-bright selection:text-[#13293D] overflow-x-hidden relative">
+    <div class="min-h-screen font-sans bg-transparent text-[#FAEFDB] selection:bg-[#BE2388] selection:text-white overflow-x-hidden relative">
         <!-- 1. Floating Pill Navbar -->
         <NavbarPill :auth-user="authUser" @scroll-to="scrollToUtility" />
 
-        <!-- 2. Hybrid Winzy + Veluno Hero Section -->
-        <HeroSection :stats="stats" :locations="locations" @scroll-to-track="scrollToUtility('track')" />
+        <!-- 2. Section 1: Hero Section + Subtle Cargo Silhouettes -->
+        <HeroSection :locations="locations" @scroll-to-track="scrollToUtility('track')" />
 
-        <!-- 3. Floating Glassmorphism Utility Widget (Bridges Hero & Bento Grid) -->
+        <!-- 3. Section 2: Centered Tracking Command Bar & Key Stats Strip -->
         <FloatingUtilityWidget
             ref="utilityRef"
             :locations="locations"
             :sample-shipments="sampleShipments"
+            :stats="stats"
         />
 
-        <!-- 4. Asymmetric 12-Column Bento Grid -->
+        <!-- 4. Section 3: Global Route Spotlight & Section 4: 3-Column Equal Capability Strip -->
         <AsymmetricBentoGrid :carriers="carriers" :locations="locations" :stats="stats" />
 
-        <!-- 5. Enterprise Footer -->
+        <!-- 5. Section 5: Minimalist Single-Row Footer -->
         <FooterSection :auth-user="authUser" />
 
-        <!-- 6. AI Copilot Fixie Floating Action Button & On-Screen Mascot -->
+        <!-- 6. AI Copilot Fixie Floating Action Button & Mascot (Auto-Collapses on Scroll) -->
         <FixieAssistantFab
             :sample-shipments="sampleShipments"
             @trigger-track="handleFixieTrack"
