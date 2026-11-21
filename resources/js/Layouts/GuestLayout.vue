@@ -1,32 +1,18 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import DelixieLogo from '@/Components/DelixieLogo.vue';
 import DynamicIslandToast from '@/Components/DynamicIslandToast.vue';
 </script>
 
 <template>
-    <div class="min-h-screen bg-transparent text-[#13293D] flex flex-col items-center justify-center p-4 relative overflow-hidden selection:bg-teal-bright selection:text-[#13293D]">
-        <DynamicIslandToast />
-        <div class="w-full max-w-md relative z-10">
-            <!-- Brand Header -->
-            <div class="text-center mb-8">
-                <Link href="/" class="inline-flex items-center hover:opacity-90 transition group">
-                    <DelixieLogo
-                        size-class="w-9 h-9"
-                        wordmark-class="font-extrabold text-2xl tracking-tight text-white drop-shadow-xs"
-                    />
-                </Link>
-                <p class="text-xs font-medium text-[#A7E4DB] mt-1.5">Global Shipment Visibility &amp; Tracking Platform</p>
-            </div>
-
-            <!-- Card Box with Crisp White Surface -->
-            <div class="bg-white/95 backdrop-blur-2xl border border-white rounded-3xl p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.32)]">
-                <slot />
-            </div>
-
-            <div class="text-center mt-6 text-xs font-medium text-[#A7E4DB]/80">
-                &copy; {{ new Date().getFullYear() }} Delixie &bull; Global Freight Operations
-            </div>
+    <div class="min-h-screen bg-[#012B23] text-[#FAEFDB] flex flex-col justify-center py-6 sm:py-10 px-4 sm:px-6 lg:px-8 relative overflow-hidden selection:bg-[#BE2388] selection:text-white">
+        <!-- Ambient Deep Teal & Magenta Glow Backdrop -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
+            <div class="absolute -top-32 -left-28 w-[680px] h-[680px] rounded-full bg-gradient-to-br from-[#02332A] via-[#0A3D32]/50 to-[#BE2388]/15 blur-[110px]"></div>
+            <div class="absolute -bottom-36 -right-28 w-[720px] h-[720px] rounded-full bg-[#001F18]/85 blur-[120px]"></div>
+            <div class="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-[#BE2388]/10 blur-[130px]"></div>
         </div>
+
+        <DynamicIslandToast />
+
+        <slot />
     </div>
 </template>
