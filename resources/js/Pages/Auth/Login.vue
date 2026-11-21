@@ -37,84 +37,37 @@ const fillDemo = (role) => {
         <Head title="Masuk ke Akun Delixie" />
 
         <div class="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center relative z-10">
-            <!-- KOLOM KIRI: Brand, Massive Editorial Headline & 3D Centerpiece Showcase (Reference Sprout) -->
-            <div class="lg:col-span-7 flex flex-col justify-between space-y-8 py-4 sm:py-6 lg:py-8">
+            <!-- KOLOM KIRI: Brand, Massive Editorial Headline & Narrative (Clean & Minimalist like Sprout) -->
+            <div class="lg:col-span-7 flex flex-col justify-center space-y-8 py-6 lg:py-16">
                 <!-- Top Brand Row with Back Link -->
                 <div class="flex items-center justify-between">
                     <Link href="/" class="inline-flex items-center gap-2 hover:opacity-90 transition group">
                         <DelixieLogo
-                            size-class="w-8 h-8"
-                            wordmark-class="font-extrabold text-2xl tracking-tight text-[#FAEFDB]"
+                            size-class="w-9 h-9"
+                            wordmark-class="font-extrabold text-2xl sm:text-3xl tracking-tight text-[#FAEFDB]"
                             wordmark-text="Delixie"
                         />
                     </Link>
 
                     <Link
                         href="/"
-                        class="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#FAEFDB]/70 hover:text-white transition px-3.5 py-1.5 rounded-full bg-white/5 border border-[#FAEFDB]/15 hover:border-[#BE2388]"
+                        class="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#FAEFDB]/70 hover:text-white transition px-4 py-2 rounded-full bg-white/5 border border-[#FAEFDB]/15 hover:border-[#BE2388]"
                     >
                         <i class="bi bi-arrow-left text-xs" aria-hidden="true"></i>
                         <span>Kembali ke Beranda</span>
                     </Link>
                 </div>
 
-                <!-- Massive Editorial Headline (Inspired by 'Every big thing starts small') -->
-                <div class="space-y-4 max-w-xl">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#001F18] border border-[#FAEFDB]/15 text-[11px] font-mono font-bold text-[#BE2388]">
-                        <span class="w-2 h-2 rounded-full bg-[#BE2388] animate-pulse"></span>
-                        <span>PORTAL VISIBILITAS RANTAI PASOK GLOBAL</span>
-                    </div>
-
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-[#FAEFDB] drop-shadow-sm">
+                <!-- Massive Editorial Headline & Narrative -->
+                <div class="space-y-6 max-w-xl">
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.06] text-[#FAEFDB] drop-shadow-md">
                         Every global journey
                         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-[#FAEFDB] via-[#E2B7D6] to-[#BE2388]">starts with a single shipment.</span>
                     </h1>
 
-                    <p class="text-sm sm:text-base text-[#FAEFDB]/80 font-normal leading-relaxed">
+                    <p class="text-base sm:text-lg text-[#FAEFDB]/85 font-normal leading-relaxed">
                         Masuk ke portal operasional untuk memantau pergerakan kontainer maritim, status armada antar-benua, dan resolusi kendala rute secara real-time.
                     </p>
-                </div>
-
-                <!-- 3D Intermodal Showcase Card with Ambient Glow (Fills Left Negative Space) -->
-                <div class="relative rounded-3xl bg-gradient-to-br from-[#02332A]/90 to-[#001F18]/90 border border-[#FAEFDB]/18 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.50)] overflow-hidden group">
-                    <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-[#BE2388]/20 blur-3xl pointer-events-none"></div>
-
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#FAEFDB]/15">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#BE2388] to-[#D42B8A] flex items-center justify-center text-white shadow-md shadow-[#BE2388]/30">
-                                <i class="bi bi-water text-lg" aria-hidden="true"></i>
-                            </div>
-                            <div>
-                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#FAEFDB]/60 block">KORIDOR MARITIM AKTIF</span>
-                                <strong class="text-sm font-extrabold font-mono text-[#FAEFDB]">IDJKT &rarr; NLRTM (Tanjung Priok &bull; Rotterdam)</strong>
-                            </div>
-                        </div>
-                        <span class="text-[11px] font-mono font-bold px-3 py-1 rounded-full bg-[#BE2388] text-white">
-                            21.4 KTS &bull; On-Time
-                        </span>
-                    </div>
-
-                    <!-- Telemetry Counters in Showcase Card -->
-                    <div class="grid grid-cols-3 gap-4 pt-4 text-center">
-                        <div>
-                            <div class="text-xl sm:text-2xl font-mono font-extrabold text-[#FAEFDB]">99.4%</div>
-                            <div class="text-[10px] font-semibold text-[#FAEFDB]/60 uppercase font-mono mt-0.5">SLA On-Time</div>
-                        </div>
-                        <div class="border-x border-[#FAEFDB]/15">
-                            <div class="text-xl sm:text-2xl font-mono font-extrabold text-[#FAEFDB]">6 Hub</div>
-                            <div class="text-[10px] font-semibold text-[#FAEFDB]/60 uppercase font-mono mt-0.5">Transit Gates</div>
-                        </div>
-                        <div>
-                            <div class="text-xl sm:text-2xl font-mono font-extrabold text-emerald-400">0 Critical</div>
-                            <div class="text-[10px] font-semibold text-[#FAEFDB]/60 uppercase font-mono mt-0.5">Open Incidents</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Left Footer Info -->
-                <div class="text-xs font-mono text-[#FAEFDB]/50 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    <span>Delixie CargoTrace Platform &bull; REST API Sanctum Protected</span>
                 </div>
             </div>
 
