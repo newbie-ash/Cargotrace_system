@@ -673,25 +673,25 @@ const statusBadgeClass = (st) => {
             </div>
         </div>
 
-        <!-- ADMIN & OPERATOR VIEW (Existing Operational Dashboard) -->
+        <!-- ADMIN & OPERATOR VIEW (Operational Dashboard) -->
         <div v-else>
             <!-- Header Banner -->
-            <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-3xl p-6 mb-6 shadow-[0_16px_40px_rgba(19,41,61,0.08)]">
+            <div class="bg-white/90 backdrop-blur-2xl border border-white rounded-3xl p-6 mb-6 shadow-[0_12px_32px_rgba(46,30,22,0.06)]">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <div class="flex items-center gap-2.5 mb-1">
-                            <h1 class="text-2xl font-extrabold tracking-tight text-[#13293D]">Operational Dashboard</h1>
-                            <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold rounded-full bg-[#13293D] text-[#A7E4DB] uppercase tracking-wider">
+                            <h1 class="text-2xl font-extrabold tracking-tight text-[#2E1E16]">Operational Dashboard</h1>
+                            <span class="px-2.5 py-0.5 text-[10px] font-mono font-bold rounded-full bg-[#2E1E16] text-[#FAF7F2] uppercase tracking-wider">
                                 {{ user.role }}
                             </span>
                         </div>
-                        <p class="text-xs text-[#265D7A] font-normal">
+                        <p class="text-xs text-[#5A4A40] font-normal">
                             Platform visibilitas terpadu &amp; pelacakan rantai pasok kargo global interkontinental.
                         </p>
                     </div>
 
                     <div v-if="isAdmin || isOperator" class="flex gap-2">
-                        <Link href="/shipments/create" class="px-5 py-2 bg-[#265D7A] hover:bg-[#13293D] text-white text-xs font-semibold rounded-full transition inline-flex items-center gap-2 shadow-md shadow-[#13293D]/15">
+                        <Link href="/shipments/create" class="px-5 py-2 bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold rounded-full transition inline-flex items-center gap-2 shadow-md shadow-blue-500/25">
                             <i class="bi bi-plus-lg"></i>
                             <span>Buat Shipment</span>
                         </Link>
@@ -699,106 +699,62 @@ const statusBadgeClass = (st) => {
                 </div>
             </div>
 
-            <!-- 8 Dynamic Metric KPI Cards -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <!-- 1. Total Shipments -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
+            <!-- Primary 4 KPI Bento Cards (No Financial/Revenue Metrics) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- 1. Total & Active Shipments -->
+                <div class="bg-white/90 backdrop-blur-2xl border border-white rounded-2xl p-5 shadow-[0_10px_28px_rgba(46,30,22,0.05)] hover:border-[#2563EB]/40 transition">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">Total Shipments</span>
-                        <div class="w-8 h-8 rounded-xl bg-[#EAF6F4] border border-[#265D7A]/20 text-[#265D7A] flex items-center justify-center">
+                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#5A4A40]">Total Shipments</span>
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 border border-blue-200 text-[#2563EB] flex items-center justify-center">
                             <i class="bi bi-box-seam"></i>
                         </div>
                     </div>
-                    <div class="text-2xl font-extrabold text-[#13293D] font-mono">{{ stats.total_shipments }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">Kargo terdaftar sistem</div>
+                    <div class="text-2xl font-extrabold text-[#2E1E16] font-mono">{{ stats.total_shipments }}</div>
+                    <div class="text-[11px] text-[#5A4A40] mt-1">
+                        Active In Transit: <strong class="text-[#2563EB] font-mono">{{ stats.in_transit }}</strong>
+                    </div>
                 </div>
 
-                <!-- 2. In Transit -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
+                <!-- 2. SLA On-Time Rate -->
+                <div class="bg-white/90 backdrop-blur-2xl border border-white rounded-2xl p-5 shadow-[0_10px_28px_rgba(46,30,22,0.05)] hover:border-emerald-500/40 transition">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">In Transit</span>
-                        <div class="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-600/25 text-amber-800 flex items-center justify-center">
-                            <i class="bi bi-water"></i>
+                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#5A4A40]">SLA On-Time Rate</span>
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center">
+                            <i class="bi bi-shield-check"></i>
                         </div>
                     </div>
-                    <div class="text-2xl font-extrabold text-amber-800 font-mono">{{ stats.in_transit }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">Sedang dalam pelayaran</div>
-                </div>
-
-                <!-- 3. Delivered -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">Delivered</span>
-                        <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-600/25 text-emerald-800 flex items-center justify-center">
-                            <i class="bi bi-check2-circle"></i>
-                        </div>
+                    <div class="text-2xl font-extrabold text-emerald-700 font-mono">{{ stats.on_time_rate }}%</div>
+                    <div class="text-[11px] text-[#5A4A40] mt-1">
+                        Tuntas tiba: <strong class="text-emerald-700 font-mono">{{ stats.delivered }}</strong> kargo
                     </div>
-                    <div class="text-2xl font-extrabold text-emerald-800 font-mono">{{ stats.delivered }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">Tuntas tiba di destinasi</div>
                 </div>
 
-                <!-- 4. Delayed Shipments -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
+                <!-- 3. Delayed Shipments -->
+                <div class="bg-white/90 backdrop-blur-2xl border border-white rounded-2xl p-5 shadow-[0_10px_28px_rgba(46,30,22,0.05)] hover:border-rose-500/40 transition">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">Delayed</span>
-                        <div class="w-8 h-8 rounded-xl bg-rose-500/15 border border-rose-600/25 text-rose-800 flex items-center justify-center">
+                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#5A4A40]">Delayed Shipments</span>
+                        <div class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 flex items-center justify-center">
                             <i class="bi bi-clock-history"></i>
                         </div>
                     </div>
-                    <div class="text-2xl font-extrabold text-rose-800 font-mono">{{ stats.delayed }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">
-                        Delay Rate: <strong class="text-rose-800 font-mono">{{ stats.delay_rate }}%</strong>
+                    <div class="text-2xl font-extrabold text-rose-700 font-mono">{{ stats.delayed }}</div>
+                    <div class="text-[11px] text-[#5A4A40] mt-1">
+                        Delay Rate: <strong class="text-rose-700 font-mono">{{ stats.delay_rate }}%</strong>
                     </div>
                 </div>
 
-                <!-- 5. Open Exceptions -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
+                <!-- 4. Open Exceptions -->
+                <div class="bg-white/90 backdrop-blur-2xl border border-white rounded-2xl p-5 shadow-[0_10px_28px_rgba(46,30,22,0.05)] hover:border-amber-500/40 transition">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">Open Exceptions</span>
-                        <div class="w-8 h-8 rounded-xl bg-rose-500/15 border border-rose-600/25 text-rose-800 flex items-center justify-center">
+                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#5A4A40]">Open Exceptions</span>
+                        <div class="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center">
                             <i class="bi bi-exclamation-triangle"></i>
                         </div>
                     </div>
-                    <div class="text-2xl font-extrabold text-rose-800 font-mono">{{ stats.open_exceptions }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">
-                        Incident Rate: <strong class="text-rose-800 font-mono">{{ stats.exception_rate }}%</strong>
+                    <div class="text-2xl font-extrabold text-amber-700 font-mono">{{ stats.open_exceptions }}</div>
+                    <div class="text-[11px] text-[#5A4A40] mt-1">
+                        Incident Rate: <strong class="text-amber-700 font-mono">{{ stats.exception_rate }}%</strong>
                     </div>
-                </div>
-
-                <!-- 6. Active Carriers -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">Active Carriers</span>
-                        <div class="w-8 h-8 rounded-xl bg-[#EAF6F4] border border-[#265D7A]/20 text-[#265D7A] flex items-center justify-center">
-                            <i class="bi bi-truck"></i>
-                        </div>
-                    </div>
-                    <div class="text-2xl font-extrabold text-[#13293D] font-mono">{{ stats.active_carriers }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">Armada pelayaran aktif</div>
-                </div>
-
-                <!-- 7. Global Hubs -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">Global Hubs</span>
-                        <div class="w-8 h-8 rounded-xl bg-[#EAF6F4] border border-[#265D7A]/20 text-[#265D7A] flex items-center justify-center">
-                            <i class="bi bi-geo-alt"></i>
-                        </div>
-                    </div>
-                    <div class="text-2xl font-extrabold text-[#13293D] font-mono">{{ stats.total_locations }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">Pelabuhan &amp; checkpoint transit</div>
-                </div>
-
-                <!-- 8. Users Count -->
-                <div class="bg-white/65 backdrop-blur-2xl border border-white/90 rounded-2xl p-5 shadow-[0_12px_30px_rgba(19,41,61,0.06)] hover:border-[#67C7C6] transition">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#265D7A]">Sistem Akun</span>
-                        <div class="w-8 h-8 rounded-xl bg-[#EAF6F4] border border-[#265D7A]/20 text-[#265D7A] flex items-center justify-center">
-                            <i class="bi bi-people"></i>
-                        </div>
-                    </div>
-                    <div class="text-2xl font-extrabold text-[#13293D] font-mono">{{ stats.total_users }}</div>
-                    <div class="text-[11px] text-[#265D7A] mt-1">Admin, operator &amp; customer</div>
                 </div>
             </div>
 

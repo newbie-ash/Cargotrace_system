@@ -7,97 +7,106 @@
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-canvas: #EDF7F6;
-    --color-frost-mist: #D9F2EE;
-    --color-navy-deep: #13293D;
-    --color-ocean-steel: #265D7A;
-    --color-teal-bright: #67C7C6;
-    --color-mint-ice: #A7E4DB;
-    --color-charcoal: #13293D;
-    --color-faint: #265D7A;
+    --color-canvas: #FAF7F2;
+    --color-oat-milk: #F5EFEB;
+    --color-oat-elevated: #FAF6F0;
+    --color-espresso: #2E1E16;
+    --color-espresso-dark: #1E120D;
+    --color-espresso-muted: #5A4A40;
+    --color-accent-blue: #2563EB;
+    --color-accent-blue-hover: #1D4ED8;
+    --color-teal-bright: #2563EB;
+    --color-mint-ice: #93C5FD;
 }
 
 :root {
     color-scheme: light;
-    --colors-canvas: #EDF7F6;
-    --colors-navy: #13293D;
-    --colors-steel: #265D7A;
-    --colors-accent: #67C7C6;
-    --colors-mint: #A7E4DB;
-    --colors-body: #13293D;
-    --colors-muted: #265D7A;
+    --colors-canvas: #FAF7F2;
+    --colors-body: #2E1E16;
+    --colors-espresso: #2E1E16;
+    --colors-muted: #5A4A40;
+    --colors-accent: #2563EB;
 }
 
 body {
-    background-color: #102232;
+    background-color: #F7F3EE;
     background-image:
-        radial-gradient(circle 900px at 95% 5%, rgba(103, 199, 198, 0.28) 0%, transparent 55%),
-        radial-gradient(circle 650px at 5% 95%, rgba(38, 93, 122, 0.50) 0%, transparent 60%),
-        linear-gradient(160deg, #102232 0%, #17384E 40%, #1F4C66 70%, #2A637E 100%);
+        radial-gradient(circle 900px at 95% 4%, rgba(37, 99, 235, 0.05) 0%, transparent 60%),
+        radial-gradient(circle 750px at 5% 95%, rgba(46, 30, 22, 0.05) 0%, transparent 60%),
+        linear-gradient(145deg, #FAF7F2 0%, #F5EFEB 45%, #ECE4D8 100%);
     background-attachment: fixed;
-    color: #13293D;
+    color: #2E1E16;
     min-height: 100vh;
 }
 
 @media (max-width: 767px) {
     body {
         background-image:
-            radial-gradient(circle 320px at 95% 4%, rgba(103, 199, 198, 0.25) 0%, transparent 60%),
-            radial-gradient(circle 350px at 5% 95%, rgba(38, 93, 122, 0.45) 0%, transparent 65%),
-            linear-gradient(160deg, #102232 0%, #17384E 50%, #265D7A 100%);
+            radial-gradient(circle 350px at 95% 4%, rgba(37, 99, 235, 0.05) 0%, transparent 60%),
+            linear-gradient(145deg, #FAF7F2 0%, #F5EFEB 50%, #EDE6DC 100%);
     }
 }
 
-/* Frosted Glassmorphism Container */
+/* Editorial Frosted Glassmorphism Containers */
 .glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(217, 242, 238, 0.45) 100%);
+    background: rgba(255, 255, 255, 0.82);
     backdrop-filter: blur(20px) saturate(140%);
     -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.95);
     border-radius: 24px;
-    box-shadow: 0 16px 40px -10px rgba(19, 41, 61, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    box-shadow: 0 16px 40px -10px rgba(46, 30, 22, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-    border-color: rgba(103, 199, 198, 0.85);
-    box-shadow: 0 20px 48px -8px rgba(19, 41, 61, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+    border-color: rgba(37, 99, 235, 0.45);
+    box-shadow: 0 20px 48px -8px rgba(46, 30, 22, 0.10), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.glass-card-dark {
+    background: linear-gradient(145deg, #2D1D15 0%, #22140D 60%, #1A0F0A 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px -10px rgba(26, 15, 10, 0.35);
+    color: #FAF7F2;
 }
 
 .dark-input {
-    background-color: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(38, 93, 122, 0.22);
-    color: #13293D;
+    background-color: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(46, 30, 22, 0.16);
+    color: #2E1E16;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dark-input::placeholder {
-    color: rgba(38, 93, 122, 0.60);
+    color: rgba(90, 74, 64, 0.55);
 }
 
 .dark-input:focus {
     outline: none;
-    border-color: #265D7A;
-    box-shadow: 0 0 0 3px rgba(103, 199, 198, 0.35);
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
 }
 
-/* Global Leaflet Dark Canvas overrides */
+/* Global Leaflet Styling (Editorial Oat Milk & Espresso) */
 .leaflet-container {
-    background: #13293D !important;
+    background: #EDE5DB !important;
     font-family: var(--font-sans) !important;
 }
 
 .leaflet-popup-content-wrapper {
-    background: #13293D !important;
-    border: 1px solid rgba(167, 228, 219, 0.35) !important;
+    background: #2E1E16 !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
     border-radius: 16px !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45) !important;
-    color: #F8FAFC !important;
+    box-shadow: 0 16px 36px rgba(46, 30, 22, 0.35) !important;
+    color: #FAF7F2 !important;
 }
 
 .leaflet-popup-tip {
-    background: #13293D !important;
-    border: 1px solid rgba(167, 228, 219, 0.35) !important;
+    background: #2E1E16 !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 .custom-leaflet-pin {
@@ -106,12 +115,12 @@ body {
 }
 
 .leaflet-bar a {
-    background-color: #13293D !important;
-    border-color: rgba(255, 255, 255, 0.20) !important;
-    color: #F8FAFC !important;
+    background-color: #FAF7F2 !important;
+    border-color: rgba(46, 30, 22, 0.15) !important;
+    color: #2E1E16 !important;
 }
 
 .leaflet-bar a:hover {
-    background-color: #265D7A !important;
+    background-color: #2563EB !important;
     color: #FFFFFF !important;
 }

@@ -45,16 +45,18 @@ onUnmounted(() => {
             class="pointer-events-auto w-full rounded-full flex items-center transition-all duration-500 ease-out relative overflow-hidden backdrop-blur-2xl"
             :class="[
                 isScrolled
-                    ? 'max-w-[56px] h-14 justify-center p-0 shadow-[0_16px_36px_rgba(0,0,0,0.45)] hover:scale-110 hover:shadow-[0_0_24px_rgba(103,199,198,0.6)] cursor-pointer'
-                    : 'max-w-4xl justify-between py-2.5 px-6 gap-4 sm:gap-8 shadow-[0_12px_36px_0_rgba(19,41,61,0.12)]'
+                    ? 'max-w-[56px] h-14 justify-center p-0 shadow-[0_16px_36px_rgba(46,30,22,0.14)] hover:scale-110 hover:shadow-[0_0_24px_rgba(37,99,235,0.4)] cursor-pointer'
+                    : 'max-w-4xl justify-between py-2.5 px-6 gap-4 sm:gap-8 shadow-[0_12px_36px_0_rgba(46,30,22,0.06)]'
             ]"
             style="
-                background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(217, 242, 238, 0.60) 50%, rgba(255, 255, 255, 0.88) 100%);
-                box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95), inset 0 -2px 6px 0 rgba(103, 199, 198, 0.25), 0 16px 38px -8px rgba(19, 41, 61, 0.20);
+                background: rgba(255, 255, 255, 0.88);
+                backdrop-filter: blur(20px) saturate(140%);
+                -webkit-backdrop-filter: blur(20px) saturate(140%);
                 border: 1.5px solid rgba(255, 255, 255, 0.95);
+                box-shadow: inset 0 1.5px 1px 0 rgba(255, 255, 255, 1), 0 12px 32px -6px rgba(46, 30, 22, 0.08);
             "
         >
-            <!-- Liquid Glass Specular Top Highlight Beam -->
+            <!-- Specular Top Highlight Beam -->
             <div
                 class="absolute inset-x-4 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/95 to-transparent pointer-events-none"
                 aria-hidden="true"
@@ -71,7 +73,7 @@ onUnmounted(() => {
                 <DelixieLogo
                     :size-class="isScrolled ? 'w-8 h-8' : 'w-7 h-7'"
                     :show-wordmark="!isScrolled"
-                    wordmark-class="font-extrabold tracking-tight text-[#13293D] text-base sm:text-lg transition-all duration-300"
+                    wordmark-class="font-extrabold tracking-tight text-[#2E1E16] text-base sm:text-lg transition-all duration-300"
                 />
             </Link>
 
@@ -81,42 +83,42 @@ onUnmounted(() => {
                 class="flex items-center justify-between flex-1 gap-4 sm:gap-8 transition-opacity duration-300"
             >
                 <!-- Nav Links -->
-                <div class="hidden md:flex items-center font-bold text-[#13293D] gap-7 text-xs">
+                <div class="hidden md:flex items-center font-bold text-[#2E1E16] gap-7 text-xs">
                     <button
                         type="button"
                         @click="emit('scrollTo', 'track')"
-                        class="hover:text-[#265D7A] transition cursor-pointer"
+                        class="hover:text-[#2563EB] transition cursor-pointer"
                     >
                         Cek Resi
                     </button>
                     <button
                         type="button"
                         @click="emit('scrollTo', 'tariff')"
-                        class="hover:text-[#265D7A] transition cursor-pointer"
+                        class="hover:text-[#2563EB] transition cursor-pointer"
                     >
                         Cek Tarif
                     </button>
                     <button
                         type="button"
                         @click="emit('scrollTo', 'hubs')"
-                        class="hover:text-[#265D7A] transition cursor-pointer"
+                        class="hover:text-[#2563EB] transition cursor-pointer"
                     >
                         Jaringan Hub
                     </button>
                     <a
                         href="#bento"
-                        class="hover:text-[#265D7A] transition cursor-pointer"
+                        class="hover:text-[#2563EB] transition cursor-pointer"
                     >
                         Arsitektur
                     </a>
                 </div>
 
-                <!-- Auth CTA: Solid Ocean Pill -->
+                <!-- Auth CTA: Solid Electric Blue Pill per Image 2 -->
                 <div class="flex items-center gap-2 shrink-0">
                     <Link
                         v-if="authUser"
                         href="/dashboard"
-                        class="rounded-full bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold transition-all duration-200 inline-flex items-center gap-2 px-5 py-2 text-xs shadow-md shadow-[#13293D]/15 cursor-pointer"
+                        class="rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold transition-all duration-200 inline-flex items-center gap-2 px-5 py-2 text-xs shadow-md shadow-blue-500/25 hover:shadow-blue-500/40 cursor-pointer"
                     >
                         <span>Dashboard</span>
                         <i class="bi bi-arrow-up-right text-[10px]" aria-hidden="true"></i>
@@ -124,7 +126,7 @@ onUnmounted(() => {
                     <Link
                         v-else
                         href="/login"
-                        class="rounded-full bg-[#265D7A] hover:bg-[#13293D] text-white font-semibold transition-all duration-200 inline-flex items-center gap-2 px-5 py-2 text-xs shadow-md shadow-[#13293D]/15 cursor-pointer"
+                        class="rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold transition-all duration-200 inline-flex items-center gap-2 px-5 py-2 text-xs shadow-md shadow-blue-500/25 hover:shadow-blue-500/40 cursor-pointer"
                     >
                         <span>Masuk Portal</span>
                         <i class="bi bi-arrow-up-right text-[10px]" aria-hidden="true"></i>

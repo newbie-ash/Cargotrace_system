@@ -47,13 +47,13 @@ onMounted(() => {
 <template>
     <section
         aria-label="Hero Section Delixie"
-        class="relative min-h-[90vh] overflow-hidden bg-transparent text-white pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
+        class="relative min-h-[90vh] overflow-hidden bg-transparent text-[#2E1E16] pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
     >
-        <!-- Ambient Organic Gradient Wave Accent (Matches Color Palette Reference) -->
+        <!-- Subtle Ambient Organic Light Accents -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-            <div class="hidden sm:block absolute -top-28 -right-28 w-[640px] h-[640px] rounded-full bg-gradient-to-br from-[#13293D] via-[#265D7A] to-[#67C7C6] opacity-80 blur-[64px]"></div>
-            <div class="hidden sm:block absolute top-20 right-16 w-[420px] h-[420px] rounded-full bg-[#A7E4DB]/35 blur-[90px]"></div>
-            <div class="absolute -bottom-24 -left-24 w-[480px] h-[480px] rounded-full bg-[#67C7C6]/20 blur-[130px]"></div>
+            <div class="hidden sm:block absolute -top-28 -right-28 w-[640px] h-[640px] rounded-full bg-[#FAF7F2] opacity-80 blur-[80px]"></div>
+            <div class="hidden sm:block absolute top-20 right-16 w-[420px] h-[420px] rounded-full bg-[#2563EB]/5 blur-[90px]"></div>
+            <div class="absolute -bottom-24 -left-24 w-[480px] h-[480px] rounded-full bg-[#FAF7F2] blur-[100px]"></div>
         </div>
 
         <!-- Main Hero Grid: Split Asymmetrical Editorial Layout -->
@@ -62,30 +62,30 @@ onMounted(() => {
             <div class="lg:col-span-7 flex flex-col justify-between space-y-8">
                 <!-- Eyebrow Category -->
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-px bg-[#67C7C6]" aria-hidden="true"></span>
-                    <span class="text-xs font-mono font-bold tracking-widest text-[#A7E4DB] uppercase drop-shadow-xs">
+                    <span class="w-8 h-[2px] bg-[#2563EB]" aria-hidden="true"></span>
+                    <span class="text-xs font-mono font-bold tracking-widest text-[#2E1E16] uppercase">
                         VISIBILITAS LOGISTIK GLOBAL
                     </span>
                 </div>
 
-                <!-- Massive Editorial Headline -->
-                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white drop-shadow-md">
-                    End-to-End
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#67C7C6] via-[#A7E4DB] to-white font-extrabold">Global</span>
-                    Shipment Visibility.
+                <!-- Massive Editorial Headline (per Image 2 Reference) -->
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-[#2E1E16]">
+                    End-to-End<br />
+                    Global Shipment<br />
+                    Visibility.
                 </h1>
 
                 <!-- Concise Lightweight Narrative -->
-                <p class="text-base sm:text-lg text-slate-200 font-normal leading-relaxed max-w-xl drop-shadow-xs">
+                <p class="text-base sm:text-lg text-[#5A4A40] font-normal leading-relaxed max-w-xl">
                     Pantau pergerakan kontainer interkontinental secara terverifikasi dengan validasi rute geospasial maritim, kalkulasi tarif transparan, dan peringatan keterlambatan real-time.
                 </p>
 
-                <!-- Solid Pill Primary CTA -->
+                <!-- Solid Pill Primary CTA: Royal Blue per Image 2 -->
                 <div class="pt-2 flex flex-wrap items-center gap-4">
                     <button
                         type="button"
                         @click="emit('scrollToTrack')"
-                        class="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#67C7C6] to-[#A7E4DB] hover:brightness-110 text-[#102232] font-bold text-sm transition-all duration-300 shadow-xl shadow-[#67C7C6]/25 hover:-translate-y-0.5 inline-flex items-center gap-3 cursor-pointer group"
+                        class="px-8 py-3.5 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold text-sm transition-all duration-300 shadow-xl shadow-blue-500/35 hover:shadow-blue-500/50 hover:-translate-y-0.5 inline-flex items-center gap-3 cursor-pointer group"
                     >
                         <span>Lacak Kargo Sekarang</span>
                         <i class="bi bi-arrow-right text-xs transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true"></i>
@@ -93,35 +93,35 @@ onMounted(() => {
                 </div>
 
                 <!-- Bottom Left: 3 Real Statistics Separated by Vertical Dividers -->
-                <div class="pt-8 mt-4 border-t border-white/20 grid grid-cols-3 gap-6 max-w-lg">
-                    <div class="pr-4 border-r border-white/20">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight drop-shadow-xs">
-                            {{ displayShipments }}<span class="text-[#67C7C6]">+</span>
+                <div class="pt-8 mt-4 border-t border-[#2E1E16]/12 grid grid-cols-3 gap-6 max-w-lg">
+                    <div class="pr-4 border-r border-[#2E1E16]/12">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#2E1E16] tracking-tight">
+                            {{ displayShipments }}<span class="text-[#2563EB]">+</span>
                         </div>
-                        <div class="text-[11px] font-semibold text-[#A7E4DB] mt-1 font-mono">
+                        <div class="text-[11px] font-semibold text-[#5A4A40] mt-1 font-mono">
                             Pengiriman Aktif
                         </div>
                     </div>
-                    <div class="pr-4 border-r border-white/20">
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight drop-shadow-xs">
+                    <div class="pr-4 border-r border-[#2E1E16]/12">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#2E1E16] tracking-tight">
                             {{ displayCarriers }}
                         </div>
-                        <div class="text-[11px] font-semibold text-[#A7E4DB] mt-1 font-mono">
+                        <div class="text-[11px] font-semibold text-[#5A4A40] mt-1 font-mono">
                             Mitra Ekspedisi
                         </div>
                     </div>
                     <div>
-                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white tracking-tight drop-shadow-xs">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-[#2E1E16] tracking-tight">
                             {{ displayLocations }}
                         </div>
-                        <div class="text-[11px] font-semibold text-[#A7E4DB] mt-1 font-mono">
+                        <div class="text-[11px] font-semibold text-[#5A4A40] mt-1 font-mono">
                             Pelabuhan &amp; Hub
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Kolom Kanan: Interactive 3D Globe (Three.js / Globe.GL) & Telemetry Overlay -->
+            <!-- Kolom Kanan: Interactive 3D Globe & Telemetry Overlay -->
             <div class="lg:col-span-5 relative flex items-center justify-center">
                 <div class="relative w-full max-w-md">
                     <div class="relative flex items-center justify-center">
@@ -129,23 +129,23 @@ onMounted(() => {
                     </div>
 
                     <!-- Floating Frosted Glass Telemetry Overlay Card -->
-                    <div class="relative z-20 mt-4 sm:mt-0 sm:absolute -bottom-4 right-0 sm:right-2 backdrop-blur-2xl bg-white/85 border border-white/95 rounded-2xl p-4 sm:p-5 shadow-[0_18px_40px_rgba(19,41,61,0.14)] max-w-xs mx-auto transition-transform duration-300 hover:-translate-y-1">
-                        <div class="flex items-center justify-between gap-3 pb-2.5 border-b border-[#265D7A]/15">
+                    <div class="relative z-20 mt-4 sm:mt-0 sm:absolute -bottom-4 right-0 sm:right-2 backdrop-blur-2xl bg-white/85 border border-white/95 rounded-2xl p-4 sm:p-5 shadow-[0_18px_40px_rgba(46,30,22,0.08)] max-w-xs mx-auto transition-transform duration-300 hover:-translate-y-1">
+                        <div class="flex items-center justify-between gap-3 pb-2.5 border-b border-[#2E1E16]/10">
                             <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#67C7C6] shadow-[0_0_8px_#67C7C6]"></span>
-                                <span class="text-xs font-mono font-bold text-[#13293D] uppercase tracking-wider">Navigasi Aktif</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-[#2563EB] shadow-[0_0_8px_#2563EB]"></span>
+                                <span class="text-xs font-mono font-bold text-[#2E1E16] uppercase tracking-wider">Navigasi Aktif</span>
                             </div>
-                            <span class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#13293D] text-[#A7E4DB]">
+                            <span class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#2E1E16] text-[#FAF7F2]">
                                 21.4 KTS
                             </span>
                         </div>
                         <div class="mt-2.5 flex items-center justify-between text-xs">
                             <div>
-                                <span class="text-[10px] text-[#265D7A] font-mono font-semibold block">KORIDOR MARITIM</span>
-                                <strong class="font-mono text-[#13293D] text-xs">IDJKT &rarr; NLRTM</strong>
+                                <span class="text-[10px] text-[#5A4A40] font-mono font-semibold block">KORIDOR MARITIM</span>
+                                <strong class="font-mono text-[#2E1E16] text-xs">IDJKT &rarr; NLRTM</strong>
                             </div>
                             <div class="text-right">
-                                <span class="text-[10px] text-[#265D7A] font-mono font-semibold block">STATUS</span>
+                                <span class="text-[10px] text-[#5A4A40] font-mono font-semibold block">STATUS</span>
                                 <span class="text-xs font-mono font-bold text-emerald-800">On Schedule</span>
                             </div>
                         </div>
