@@ -47,20 +47,141 @@ onMounted(() => {
 <template>
     <section
         aria-label="Hero Section Delixie"
-        class="relative min-h-[95vh] overflow-hidden bg-transparent text-white pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
+        class="relative min-h-[92vh] overflow-hidden bg-transparent text-white pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
     >
-        <!-- Logistics 3D Intermodal Hero Background -->
-        <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-            <img
-                src="/images/hero-logistics-bg.jpg"
-                alt="Global Intermodal Logistics Background"
-                class="w-full h-full object-cover object-right md:object-center opacity-90 select-none"
-            />
-            <!-- Left Gradient Overlay for High-Contrast Typography Readability -->
-            <div class="absolute inset-0 bg-gradient-to-r from-[#102232] via-[#102232]/85 to-transparent w-full lg:w-2/3"></div>
-            <!-- Top & Bottom Blends to seamlessly merge with canvas -->
-            <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#102232] to-transparent"></div>
-            <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#102232] via-[#102232]/80 to-transparent"></div>
+        <!-- Ultra-Crisp Vector & Procedural Logistics Background (100% Vector Sharpness / Zero Pixelation) -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden select-none" aria-hidden="true">
+            <!-- 1. Ambient Deep Ocean Radial Glow Mesh -->
+            <div class="absolute -top-32 -right-24 w-[720px] h-[720px] rounded-full bg-gradient-to-br from-[#13293D] via-[#265D7A]/55 to-[#67C7C6]/25 blur-[96px]"></div>
+            <div class="absolute top-1/4 right-1/4 w-[480px] h-[480px] rounded-full bg-[#67C7C6]/15 blur-[110px]"></div>
+            <div class="absolute -bottom-36 -left-28 w-[580px] h-[580px] rounded-full bg-[#17384E]/60 blur-[120px]"></div>
+
+            <!-- 2. High-Precision Geospatial SVG Logistics Grid & Animated Route Arcs -->
+            <svg
+                class="absolute inset-0 w-full h-full opacity-70"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid slice"
+                viewBox="0 0 1440 900"
+            >
+                <defs>
+                    <!-- Coordinate Grid Pattern -->
+                    <pattern id="hero-geo-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                        <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(103, 199, 198, 0.05)" stroke-width="1" />
+                        <circle cx="80" cy="80" r="1.2" fill="rgba(167, 228, 219, 0.18)" />
+                    </pattern>
+
+                    <!-- Route Gradient Arcs -->
+                    <linearGradient id="route-asia-eu" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#10B981" stop-opacity="0.25" />
+                        <stop offset="35%" stop-color="#67C7C6" stop-opacity="0.95" />
+                        <stop offset="70%" stop-color="#A7E4DB" stop-opacity="0.85" />
+                        <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.35" />
+                    </linearGradient>
+
+                    <linearGradient id="route-transpacific" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#67C7C6" stop-opacity="0.15" />
+                        <stop offset="50%" stop-color="#67C7C6" stop-opacity="0.75" />
+                        <stop offset="100%" stop-color="#A7E4DB" stop-opacity="0.25" />
+                    </linearGradient>
+
+                    <linearGradient id="route-intermodal-land" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#A7E4DB" stop-opacity="0.65" />
+                        <stop offset="100%" stop-color="#10B981" stop-opacity="0.15" />
+                    </linearGradient>
+
+                    <!-- Route Glow Filter -->
+                    <filter id="route-glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="2.5" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Full Area Geodetic Grid -->
+                <rect width="100%" height="100%" fill="url(#hero-geo-grid)" />
+
+                <!-- Global Latitude / Longitude Curvature Guides -->
+                <path d="M-100,280 C400,220 900,340 1600,240" fill="none" stroke="rgba(103, 199, 198, 0.08)" stroke-width="1.2" stroke-dasharray="6 6" />
+                <path d="M-100,520 C500,480 1000,600 1600,490" fill="none" stroke="rgba(103, 199, 198, 0.08)" stroke-width="1.2" stroke-dasharray="6 6" />
+                <path d="M-100,760 C300,710 850,820 1600,730" fill="none" stroke="rgba(103, 199, 198, 0.06)" stroke-width="1" />
+
+                <!-- Trade Lane 1: Asia - Middle East - Europe Maritime Supercorridor (Animated) -->
+                <path
+                    d="M 660,700 C 820,630 960,470 1200,310"
+                    fill="none"
+                    stroke="url(#route-asia-eu)"
+                    stroke-width="2.5"
+                    filter="url(#route-glow)"
+                    class="hero-route-line-1"
+                />
+                <!-- Trade Lane 2: Intra-Asia Aerial Express Corridor (Animated) -->
+                <path
+                    d="M 740,800 C 940,710 1100,640 1340,530"
+                    fill="none"
+                    stroke="url(#route-transpacific)"
+                    stroke-width="2"
+                    stroke-dasharray="8 8"
+                    class="hero-route-line-2"
+                />
+                <!-- Trade Lane 3: Trans-Continental Feeder Arc (Animated) -->
+                <path
+                    d="M 960,250 C 1120,210 1260,270 1420,370"
+                    fill="none"
+                    stroke="url(#route-intermodal-land)"
+                    stroke-width="1.8"
+                    stroke-dasharray="5 7"
+                    class="hero-route-line-3"
+                />
+
+                <!-- Hub Blips & Radar Rings with Real Port Coordinates -->
+                <!-- Hub 1: Jakarta Tanjung Priok (IDJKT) -->
+                <g transform="translate(710, 680)">
+                    <circle r="14" fill="none" stroke="#10B981" stroke-width="1" class="animate-ping opacity-35" />
+                    <circle r="4" fill="#10B981" />
+                    <text x="12" y="-6" fill="#A7E4DB" font-size="9" font-family="monospace" font-weight="bold" letter-spacing="1">IDJKT [06°S 106°E]</text>
+                </g>
+
+                <!-- Hub 2: Singapore Malacca Strait (SGSIN) -->
+                <g transform="translate(850, 570)">
+                    <circle r="12" fill="none" stroke="#67C7C6" stroke-width="1" class="animate-ping opacity-30" style="animation-delay: 0.6s;" />
+                    <circle r="3.5" fill="#67C7C6" />
+                    <text x="12" y="-6" fill="#67C7C6" font-size="9" font-family="monospace" letter-spacing="1">SGSIN HUB</text>
+                </g>
+
+                <!-- Hub 3: Dubai Port (AEDXB) -->
+                <g transform="translate(1040, 420)">
+                    <circle r="12" fill="none" stroke="#67C7C6" stroke-width="1" class="animate-ping opacity-30" style="animation-delay: 1.2s;" />
+                    <circle r="3.5" fill="#67C7C6" />
+                    <text x="12" y="-6" fill="#A7E4DB" font-size="9" font-family="monospace" letter-spacing="1">AEDXB TRANSIT</text>
+                </g>
+
+                <!-- Hub 4: Rotterdam Gateway (NLRTM) -->
+                <g transform="translate(1220, 300)">
+                    <circle r="16" fill="none" stroke="#F59E0B" stroke-width="1" class="animate-ping opacity-40" style="animation-delay: 1.8s;" />
+                    <circle r="4.5" fill="#F59E0B" />
+                    <text x="12" y="-8" fill="#F59E0B" font-size="9" font-family="monospace" font-weight="bold" letter-spacing="1">NLRTM [51°N 004°E]</text>
+                </g>
+
+                <!-- Geospatial Matrix Target Crosshairs -->
+                <g transform="translate(1140, 170)" stroke="rgba(103, 199, 198, 0.28)" stroke-width="1">
+                    <line x1="-12" y1="0" x2="12" y2="0" />
+                    <line x1="0" y1="-12" x2="0" y2="12" />
+                    <circle r="6" fill="none" />
+                    <text x="16" y="4" fill="rgba(167, 228, 219, 0.45)" font-size="8" font-family="monospace">RADAR-SYNC 21.4K</text>
+                </g>
+                <g transform="translate(610, 320)" stroke="rgba(103, 199, 198, 0.2)" stroke-width="1">
+                    <line x1="-8" y1="0" x2="8" y2="0" />
+                    <line x1="0" y1="-8" x2="0" y2="8" />
+                    <circle r="4" fill="none" />
+                </g>
+            </svg>
+
+            <!-- 3. Left Gradient Vignette (Ensures 100% crisp readability for headline & CTA) -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#102232] via-[#102232]/85 to-transparent w-full lg:w-3/5"></div>
+            <!-- Bottom Seamless Vignette into Utility Hub -->
+            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#102232] to-transparent"></div>
         </div>
 
         <!-- Main Hero Grid: Split Asymmetrical Editorial Layout -->
@@ -131,7 +252,7 @@ onMounted(() => {
             <!-- Kolom Kanan: Interactive 3D Globe & Telemetry Overlay -->
             <div class="lg:col-span-5 relative flex items-center justify-center min-h-[400px]">
                 <div class="relative w-full max-w-md">
-                    <!-- 3D Globe positioned alongside the intermodal fleet -->
+                    <!-- 3D Globe positioned alongside vector route grid -->
                     <div class="relative flex items-center justify-center opacity-95 hover:opacity-100 transition-opacity">
                         <HeroGlobe3D :locations="locations" />
                     </div>
@@ -163,3 +284,26 @@ onMounted(() => {
         </div>
     </section>
 </template>
+
+<style scoped>
+@keyframes heroRouteFlow {
+    from {
+        stroke-dashoffset: 160;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+.hero-route-line-1 {
+    stroke-dasharray: 12 8;
+    animation: heroRouteFlow 14s linear infinite;
+}
+.hero-route-line-2 {
+    stroke-dasharray: 8 6;
+    animation: heroRouteFlow 10s linear infinite reverse;
+}
+.hero-route-line-3 {
+    stroke-dasharray: 6 10;
+    animation: heroRouteFlow 16s linear infinite;
+}
+</style>
