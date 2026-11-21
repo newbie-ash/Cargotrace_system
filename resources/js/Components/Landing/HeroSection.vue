@@ -47,13 +47,20 @@ onMounted(() => {
 <template>
     <section
         aria-label="Hero Section Delixie"
-        class="relative min-h-[90vh] overflow-hidden bg-transparent text-white pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
+        class="relative min-h-[95vh] overflow-hidden bg-transparent text-white pt-32 pb-28 px-6 sm:px-12 lg:px-16 flex flex-col justify-center"
     >
-        <!-- Ambient Organic Gradient Wave Accent (Matches Color Palette Reference) -->
+        <!-- Logistics 3D Intermodal Hero Background -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-            <div class="hidden sm:block absolute -top-28 -right-28 w-[640px] h-[640px] rounded-full bg-gradient-to-br from-[#13293D] via-[#265D7A] to-[#67C7C6] opacity-80 blur-[64px]"></div>
-            <div class="hidden sm:block absolute top-20 right-16 w-[420px] h-[420px] rounded-full bg-[#A7E4DB]/35 blur-[90px]"></div>
-            <div class="absolute -bottom-24 -left-24 w-[480px] h-[480px] rounded-full bg-[#67C7C6]/20 blur-[130px]"></div>
+            <img
+                src="/images/hero-logistics-bg.jpg"
+                alt="Global Intermodal Logistics Background"
+                class="w-full h-full object-cover object-right md:object-center opacity-90 select-none"
+            />
+            <!-- Left Gradient Overlay for High-Contrast Typography Readability -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#102232] via-[#102232]/85 to-transparent w-full lg:w-2/3"></div>
+            <!-- Top & Bottom Blends to seamlessly merge with canvas -->
+            <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#102232] to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#102232] via-[#102232]/80 to-transparent"></div>
         </div>
 
         <!-- Main Hero Grid: Split Asymmetrical Editorial Layout -->
@@ -121,10 +128,11 @@ onMounted(() => {
                 </div>
             </div>
 
-            <!-- Kolom Kanan: Interactive 3D Globe (Three.js / Globe.GL) & Telemetry Overlay -->
-            <div class="lg:col-span-5 relative flex items-center justify-center">
+            <!-- Kolom Kanan: Interactive 3D Globe & Telemetry Overlay -->
+            <div class="lg:col-span-5 relative flex items-center justify-center min-h-[400px]">
                 <div class="relative w-full max-w-md">
-                    <div class="relative flex items-center justify-center">
+                    <!-- 3D Globe positioned alongside the intermodal fleet -->
+                    <div class="relative flex items-center justify-center opacity-95 hover:opacity-100 transition-opacity">
                         <HeroGlobe3D :locations="locations" />
                     </div>
 
