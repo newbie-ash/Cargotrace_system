@@ -39,7 +39,7 @@ const hasCoords = (loc) =>
     Number.isFinite(Number(loc.latitude)) &&
     Number.isFinite(Number(loc.longitude));
 
-// Generate dark ocean texture via offscreen canvas (Zero CORS / Zero external network dependency)
+// Generate dark deep teal ocean texture via offscreen canvas
 const createOceanTexture = () => {
     const canvas = document.createElement('canvas');
     canvas.width = 128;
@@ -48,9 +48,9 @@ const createOceanTexture = () => {
     if (!ctx) return '';
 
     const grad = ctx.createLinearGradient(0, 0, 0, 64);
-    grad.addColorStop(0, '#1A3A54');
-    grad.addColorStop(0.5, '#13293D');
-    grad.addColorStop(1, '#0C1B28');
+    grad.addColorStop(0, '#02332A');
+    grad.addColorStop(0.5, '#012B23');
+    grad.addColorStop(1, '#001A14');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 128, 64);
     return canvas.toDataURL();
@@ -59,7 +59,7 @@ const createOceanTexture = () => {
 const buildPointsAndArcs = () => {
     const validLocs = props.locations.filter(hasCoords);
 
-    // Format points
+    // Format points (Magenta, Bone, Deep Teal)
     const points = validLocs.map((loc) => {
         const isOrigin = loc.code === 'IDJKT' || loc.code === 'IDTPP';
         const isDest = loc.code === 'NLRTM';
@@ -68,11 +68,11 @@ const buildPointsAndArcs = () => {
             name: loc.name,
             lat: parseFloat(loc.latitude),
             lng: parseFloat(loc.longitude),
-            color: isOrigin ? '#10B981' : isDest ? '#F59E0B' : '#67C7C6',
+            color: isOrigin ? '#BE2388' : isDest ? '#FAEFDB' : '#E03598',
         };
     });
 
-    // Curate active flight/maritime arcs between real DB nodes
+    // Curate active flight/maritime arcs between real DB nodes (Magenta & Bone)
     const arcs = [];
     const findLoc = (code) => validLocs.find((l) => l.code === code);
 
@@ -86,7 +86,7 @@ const buildPointsAndArcs = () => {
             startLng: parseFloat(corridor1[i].longitude),
             endLat: parseFloat(corridor1[i + 1].latitude),
             endLng: parseFloat(corridor1[i + 1].longitude),
-            color: ['#10B981', '#67C7C6', '#F59E0B'],
+            color: ['#BE2388', '#E03598', '#FAEFDB'],
         });
     }
 
@@ -100,7 +100,7 @@ const buildPointsAndArcs = () => {
             startLng: parseFloat(corridor2[i].longitude),
             endLat: parseFloat(corridor2[i + 1].latitude),
             endLng: parseFloat(corridor2[i + 1].longitude),
-            color: ['#A7E4DB', '#67C7C6'],
+            color: ['#FAEFDB', '#BE2388'],
         });
     }
 
@@ -112,7 +112,7 @@ const buildPointsAndArcs = () => {
                 startLng: parseFloat(validLocs[i].longitude),
                 endLat: parseFloat(validLocs[i + 1].latitude),
                 endLng: parseFloat(validLocs[i + 1].longitude),
-                color: ['#10B981', '#67C7C6', '#F59E0B'],
+                color: ['#BE2388', '#FAEFDB', '#E03598'],
             });
         }
     }
@@ -121,8 +121,8 @@ const buildPointsAndArcs = () => {
     const rings = [];
     const jkt = findLoc('IDJKT');
     const rtm = findLoc('NLRTM');
-    if (jkt) rings.push({ lat: parseFloat(jkt.latitude), lng: parseFloat(jkt.longitude), color: '#10B981' });
-    if (rtm) rings.push({ lat: parseFloat(rtm.latitude), lng: parseFloat(rtm.longitude), color: '#F59E0B' });
+    if (jkt) rings.push({ lat: parseFloat(jkt.latitude), lng: parseFloat(jkt.longitude), color: '#BE2388' });
+    if (rtm) rings.push({ lat: parseFloat(rtm.latitude), lng: parseFloat(rtm.longitude), color: '#FAEFDB' });
 
     return { points, arcs, rings };
 };
@@ -150,12 +150,12 @@ const initGlobe = () => {
         .backgroundColor('rgba(0,0,0,0)')
         .globeImageUrl(oceanTexture)
         .showAtmosphere(true)
-        .atmosphereColor('#67C7C6')
+        .atmosphereColor('#BE2388')
         .atmosphereAltitude(0.18)
         .polygonsData(countries.features)
-        .polygonCapColor(() => 'rgba(38, 93, 122, 0.92)')
-        .polygonSideColor(() => 'rgba(103, 199, 198, 0.22)')
-        .polygonStrokeColor(() => '#67C7C6')
+        .polygonCapColor(() => 'rgba(10, 61, 50, 0.94)')
+        .polygonSideColor(() => 'rgba(190, 35, 136, 0.25)')
+        .polygonStrokeColor(() => 'rgba(250, 239, 219, 0.35)')
         .polygonAltitude(0.012)
         .pointsData(points)
         .pointColor('color')
@@ -165,14 +165,14 @@ const initGlobe = () => {
         .labelText('code')
         .labelSize(1.3)
         .labelDotRadius(0.35)
-        .labelColor(() => '#A7E4DB')
+        .labelColor(() => '#FAEFDB')
         .labelAltitude(0.038)
         .arcsData(arcs)
         .arcColor('color')
         .arcDashLength(0.42)
         .arcDashGap(0.18)
         .arcDashAnimateTime(2000)
-        .arcStroke(1.2)
+        .arcStroke(1.3)
         .arcAltitude(0.24)
         .ringsData(rings)
         .ringColor('color')
@@ -264,16 +264,16 @@ onBeforeUnmount(() => {
         >
             <defs>
                 <radialGradient id="fallbackSphere" cx="35%" cy="30%" r="70%">
-                    <stop offset="0%" stop-color="#1A3A54" />
-                    <stop offset="55%" stop-color="#13293D" />
-                    <stop offset="100%" stop-color="#0C1B28" />
+                    <stop offset="0%" stop-color="#0A3D32" />
+                    <stop offset="55%" stop-color="#012B23" />
+                    <stop offset="100%" stop-color="#001F18" />
                 </radialGradient>
             </defs>
-            <circle cx="210" cy="210" r="178" fill="url(#fallbackSphere)" stroke="#67C7C6" stroke-width="2" />
-            <path d="M105,140 Q145,105 190,128 T235,165 Q215,215 170,225 T110,195 Z" fill="#265D7A" fill-opacity="0.8" stroke="#67C7C6" stroke-width="1" />
-            <path d="M245,105 Q295,95 330,138 T315,205 Q270,215 245,175 Z" fill="#265D7A" fill-opacity="0.8" stroke="#67C7C6" stroke-width="1" />
-            <ellipse cx="210" cy="210" rx="95" ry="178" fill="none" stroke="rgba(103,199,198,0.25)" stroke-width="1.2" />
-            <ellipse cx="210" cy="210" rx="178" ry="62" fill="none" stroke="rgba(103,199,198,0.25)" stroke-width="1.2" />
+            <circle cx="210" cy="210" r="178" fill="url(#fallbackSphere)" stroke="#BE2388" stroke-width="2" />
+            <path d="M105,140 Q145,105 190,128 T235,165 Q215,215 170,225 T110,195 Z" fill="#0A3D32" fill-opacity="0.9" stroke="#FAEFDB" stroke-width="1" />
+            <path d="M245,105 Q295,95 330,138 T315,205 Q270,215 245,175 Z" fill="#0A3D32" fill-opacity="0.9" stroke="#FAEFDB" stroke-width="1" />
+            <ellipse cx="210" cy="210" rx="95" ry="178" fill="none" stroke="rgba(190,35,136,0.30)" stroke-width="1.2" />
+            <ellipse cx="210" cy="210" rx="178" ry="62" fill="none" stroke="rgba(190,35,136,0.30)" stroke-width="1.2" />
         </svg>
     </div>
 </template>

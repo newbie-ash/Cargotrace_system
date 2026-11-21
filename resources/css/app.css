@@ -7,97 +7,97 @@
 
 @theme {
     --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-canvas: #EDF7F6;
-    --color-frost-mist: #D9F2EE;
-    --color-navy-deep: #13293D;
-    --color-ocean-steel: #265D7A;
-    --color-teal-bright: #67C7C6;
-    --color-mint-ice: #A7E4DB;
-    --color-charcoal: #13293D;
-    --color-faint: #265D7A;
+    --color-canvas: #012B23;
+    --color-deep-teal: #012B23;
+    --color-deep-teal-dark: #001F18;
+    --color-deep-teal-light: #0A3D32;
+    --color-bone: #FAEFDB;
+    --color-bone-muted: #D9CFBD;
+    --color-magenta: #BE2388;
+    --color-magenta-hover: #A61D75;
+    --color-magenta-bright: #D42B8A;
 }
 
 :root {
-    color-scheme: light;
-    --colors-canvas: #EDF7F6;
-    --colors-navy: #13293D;
-    --colors-steel: #265D7A;
-    --colors-accent: #67C7C6;
-    --colors-mint: #A7E4DB;
-    --colors-body: #13293D;
-    --colors-muted: #265D7A;
+    color-scheme: dark;
+    --colors-canvas: #012B23;
+    --colors-deep-teal: #012B23;
+    --colors-bone: #FAEFDB;
+    --colors-magenta: #BE2388;
+    --colors-body: #FAEFDB;
+    --colors-muted: #D9CFBD;
 }
 
 body {
-    background-color: #102232;
+    background-color: #012B23;
     background-image:
-        radial-gradient(circle 900px at 95% 5%, rgba(103, 199, 198, 0.28) 0%, transparent 55%),
-        radial-gradient(circle 650px at 5% 95%, rgba(38, 93, 122, 0.50) 0%, transparent 60%),
-        linear-gradient(160deg, #102232 0%, #17384E 40%, #1F4C66 70%, #2A637E 100%);
+        radial-gradient(circle 850px at 85% 15%, rgba(190, 35, 136, 0.18) 0%, transparent 60%),
+        radial-gradient(circle 600px at 5% 95%, rgba(0, 31, 24, 0.70) 0%, transparent 65%),
+        linear-gradient(160deg, #012B23 0%, #03362C 40%, #054034 75%, #08483B 100%);
     background-attachment: fixed;
-    color: #13293D;
+    color: #FAEFDB;
     min-height: 100vh;
 }
 
 @media (max-width: 767px) {
     body {
         background-image:
-            radial-gradient(circle 320px at 95% 4%, rgba(103, 199, 198, 0.25) 0%, transparent 60%),
-            radial-gradient(circle 350px at 5% 95%, rgba(38, 93, 122, 0.45) 0%, transparent 65%),
-            linear-gradient(160deg, #102232 0%, #17384E 50%, #265D7A 100%);
+            radial-gradient(circle 380px at 90% 8%, rgba(190, 35, 136, 0.16) 0%, transparent 65%),
+            radial-gradient(circle 350px at 5% 95%, rgba(0, 31, 24, 0.65) 0%, transparent 65%),
+            linear-gradient(160deg, #012B23 0%, #03362C 50%, #054034 100%);
     }
 }
 
-/* Frosted Glassmorphism Container */
+/* Frosted Glassmorphism Container: Deep Teal & Bone */
 .glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(217, 242, 238, 0.45) 100%);
+    background: linear-gradient(135deg, rgba(4, 43, 35, 0.75) 0%, rgba(1, 35, 28, 0.60) 100%);
     backdrop-filter: blur(20px) saturate(140%);
     -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(250, 239, 219, 0.14);
     border-radius: 24px;
-    box-shadow: 0 16px 40px -10px rgba(19, 41, 61, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(250, 239, 219, 0.18);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-    border-color: rgba(103, 199, 198, 0.85);
-    box-shadow: 0 20px 48px -8px rgba(19, 41, 61, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+    border-color: rgba(190, 35, 136, 0.60);
+    box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.50), 0 0 24px rgba(190, 35, 136, 0.15);
 }
 
 .dark-input {
-    background-color: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(38, 93, 122, 0.22);
-    color: #13293D;
+    background-color: rgba(1, 31, 24, 0.85);
+    border: 1px solid rgba(250, 239, 219, 0.20);
+    color: #FAEFDB;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dark-input::placeholder {
-    color: rgba(38, 93, 122, 0.60);
+    color: rgba(250, 239, 219, 0.45);
 }
 
 .dark-input:focus {
     outline: none;
-    border-color: #265D7A;
-    box-shadow: 0 0 0 3px rgba(103, 199, 198, 0.35);
+    border-color: #BE2388;
+    box-shadow: 0 0 0 3px rgba(190, 35, 136, 0.30);
 }
 
 /* Global Leaflet Dark Canvas overrides */
 .leaflet-container {
-    background: #13293D !important;
+    background: #012B23 !important;
     font-family: var(--font-sans) !important;
 }
 
 .leaflet-popup-content-wrapper {
-    background: #13293D !important;
-    border: 1px solid rgba(167, 228, 219, 0.35) !important;
+    background: #012B23 !important;
+    border: 1px solid rgba(190, 35, 136, 0.45) !important;
     border-radius: 16px !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45) !important;
-    color: #F8FAFC !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important;
+    color: #FAEFDB !important;
 }
 
 .leaflet-popup-tip {
-    background: #13293D !important;
-    border: 1px solid rgba(167, 228, 219, 0.35) !important;
+    background: #012B23 !important;
+    border: 1px solid rgba(190, 35, 136, 0.45) !important;
 }
 
 .custom-leaflet-pin {
@@ -106,12 +106,12 @@ body {
 }
 
 .leaflet-bar a {
-    background-color: #13293D !important;
-    border-color: rgba(255, 255, 255, 0.20) !important;
-    color: #F8FAFC !important;
+    background-color: #012B23 !important;
+    border-color: rgba(250, 239, 219, 0.20) !important;
+    color: #FAEFDB !important;
 }
 
 .leaflet-bar a:hover {
-    background-color: #265D7A !important;
+    background-color: #BE2388 !important;
     color: #FFFFFF !important;
 }
